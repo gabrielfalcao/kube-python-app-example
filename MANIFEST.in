@@ -1,0 +1,6 @@
+include COPYING README.rst Pipfile *.rst docs/source/*
+recursive-include docs/source *.*
+recursive-include docs/source/_static *.*
+
+recursive-include application/docs *.*
+recursive-include application/docs/_static *.*

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-hello
+  namespace: devspace-gfalcao-ea9943
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: flask-hello
+  template:
+    metadata:
+      labels:
+        name: flask-hello
+    spec:
+      containers:
+      - image: gabrielfalcao/flask-hello
+        imagePullPolicy: Always
+        name: flask-hello
+        ports:
+        - containerPort: 5000
+          name: ui
+---
+apiVersion: v1
+data: {}
+kind: Secret
+metadata:
+  name: flask-hello
+  namespace: devspace-gfalcao-ea9943
+stringData:
+  password: bar
+  username: foo
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: flask-hello
+  name: flask-hello
+  namespace: devspace-gfalcao-ea9943
+spec:
+  ports:
+  - name: flask-hello-ui
+    port: 5000
+    targetPort: 5000
+  selector:
+    name: flask-hello
+  type: NodePort

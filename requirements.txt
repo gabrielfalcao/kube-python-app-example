@@ -1,0 +1,11 @@
+Flask-Cors==3.0.8
+bcrypt==3.1.7
+chemist==1.6.3
+click==7.0
+coloredlogs==10.0
+flask-restplus==0.13.0
+flask==1.1.1
+psycopg2-binary==2.8.4
+pyzmq==18.1.1
+requests==2.22.0
+uWSGI==2.0.18

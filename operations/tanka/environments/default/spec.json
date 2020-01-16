@@ -1,0 +1,11 @@
+{
+  "apiVersion": "tanka.dev/v1alpha1",
+  "kind": "Environment",
+  "metadata": {
+    "name": "default"
+  },
+  "spec": {
+    "apiServer": "https://82E241CB6822C1BDC5FA604A0AAFD2B5.gr7.eu-central-1.eks.amazonaws.com",
+    "namespace": "devspace-gfalcao-ea9943"
+  }
+}

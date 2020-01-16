@@ -1,0 +1,24 @@
+FROM python:3.7-alpine
+
+RUN apk --update --no-cache add \
+    bash \
+    build-base \
+    ca-certificates \
+    figlet \
+    gcc \
+    libffi-dev \
+    make \
+    musl-dev \
+    postgresql-dev \
+    postgresql-libs \
+    python3-dev
+
+RUN mkdir -p /app /pip/cache
+RUN python3 -mvenv /venv
+
+WORKDIR /app
+
+COPY *.txt /app/
+
+RUN /venv/bin/pip install --cache-dir /pip/cache -U pip setuptools
+RUN /venv/bin/pip install --cache-dir /pip/cache -r development.txt

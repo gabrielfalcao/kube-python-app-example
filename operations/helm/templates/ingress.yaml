@@ -1,0 +1,23 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "nom.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  hosts:
+    - {{ printf "web" $.Release.Namespace . $.Values.ingress.domain | quote }}
+  {{- with .Values.ingress.gateways }}
+  gateways:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  http:
+    - route:
+        - destination:
+            host: {{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+            port:
+              number: 5000
+{{- end }}
