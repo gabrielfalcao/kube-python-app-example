@@ -7,7 +7,7 @@ ENV PYTHONPATH="/app/:${PYTHONPATH}"
 ENV VENV /venv/
 ENV PATH="/venv/bin:${PATH}"
 
-RUN /venv/bin/pip install coloredlogs
+RUN /venv/bin/pip install coloredlogs ipdb
 
 COPY . /app/
 
