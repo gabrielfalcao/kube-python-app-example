@@ -7,10 +7,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  POSTGRES_HOST: {{ include "postgresql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  POSTGRES_HOST: {{ include "postgresql.hostname" . }}
   POSTGRES_PORT: {{ .Values.postgresql.port | quote }}
-  POSTGRES_DATABASE: {{ .Values.postgresql.database }}
-  POSTGRES_USERNAME: {{ .Values.postgresql.username }}
+  POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
+  POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
 
 ---
 apiVersion: apps/v1

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+import logging
+import time
 import os
 from flask import render_template
 from flask_restplus import Api
@@ -9,6 +11,9 @@ from flask_restplus import fields
 from application.core import application
 from application.utils import json_response
 from application.models import User, metadata, engine
+
+
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 @application.route("/", methods=["GET"])
@@ -25,6 +30,22 @@ user_json = api.model('User', {
 })
 
 ns = api.namespace('users', description='User operations', path='/api/')
+
+
+def connect_db():
+    try:
+        metadata.create_all(engine)
+        return True
+    except Exception as e:
+        logging.error(f'failed to connect to db: {e}')
+        return False
+
+
+def try_connect_db(attempts=30):
+    for x in range(attempts):
+        if connect_db():
+            break
+        time.sleep(2)
 
 
 @ns.route('/user')
@@ -66,18 +87,12 @@ class UserEndpoint(Resource):
 @api.route('/health')
 class HealthCheck(Resource):
     def get(self):
-        try:
-            metadata.create_all(engine)
-            response = {'system': 'ok'}
-            status = 200
-        except Exception as e:
-            response = {'error': f'{e}'}
-            status = 500
-
-        return response, status
+        try_connect_db()
+        return {'system': 'ok'}
 
 
 if __name__ == "__main__":
+    try_connect_db()
     application.run(
         debug=bool(os.getenv('FLASK_DEBUG')),
         host=str(os.getenv('FLASK_HOST', '0.0.0.0')),
