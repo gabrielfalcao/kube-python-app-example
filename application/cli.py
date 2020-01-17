@@ -130,13 +130,6 @@ def check_db(ctx):
 
 
 @main.command("migrate-db")
-@click.option(
-    "--checkfirst",
-    "-c",
-    is_flag=True,
-    help="check if tables exist before creating",
-    default=False,
-)
 @click.pass_context
 def migrate_db(ctx, checkfirst):
     "runs the web server"
@@ -151,7 +144,7 @@ def migrate_db(ctx, checkfirst):
     url = engine.url
     logger.info(f"Migrating SQL database: {str(engine.url)!r}")
     try:
-        metadata.create_all(engine, checkfirst=checkfirst)
+        metadata.create_all(engine)
         logger.info(f"SUCCESS")
     except Exception as e:
         logger.exception(f"failed to connect to migrate {url}: {e}")
