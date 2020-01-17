@@ -67,3 +67,40 @@ postgresql:
   #     imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
   #     name: create postgres users
   #     command: ['bash', '-c', '"echo \"grant all privileges on database flask_hello to postgres\""']
+
+
+redis:
+  image:
+    pullPolicy: IfNotPresent
+  cluster:
+    enabled: false
+    slaveCount: 1
+  master:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    persistence:
+      enabled: true
+      storageClass: efs
+  slave:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    persistence:
+      enabled: true
+      storageClass: efs
+  sentinel:
+    enabled: false
+  rbac:
+    create: true
+  usePassword: false
+  metrics:
+    enabled: true
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 50Mi
