@@ -16,6 +16,15 @@ level_choices = click.Choice(
 )
 
 
+def check_database_host_reachable():
+    logger.info(f"Checking database access")
+    try:
+        host = socket.gethostbyname(config.host)
+        logger.info(f"Database host {config.host!r} resolves to {host!r}")
+    except Exception:
+        logger.exception("failed to resolve database hostname {config.host!r}")
+
+
 def set_log_level_by_name(loglevel: str, loggername=None):
     loglevel = loglevel.upper()
     coloredlogs.install(loglevel)
@@ -94,13 +103,7 @@ def check_db(ctx):
 
     set_debug_mode()
 
-    logger.info(f"Checking database access")
-    try:
-        host = socket.gethostbyname(config.host)
-        logger.info(f"Database host {config.host!r} resolves to {host!r}")
-    except Exception:
-        logger.exception("failed to resolve database hostname {config.host!r}")
-
+    check_database_host_reachable()
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Trying to connect to DB")
@@ -122,8 +125,8 @@ def migrate_db(ctx, checkfirst):
     "runs the web server"
 
     set_debug_mode()
-    logging.getLogger().setLevel(logging.DEBUG)
-    coloredlogs.install(level="DEBUG")
+    check_database_host_reachable()
+
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Migrating SQL database: {str(engine.url)!r}")
@@ -132,4 +135,3 @@ def migrate_db(ctx, checkfirst):
         logger.info(f"SUCCESS")
     except Exception as e:
         logger.exception(f"failed to connect to migrate {url}: {e}")
-        raise SystemExit(1)
