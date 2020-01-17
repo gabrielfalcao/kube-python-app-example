@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import socket
 import click
 import logging
 import coloredlogs
@@ -10,11 +11,25 @@ from application.models import metadata
 from application import version
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('flask-hello')
 
 level_choices = click.Choice(
     ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False
 )
+
+
+def set_log_level_by_name(loglevel: str, loggername=None):
+    if loggername:
+        logger = logging.getLogger(loggername)
+    else:
+        logging.getLogger()
+
+    logger.setLevel(
+        getattr(logging, loglevel.upper(), logging.INFO))
+
+
+def set_debug_mode():
+    set_log_level_by_name('DEBUG')
 
 
 @click.group()
@@ -22,10 +37,7 @@ level_choices = click.Choice(
 @click.pass_context
 def main(ctx, loglevel):
     "flask-hello command-line manager"
-    coloredlogs.install(level=loglevel)
-
-    logging.getLogger().setLevel(
-        getattr(logging, loglevel.upper(), logging.INFO))
+    set_log_level_by_name(loglevel)
     ctx.obj = dict(engine=set_default_uri(config.sqlalchemy_url()))
 
 
@@ -39,7 +51,7 @@ def print_version():
 def check():
     "runs the web server"
 
-    coloredlogs.install(level="DEBUG")
+    set_debug_mode()
     logger.info('Python installation works')
     logger.info(f'DATABASE: {config.sqlalchemy_url()}')
 
@@ -75,9 +87,17 @@ def run_web(ctx, host, port, debug):
 @main.command("check-db")
 @click.pass_context
 def check_db(ctx):
-    "attempts to connect to database"
+    "checks if the application can connect to the configured db"
 
-    coloredlogs.install(level="DEBUG")
+    set_debug_mode()
+
+    logger.info(f"Checking database access")
+    try:
+        host = socket.gethostbyname(config.host)
+        logger.info(f"Database host {config.host!r} resolves to {host!r}")
+    except Exception:
+        logger.exception('failed to resolve database hostname {config.host!r}')
+
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Trying to connect to DB")
@@ -98,6 +118,7 @@ def check_db(ctx):
 def migrate_db(ctx, checkfirst):
     "runs the web server"
 
+    set_debug_mode()
     logging.getLogger().setLevel(logging.DEBUG)
     coloredlogs.install(level="DEBUG")
     engine = ctx.obj["engine"]
