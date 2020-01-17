@@ -1,6 +1,7 @@
 FROM gabrielfalcao/flask-hello-base
 
 ENV PYTHONPATH /app/
+ENV VENV /venv/
 
 COPY . /app/
 

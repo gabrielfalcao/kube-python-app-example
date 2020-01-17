@@ -1,51 +1,54 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image
 
+BASE_IMAGE		:= flask-hello-base
+PROD_IMAGE		:= k8s-flask-hello
 export FLASK_DEBUG	:= 1
+export VENV		?= .venv
 
 all: dependencies tests
 
-.venv:  # creates .venv folder if does not exist
-	python3 -mvenv .venv
+$(VENV):  # creates $(VENV) folder if does not exist
+	python3 -mvenv $(VENV)
 
 
-.venv/bin/nosetests .venv/bin/python .venv/bin/pip: # installs latest pip
-	test -e .venv/bin/pip || make .venv
-	.venv/bin/pip install -U pip setuptools
-	.venv/bin/pip install -r development.txt
+$(VENV)/bin/nosetests $(VENV)/bin/python $(VENV)/bin/pip: # installs latest pip
+	test -e $(VENV)/bin/pip || make $(VENV)
+	$(VENV)/bin/pip install -U pip setuptools
+	$(VENV)/bin/pip install -r development.txt
 
 # Runs the unit and functional tests
-tests: .venv/bin/nosetests  # runs all tests
-	.venv/bin/nosetests tests
+tests: $(VENV)/bin/nosetests  # runs all tests
+	$(VENV)/bin/nosetests tests
 
 # Install dependencies
-dependencies: | .venv/bin/nosetests
+dependencies: | $(VENV)/bin/nosetests
 
 
 migrate:
-	.venv/bin/python application/migrate.py
+	$(VENV)/bin/python application/migrate.py
 
 # runs unit tests
 
-unit: .venv/bin/nosetests  # runs only unit tests
-	.venv/bin/nosetests --cover-erase tests/unit
+unit: $(VENV)/bin/nosetests  # runs only unit tests
+	$(VENV)/bin/nosetests --cover-erase tests/unit
 
-functional: .venv/bin/nosetests  # runs functional tests
-	.venv/bin/nosetests tests/functional
+functional: $(VENV)/bin/nosetests  # runs functional tests
+	$(VENV)/bin/nosetests tests/functional
 
 # runs the server, exposing the routes to http://localhost:5000
-run: .venv/bin/python
-	.venv/bin/python application/web.py
-
-docker-image:
-	figlet base image
-	docker build -f Dockerfile.base -t gabrielfalcao/flask-hello-base .
+run: $(VENV)/bin/python
+	$(VENV)/bin/python application/web.py
 
 docker-base-image:
+	figlet base image
+	docker images | grep "$(BASE_IMAGE)" || docker build -f Dockerfile.base -t "gabrielfalcao/$(BASE_IMAGE):latest" .
+
+docker-image: docker-base-image
 	figlet production image
-	docker build -f Dockerfile -t gabrielfalcao/k8s-flask-hello .
+	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE):latest .
 
 docker-push:
-	docker push gabrielfalcao/k8s-flask-hello
+	docker push gabrielfalcao/$(PROD_IMAGE)
 
 wheels:
 	mkdir -p wheels
