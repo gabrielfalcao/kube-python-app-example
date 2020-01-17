@@ -1,7 +1,8 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image
 
+TAG			:= $(shell git log -n1  --format=oneline Dockerfile | awk '{print $$1}')
 BASE_IMAGE		:= flask-hello-base
-PROD_IMAGE		:= k8s-flask-hello:v1
+PROD_IMAGE		:= k8s-flask-hello:$(TAG)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -61,7 +62,7 @@ docker: docker-image docker-push
 deploy: deploy-with-helm
 
 deploy-with-helm:
-	newstore k8s stack install -t 60 --no-update --atomic --debug operations/helm
+	newstore k8s stack install --timeout 30 --no-update --atomic --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
