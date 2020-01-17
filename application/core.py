@@ -7,7 +7,7 @@ from application.filesystem import templates_path
 
 class config:
     host = os.getenv("POSTGRES_HOST") or "localhost"
-    port = os.getenv("POSTGRES_PORT") or 5432
+    port = int(os.getenv("POSTGRES_PORT") or 5432)
     username = os.getenv("POSTGRES_USERNAME") or "flask_hello"
     password = os.getenv("POSTGRES_PASSWORD") or ""
     database = os.getenv("POSTGRES_DATABASE") or "flask_hello"

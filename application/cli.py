@@ -17,12 +17,22 @@ level_choices = click.Choice(
 
 
 def check_database_host_reachable():
-    logger.info(f"Checking database access")
     try:
+        logger.info(f"Check ability to resolve name: {config.host}")
         host = socket.gethostbyname(config.host)
-        logger.info(f"Database host {config.host!r} resolves to {host!r}")
+        logger.info(f"SUCCESS: {config.host!r} => {host!r}")
     except Exception as e:
         return e
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        logger.info(f"Checking TCP connection to {host!r}")
+        sock.connect((host, config.port))
+        logger.info(f"SUCCESS: TCP connection to database works!!")
+    except Exception as e:
+        return e
+    finally:
+        sock.close()
 
 
 def set_log_level_by_name(loglevel: str, loggername=None):
