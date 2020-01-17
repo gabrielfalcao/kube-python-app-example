@@ -33,6 +33,14 @@ def print_version():
     print(f"flask-hello {version} / {sys.platform}")
 
 
+@main.command("check")
+def check():
+    "runs the web server"
+
+    coloredlogs.install(level="DEBUG")
+    logger.info('IT WORKS!')
+
+
 @main.command("web")
 @click.option(
     "--port",
@@ -55,7 +63,6 @@ def print_version():
 def run_web(ctx, host, port, debug):
     "runs the web server"
 
-    coloredlogs.install(level="DEBUG")
     if debug:
         coloredlogs.install(level="DEBUG")
 
@@ -67,6 +74,7 @@ def run_web(ctx, host, port, debug):
 def check_db(ctx):
     "attempts to connect to database"
 
+    coloredlogs.install(level="DEBUG")
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Trying to connect to DB")
@@ -85,6 +93,7 @@ def check_db(ctx):
 def migrate_db(ctx):
     "runs the web server"
 
+    coloredlogs.install(level="DEBUG")
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Migrating SQL database")
