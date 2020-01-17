@@ -78,19 +78,21 @@ def check_db(ctx):
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Trying to connect to DB")
-    try:
-        result = engine.connect()
-        logger.info(f"SUCCESS: {url}")
-    except Exception as e:
-        logger.exception(
-            f"failed to connect to {url}: {e}"
-        )
-        raise SystemExit(1)
+    result = engine.connect()
+    logger.info(f"SUCCESS: {url}")
+    result.close()
 
 
 @main.command("migrate-db")
+@click.option(
+    "--checkfirst",
+    "-c",
+    is_flag=True,
+    help="check if tables exist before creating",
+    default=False,
+)
 @click.pass_context
-def migrate_db(ctx):
+def migrate_db(ctx, checkfirst):
     "runs the web server"
 
     coloredlogs.install(level="DEBUG")
@@ -98,7 +100,7 @@ def migrate_db(ctx):
     url = engine.url
     logger.info(f"Migrating SQL database")
     try:
-        metadata.create_all(engine, checkfirst=False)
+        metadata.create_all(engine, checkfirst=checkfirst)
         logger.info(f"SUCCESS")
     except Exception as e:
         logger.exception(
