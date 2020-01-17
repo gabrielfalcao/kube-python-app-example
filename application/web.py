@@ -8,7 +8,7 @@ from flask_restplus import Resource
 from flask_restplus import fields
 from application.core import application
 from application.utils import json_response
-from application.models import User
+from application.models import User, metadata, engine
 
 
 @application.route("/", methods=["GET"])
@@ -66,7 +66,15 @@ class UserEndpoint(Resource):
 @api.route('/health')
 class HealthCheck(Resource):
     def get(self):
-        return {'system': 'ok'}
+        try:
+            metadata.create_all(engine)
+            response = {'system': 'ok'}
+            status = 200
+        except Exception as e:
+            response = {'error': f'{e}'}
+            status = 500
+
+        return response, status
 
 
 if __name__ == "__main__":

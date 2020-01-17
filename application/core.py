@@ -8,5 +8,3 @@ params = {"template_folder": templates_path}
 
 application = Flask(__name__, **params)
 cors = CORS(application, resources="/*")
-
-metadata.create_all(engine)
