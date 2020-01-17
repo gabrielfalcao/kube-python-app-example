@@ -11,7 +11,7 @@ from application.models import metadata
 from application import version
 
 
-logger = logging.getLogger('flask-hello')
+logger = logging.getLogger("flask-hello")
 
 level_choices = click.Choice(
     ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False
@@ -24,12 +24,11 @@ def set_log_level_by_name(loglevel: str, loggername=None):
     else:
         logging.getLogger()
 
-    logger.setLevel(
-        getattr(logging, loglevel.upper(), logging.INFO))
+    logger.setLevel(getattr(logging, loglevel.upper(), logging.INFO))
 
 
 def set_debug_mode():
-    set_log_level_by_name('DEBUG')
+    set_log_level_by_name("DEBUG")
 
 
 @click.group()
@@ -52,8 +51,8 @@ def check():
     "runs the web server"
 
     set_debug_mode()
-    logger.info('Python installation works')
-    logger.info(f'DATABASE: {config.sqlalchemy_url()}')
+    logger.info("Python installation works")
+    logger.info(f"DATABASE: {config.sqlalchemy_url()}")
 
 
 @main.command("web")
@@ -96,7 +95,7 @@ def check_db(ctx):
         host = socket.gethostbyname(config.host)
         logger.info(f"Database host {config.host!r} resolves to {host!r}")
     except Exception:
-        logger.exception('failed to resolve database hostname {config.host!r}')
+        logger.exception("failed to resolve database hostname {config.host!r}")
 
     engine = ctx.obj["engine"]
     url = engine.url
@@ -128,7 +127,5 @@ def migrate_db(ctx, checkfirst):
         metadata.create_all(engine, checkfirst=checkfirst)
         logger.info(f"SUCCESS")
     except Exception as e:
-        logger.exception(
-            f"failed to connect to migrate {url}: {e}"
-        )
+        logger.exception(f"failed to connect to migrate {url}: {e}")
         raise SystemExit(1)
