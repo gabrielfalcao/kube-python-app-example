@@ -7,6 +7,8 @@ ENV PYTHONPATH="/app/:${PYTHONPATH}"
 ENV VENV /venv/
 ENV PATH="/venv/bin:${PATH}"
 
+RUN /venv/bin/pip install coloredlogs
+
 COPY . /app/
 
 RUN make tests
