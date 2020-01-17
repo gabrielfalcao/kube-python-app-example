@@ -17,7 +17,7 @@ level_choices = click.Choice(
 )
 
 
-def check_database_host_reachable():
+def check_database_dns():
     try:
         logger.info(f"Check ability to resolve name: {config.host}")
         host = socket.gethostbyname(config.host)
@@ -116,7 +116,7 @@ def check_db(ctx):
 
     set_debug_mode()
 
-    error = check_database_host_reachable()
+    error = check_database_dns()
     if error:
         logger.error(f'could not resolve {config.host!r}: {error}')
         raise SystemExit(1)
@@ -135,7 +135,7 @@ def migrate_db(ctx):
     "runs the web server"
 
     set_debug_mode()
-    error = check_database_host_reachable()
+    error = check_database_dns()
     if error:
         logger.error(f'could not resolve {config.host!r}: {error}')
         raise SystemExit(1)
