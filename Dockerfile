@@ -13,3 +13,5 @@ RUN make tests
 ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
+
+COMMAND ['flask-hello', 'web']
