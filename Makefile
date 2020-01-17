@@ -63,7 +63,7 @@ docker: docker-image docker-push
 deploy: deploy-with-helm
 
 deploy-with-helm:
-	newstore k8s stack install --timeout 30 --no-update --atomic --debug operations/helm
+	newstore k8s stack install --set image.tag=$(TAG) --timeout 30 --no-update --atomic --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"

@@ -1,5 +1,8 @@
 FROM gabrielfalcao/flask-hello-base
 
+RUN apk --update --no-cache add \
+    git \
+
 ENV PYTHONPATH="/app/:${PYTHONPATH}"
 ENV VENV /venv/
 ENV PATH="/venv/bin:${PATH}"
