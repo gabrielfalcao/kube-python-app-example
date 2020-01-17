@@ -57,4 +57,4 @@ postgresql:
 
   postgresqlPassword: b5fi41dz1BE4C22F44u
   postgresqlDatabase: flask_hello
-  postgresqlUsername: flask_hello
+  postgresqlUsername: postgres
