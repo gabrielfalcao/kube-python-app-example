@@ -46,7 +46,6 @@ run: $(VENV)/bin/python
 docker-base-image:
 	figlet base image
 	docker images | grep "$(BASE_IMAGE):$(BASE_TAG)" || docker build -f Dockerfile.base -t "$(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)" .
-	docker tag "$(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)" "$(DOCKER_AUTHOR)/$(BASE_IMAGE)"
 
 docker-image: docker-base-image
 	figlet production image
@@ -58,8 +57,8 @@ docker-push:
 	@docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
 	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)
 	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
-	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE):latest
-	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE):latest
+	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE)
+	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
 wheels:
 	mkdir -p wheels
