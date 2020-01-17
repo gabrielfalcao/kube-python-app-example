@@ -17,6 +17,8 @@ level_choices = click.Choice(
 
 
 def set_log_level_by_name(loglevel: str, loggername=None):
+    loglevel = loglevel.upper()
+    coloredlogs.install(loglevel)
     if loggername:
         logger = logging.getLogger(loggername)
     else:
@@ -26,6 +28,7 @@ def set_log_level_by_name(loglevel: str, loggername=None):
 
 
 def set_debug_mode():
+    logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
     set_log_level_by_name("DEBUG")
 
 

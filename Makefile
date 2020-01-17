@@ -1,4 +1,4 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
@@ -27,6 +27,8 @@ tests: $(VENV)/bin/nosetests  # runs all tests
 # Install dependencies
 dependencies: | $(VENV)/bin/nosetests
 
+check:
+	$(VENV)/bin/flask-hello check
 
 migrate:
 	$(VENV)/bin/python application/migrate.py
