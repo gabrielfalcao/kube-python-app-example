@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_cors import CORS
+from flask_session import Session
 
 from application.filesystem import templates_path
 
@@ -25,3 +26,4 @@ params = {"template_folder": templates_path}
 
 application = Flask(__name__, **params)
 cors = CORS(application, resources="/*")
+session = Session(application)
