@@ -6,6 +6,7 @@ RUN apk --update --no-cache add \
 
 ENV VENV /venv/
 ENV PATH "/venv/bin:${PATH}"
+ENV PYTHONPATH /app/
 
 COPY . /app/
 
@@ -21,5 +22,5 @@ ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
 
+CMD flask-hello web --port=$FLASK_HELLO_PORT
 CMD /venv/bin/uwsgi --http :$FLASK_HELLO_PORT --mount /=application.web:application
-# CMD flask-hello web --port=$FLASK_HELLO_PORT
