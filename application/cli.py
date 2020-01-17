@@ -28,7 +28,7 @@ def check_database_host_reachable():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         logger.info(f"Checking TCP connection to {host!r}")
-        sock.connect((host, config.port))
+        sock.connect((host, int(config.port)))
         logger.info(f"SUCCESS: TCP connection to database works!!")
     except Exception as e:
         return e
@@ -131,7 +131,7 @@ def check_db(ctx):
 
 @main.command("migrate-db")
 @click.pass_context
-def migrate_db(ctx, checkfirst):
+def migrate_db(ctx):
     "runs the web server"
 
     set_debug_mode()
