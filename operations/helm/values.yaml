@@ -50,6 +50,9 @@ tolerations: []
 
 affinity: {}
 postgresql:
+  image:
+    repository: postgres
+    tag: 10.6
   postgresqlPassword: b5fi41dz1BE4C22F44u
   postgresqlDatabase: flask_hello
   postgresqlUsername: web

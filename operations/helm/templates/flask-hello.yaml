@@ -56,6 +56,12 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "flask-hello.fullname" . }}-secrets
+              key: postgresql-password
 
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -65,12 +71,7 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
-          # env:
-        # - name: POSTGRES_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: {{ include "postgresql.fullname" . }}
-        #       key: postgresql-password
+
 
         ports:
         - containerPort: 5000
@@ -101,7 +102,7 @@ apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: {{ template "flask-hello.fullname" . }}
+  name: {{ template "flask-hello.fullname" . }}-secrets
   labels:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}
 data:
