@@ -53,8 +53,9 @@ affinity: {}
 postgresql:
   database: flask_hello
   username: flask_hello
-  password: "b5--1d_1BE-C22F-4u"
+  password: "b5fi41dz1BE4C22F44u"
 
 
-postgresqlPassword: "b5--1d_1BE-C22F-4u"
+postgresqlPassword: "b5fi41dz1BE4C22F44u"
 postgresqlDatabase: flask_hello
+postgresqlUsername: flask_hello
