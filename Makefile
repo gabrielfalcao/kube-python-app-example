@@ -44,7 +44,8 @@ functional: $(VENV)/bin/nosetests  # runs functional tests
 
 # runs the server, exposing the routes to http://localhost:5000
 run: $(VENV)/bin/python
-	$(VENV)/bin/flask-hello web
+	$(VENV)/bin/uwsgi --http :5000 --mount /=application.web:application
+
 
 docker-base-image:
 	figlet base image
