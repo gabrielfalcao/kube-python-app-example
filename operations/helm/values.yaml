@@ -51,7 +51,8 @@ affinity: {}
 
 
 postgresql:
-  port: 5432
+  service:
+    port: 5432
   postgresqlPassword: b5fi41dz1BE4C22F44u
   postgresqlDatabase: flask_hello
   postgresqlUsername: flask_hello
