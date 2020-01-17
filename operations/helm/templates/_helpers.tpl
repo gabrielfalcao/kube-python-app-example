@@ -44,18 +44,33 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
+{{/*
+PostgreSQL
+*/}}
 
 {{- define "postgresql.fullname" -}}
 {{- printf "%s-postgresql" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+{{- define "postgresql.hostname" -}}
+{{ include "postgresql.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+{{- end -}}
+
+{{/*
+Redis
+*/}}
+
+{{- define "redis.fullname" -}}
+{{- printf "%s-redis" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- define "redis.hostname" -}}
+{{ include "redis.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+{{- end -}}
+
 
 
 {{- define "namespace.svc.hostname" -}}
 {{- printf "%s.svc.cluster.local" .Release.Namespace -}}
 {{- end -}}
-
-
-
-{{- define "postgresql.hostname" -}}
-{{ include "postgresql.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+{{- define "redis.hostname" -}}
+{{ include "redis.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
