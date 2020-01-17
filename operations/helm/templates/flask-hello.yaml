@@ -60,6 +60,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
+        command: ['/venv/bin/flask-hello', 'web']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env

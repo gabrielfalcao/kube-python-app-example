@@ -17,4 +17,4 @@ ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
 
-CMD ['/venv/bin/flask-hello', 'web']
+CMD /venv/bin/flask-hello web
