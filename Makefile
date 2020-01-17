@@ -61,13 +61,13 @@ docker: docker-image docker-push
 deploy: deploy-with-helm
 
 deploy-with-helm:
-	newstore k8s stack install --no-update --atomic --debug operations/helm
+	newstore k8s stack install -t 60 --no-update --atomic --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
 
 rollback:
-	newstore k8s stack delete helm
+	-newstore k8s stack delete helm
 
 db:
 	-@2>/dev/null dropdb flask_hello || echo ''
