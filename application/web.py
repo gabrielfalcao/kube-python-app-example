@@ -33,19 +33,13 @@ ns = api.namespace('users', description='User operations', path='/api/')
 
 
 def connect_db():
+    print('trying to crate tables')
     try:
         metadata.create_all(engine)
         return True
     except Exception as e:
         print(f'failed to connect to db: {e}')
         return False
-
-
-def try_connect_db(attempts=30):
-    for x in range(attempts):
-        if connect_db():
-            break
-        time.sleep(2)
 
 
 @ns.route('/user')
@@ -92,7 +86,7 @@ class HealthCheck(Resource):
 
 
 if __name__ == "__main__":
-    try_connect_db()
+    connect_db()
     application.run(
         debug=bool(os.getenv('FLASK_DEBUG')),
         host=str(os.getenv('FLASK_HOST', '0.0.0.0')),
