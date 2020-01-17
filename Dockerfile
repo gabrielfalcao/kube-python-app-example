@@ -12,9 +12,9 @@ COPY . /app/
 
 RUN make tests
 
-ENV FLASK_HELLO_VERSION 1
+ENV FLASK_HELLO_VERSION 2
 
 EXPOSE 5000
 
-ENTRYPOINT ["/venv/bin/python"]
+ENTRYPOINT [ "/venv/bin/python" ]
 CMD [  "application/web.py" ]
