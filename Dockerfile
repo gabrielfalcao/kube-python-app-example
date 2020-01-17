@@ -1,28 +1,14 @@
-FROM python:3.7-alpine
+FROM gabrielfalcao/flask-hello-base
 
-RUN apk --update --no-cache add \
-    build-base \
-    ca-certificates \
-    libffi-dev \
-    make \
-    gcc \
-    musl-dev \
-    postgresql-libs \
-    postgresql-dev \
-    python3-dev
+ENV PYTHONPATH /app/
 
-ENV PATH $PATH:/app/.venv/bin
-ENV PYTHONPATH $PYTHONPATH:/app/
+COPY . /app/
 
-COPY . /app
-
-WORKDIR /app
-
-RUN make dependencies
+RUN make tests
 
 ENV FLASK_HELLO_VERSION 1
 
 ENTRYPOINT [ "bash" ]
 
 EXPOSE 5000
-CMD [ "/app/.venv/bin/python" "application/web.py" ]
+CMD [ "/venv/bin/python" "application/web.py" ]

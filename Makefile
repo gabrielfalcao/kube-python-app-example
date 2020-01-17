@@ -1,4 +1,4 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels
 
 export FLASK_DEBUG	:= 1
 
@@ -8,12 +8,9 @@ all: dependencies tests
 	python3 -mvenv .venv
 
 
-.venv/bin/pip: # installs latest pip
+.venv/bin/nosetests .venv/bin/python .venv/bin/pip: # installs latest pip
 	test -e .venv/bin/pip || make .venv
 	.venv/bin/pip install -U pip setuptools
-
-
-.venv/bin/python .venv/bin/nosetests: .venv/bin/pip  # ensures that test dependencies are installed (nose is a test runner)
 	.venv/bin/pip install -r development.txt
 
 # Runs the unit and functional tests
@@ -40,16 +37,25 @@ run: .venv/bin/python
 	.venv/bin/python application/web.py
 
 docker-image:
-	docker build -t gabrielfalcao/k8s-flask-hello .
+	docker build -f Dockerfile.base -t gabrielfalcao/flask-hello-base .
+	docker build -f Dockerfile -t gabrielfalcao/k8s-flask-hello .
 
 docker-push:
 	docker push gabrielfalcao/k8s-flask-hello
 
+wheels:
+	mkdir -p wheels
+	docker run --rm -w /python -v $$(pwd):/python -v $$(pwd)/wheels:/wheels python:3.7-alpine sh -c 'pip wheel -r development.txt'
+
 docker: docker-image docker-push
 
+deploy: deploy-with-helm
 
-deploy:
+deploy-with-helm:
 	newstore k8s stack install --no-update --atomic --debug operations/helm
+
+port-forward:
+	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
 
 rollback:
 	newstore k8s stack delete helm
