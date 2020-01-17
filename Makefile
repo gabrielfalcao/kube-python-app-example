@@ -2,7 +2,7 @@
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log -n1  --oneline Dockerfile.base *.txt | awk '{print $$1}')
-PROD_TAG		:= $(shell git log -n1  --oneline Dockerfile . | awk '{print $$1}')
+PROD_TAG		:= $(shell git rev-parse HEAD)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
