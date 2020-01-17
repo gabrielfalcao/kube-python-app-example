@@ -1,8 +1,9 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image
 
-TAG			:= $(shell git log -n1  --format=oneline Dockerfile | awk '{print $$1}')
-BASE_IMAGE		:= flask-hello-base
-PROD_IMAGE		:= k8s-flask-hello:$(TAG)
+BASE_TAG		:= $(shell git log -n1  --format=oneline Dockerfile.base | awk '{print $$1}')
+PROD_TAG		:= $(shell git log -n1  --format=oneline Dockerfile | awk '{print $$1}')
+BASE_IMAGE		:= flask-hello-base:$(BASE_TAG)
+PROD_IMAGE		:= k8s-flask-hello:$(PROD_TAG)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
