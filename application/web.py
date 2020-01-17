@@ -33,9 +33,9 @@ ns = api.namespace('users', description='User operations', path='/api/')
 
 
 def connect_db():
-    print('trying to crate tables')
+    print('trying to connect')
     try:
-        metadata.create_all(engine)
+        engine.connect()
     except Exception as e:
         return e
 
