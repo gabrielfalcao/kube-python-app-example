@@ -21,9 +21,8 @@ def check_database_host_reachable():
     try:
         host = socket.gethostbyname(config.host)
         logger.info(f"Database host {config.host!r} resolves to {host!r}")
-    except Exception:
-        logger.exception("failed to resolve database hostname {config.host!r}")
-        raise SystemExit(1)
+    except Exception as e:
+        return e
 
 
 def set_log_level_by_name(loglevel: str, loggername=None):
@@ -104,7 +103,11 @@ def check_db(ctx):
 
     set_debug_mode()
 
-    check_database_host_reachable()
+    error = check_database_host_reachable()
+    if error:
+        logger.error(f'could not resolve {config.host!r}: {error}')
+        raise SystemExit(1)
+
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Trying to connect to DB")
@@ -126,7 +129,10 @@ def migrate_db(ctx, checkfirst):
     "runs the web server"
 
     set_debug_mode()
-    check_database_host_reachable()
+    error = check_database_host_reachable()
+    if error:
+        logger.error(f'could not resolve {config.host!r}: {error}')
+        raise SystemExit(1)
 
     engine = ctx.obj["engine"]
     url = engine.url

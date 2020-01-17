@@ -52,7 +52,9 @@ affinity: {}
 
 postgresql:
   service:
+    type: NodePort
     port: 5432
+    nodePort: 5000
   postgresqlPassword: b5fi41dz1BE4C22F44u
   postgresqlDatabase: flask_hello
   postgresqlUsername: flask_hello
