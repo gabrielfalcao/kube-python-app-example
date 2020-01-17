@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 #
 import logging
-import time
-import os
 from flask import render_template
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
 from application.core import application
 
-from application.models import User, metadata, engine
+from application.models import User
 
 
 logger = logging.getLogger(__name__)
@@ -33,14 +31,6 @@ user_json = api.model(
 )
 
 ns = api.namespace("users", description="User operations", path="/api/")
-
-
-def connect_db():
-    logger.info("trying to connect")
-    try:
-        engine.connect()
-    except Exception as e:
-        return e
 
 
 @ns.route("/user")
@@ -82,8 +72,4 @@ class UserEndpoint(Resource):
 @api.route("/health")
 class HealthCheck(Resource):
     def get(self):
-        error = connect_db()
-        if error:
-            return {"error": f"{error}"}, 500
-
         return {"system": "ok"}

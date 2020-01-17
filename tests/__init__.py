@@ -1,5 +1,6 @@
-from application import models
+from chemist import set_default_uri
+from application.models import metadata
 
-models.engine = models.set_default_uri(f"sqlite:///:memory:")
+engine = set_default_uri(f"sqlite:///:memory:")
 
-models.metadata.create_all(models.engine)
+metadata.create_all(engine)
