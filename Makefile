@@ -1,7 +1,7 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy
 
 DEPLOY_TIMEOUT		:= 300
-BASE_TAG		:= $(shell git rev-parse HEAD) #$(shell git log -n1  --oneline Dockerfile.base *.txt | awk '{print $$1}')
+BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
 PROD_TAG		:= $(shell git rev-parse HEAD)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
