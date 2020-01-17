@@ -24,6 +24,8 @@ def main(ctx, loglevel):
     "flask-hello command-line manager"
     coloredlogs.install(level=loglevel)
 
+    logging.getLogger().setLevel(
+        getattr(logging, loglevel.upper(), logging.INFO))
     ctx.obj = dict(engine=set_default_uri(config.sqlalchemy_url()))
 
 
@@ -96,6 +98,7 @@ def check_db(ctx):
 def migrate_db(ctx, checkfirst):
     "runs the web server"
 
+    logging.getLogger().setLevel(logging.DEBUG)
     coloredlogs.install(level="DEBUG")
     engine = ctx.obj["engine"]
     url = engine.url
