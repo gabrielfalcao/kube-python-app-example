@@ -22,34 +22,31 @@ spec:
         name: {{ .Chart.Name }}
         env:
         - name: POSTGRES_HOST
-          value: {{ include "postgresql.fullname" . }}.default.svc.cluster.local
+          value: '{{ include "postgresql.fullname" . }}.default.svc.cluster.local'
         - name: POSTGRES_PORT
-          value: 5432
+          value: "5432"
         - name: POSTGRES_DATABASE
-          value: {{ .Values.postgresql.database }}
+          value: "{{ .Values.postgresql.database }}"
         - name: POSTGRES_USERNAME
-          value: {{ .Values.postgresql.username }}
+          value: "{{ .Values.postgresql.username }}"
         - name: POSTGRES_PASSWORD
-          value: "{{ .Values.postgresql.password }}"
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "postgresql.fullname" . }}
+              key: postgresql-password
+
         ports:
         - containerPort: 5000
           name: api
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: flask-hello
-stringData:
-  password: bar
-  username: flask-hello
-type: Opaque
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "flask-hello.fullname" . }}
   labels:
-{{ include "flask-hello.labels" . | indent 4 }}
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -60,3 +57,15 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+
+
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ template "flask-hello.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+data:
+  postgresql-password: {{ .Values.postgresql.password | b64enc | quote }}
