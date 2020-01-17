@@ -7,7 +7,7 @@ RUN apk --update --no-cache add \
 
 ENV PYTHONPATH /app/
 ENV VENV /venv/
-
+ENV PATH /venv/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
 COPY . /app/
 
 RUN make tests
@@ -15,4 +15,6 @@ RUN make tests
 ENV FLASK_HELLO_VERSION 1
 
 EXPOSE 5000
-CMD [ "/venv/bin/python" "application/web.py" ]
+
+ENTRYPOINT ["/venv/bin/python"]
+CMD [  "application/web.py" ]
