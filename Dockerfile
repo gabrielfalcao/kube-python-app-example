@@ -4,7 +4,7 @@ RUN apk --update --no-cache add \
     git
 
 ENV VENV /venv/
-ENV PATH="/venv/bin:${PATH}"
+ENV PATH "/venv/bin:${PATH}"
 
 COPY . /app/
 
@@ -14,4 +14,4 @@ ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
 
-CMD ['flask-hello', 'web']
+CMD ['/venv/bin/flask-hello', 'web']
