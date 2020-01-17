@@ -64,7 +64,8 @@ def check():
     "runs the web server"
 
     set_debug_mode()
-    logger.info("Python installation works")
+    logger.info("Python installation works!")
+    check_database_host_reachable()
     logger.info(f"DATABASE: {config.sqlalchemy_url()}")
 
 
@@ -91,7 +92,7 @@ def run_web(ctx, host, port, debug):
     "runs the web server"
 
     if debug:
-        coloredlogs.install(level="DEBUG")
+        set_debug_mode()
 
     application.run(debug=debug, host=host, port=port)
 
