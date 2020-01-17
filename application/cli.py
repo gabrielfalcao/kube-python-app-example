@@ -99,7 +99,7 @@ def migrate_db(ctx, checkfirst):
     coloredlogs.install(level="DEBUG")
     engine = ctx.obj["engine"]
     url = engine.url
-    logger.info(f"Migrating SQL database")
+    logger.info(f"Migrating SQL database: {str(engine.url)!r}")
     try:
         metadata.create_all(engine, checkfirst=checkfirst)
         logger.info(f"SUCCESS")
