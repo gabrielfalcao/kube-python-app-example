@@ -7,7 +7,8 @@ import click
 import logging
 import coloredlogs
 from chemist import set_default_uri
-from application.core import application, config
+from application.web import application
+from application.core import config
 from application.models import metadata
 from application import version
 
@@ -90,7 +91,7 @@ def check():
     default=int(os.getenv("FLASK_PORT", 5000)),
 )
 @click.option(
-    "--host", "-H", help="HTTP HOST", default=os.getenv("FLASK_HOST") or 'localhost'
+    "--host", "-H", help="HTTP HOST", default=os.getenv("FLASK_HOST")
 )
 @click.option(
     "--debug",
@@ -106,7 +107,7 @@ def run_web(ctx, host, port, debug):
     if debug:
         set_debug_mode()
 
-    application.run(debug=debug, host=host, port=port)
+    application.run(debug=debug, host=host or None, port=port)
 
 
 @main.command("check-db")
