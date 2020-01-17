@@ -36,10 +36,8 @@ def connect_db():
     print('trying to crate tables')
     try:
         metadata.create_all(engine)
-        return True
     except Exception as e:
-        print(f'failed to connect to db: {e}')
-        return False
+        return e
 
 
 @ns.route('/user')
@@ -81,7 +79,10 @@ class UserEndpoint(Resource):
 @api.route('/health')
 class HealthCheck(Resource):
     def get(self):
-        try_connect_db()
+        error = connect_db()
+        if error:
+            return {'error': f'{error}'}, 500
+
         return {'system': 'ok'}
 
 
