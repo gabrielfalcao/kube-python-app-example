@@ -1,4 +1,5 @@
 import os
+import redis
 from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
@@ -25,5 +26,14 @@ class config:
 params = {"template_folder": templates_path}
 
 application = Flask(__name__, **params)
+
 cors = CORS(application, resources="/*")
 session = Session(application)
+
+
+application.config['SESSION_REDIS'] = redis.Redis(
+    host=os.getenv('REDIS_HOST') or 'localhost',
+    port=int(os.getenv('REDIS_PORT') or 6379),
+    db=0,
+)
+application.config['SESSION_TYPE'] = 'redis'
