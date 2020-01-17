@@ -87,7 +87,6 @@ class HealthCheck(Resource):
 
 
 if __name__ == "__main__":
-    connect_db()
     application.run(
         debug=bool(os.getenv('FLASK_DEBUG')),
         host=str(os.getenv('FLASK_HOST', '0.0.0.0')),

@@ -11,6 +11,7 @@ data:
   POSTGRES_PORT: {{ .Values.postgresql.port | quote }}
   POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
   POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
+  POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword }}
 
 ---
 apiVersion: apps/v1
@@ -53,12 +54,12 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
-        env:
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ include "postgresql.fullname" . }}
-              key: postgresql-password
+        # env:
+        # - name: POSTGRES_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: {{ include "postgresql.fullname" . }}
+        #       key: postgresql-password
 
         ports:
         - containerPort: 5000
