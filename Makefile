@@ -48,6 +48,7 @@ docker-image: docker-base-image
 	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE) .
 
 docker-push:
+	@docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
 	docker push gabrielfalcao/$(BASE_IMAGE)
 	docker push gabrielfalcao/$(PROD_IMAGE)
 
