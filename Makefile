@@ -1,4 +1,4 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy
 
 BASE_TAG		:= $(shell git log -n1  --format=oneline Dockerfile.base | awk '{print $$1}')
 PROD_TAG		:= $(shell git log -n1  --format=oneline Dockerfile | awk '{print $$1}')
@@ -78,3 +78,5 @@ db:
 	-@2>/dev/null createdb flask_hello
 	-psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
 	-psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
+
+redeploy: rollback deploy
