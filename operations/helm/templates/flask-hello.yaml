@@ -33,17 +33,18 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       initContainers:
-      - name: wait-for-db
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nslookup $POSTGRES_HOST; do echo waiting for $POSTGRES_HOST; sleep 2; done;']
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Chart.Name }}-check-installation
+        command: ['/venv/bin/flask-hello', 'check']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
 
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}-check-installation
-        command: ['/venv/bin/flask-hello', 'check']
+        name: {{ .Chart.Name }}-check-db-connection
+        command: ['/venv/bin/flask-hello', 'check-db']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
