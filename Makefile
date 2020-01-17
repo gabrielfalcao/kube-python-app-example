@@ -3,8 +3,9 @@
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log -n1  --oneline Dockerfile.base *.txt | awk '{print $$1}')
 PROD_TAG		:= $(shell git log -n1  --oneline Dockerfile application | awk '{print $$1}')
-BASE_IMAGE		:= flask-hello-base:$(BASE_TAG)
-PROD_IMAGE		:= k8s-flask-hello:$(PROD_TAG)
+DOCKER_AUTHOR		:= gabrielfalcao
+BASE_IMAGE		:= flask-hello-base
+PROD_IMAGE		:= k8s-flask-hello
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -44,16 +45,16 @@ run: $(VENV)/bin/python
 
 docker-base-image:
 	figlet base image
-	docker images | grep "$(BASE_IMAGE)" || docker build -f Dockerfile.base -t "gabrielfalcao/$(BASE_IMAGE)" .
+	docker images | grep "$(BASE_IMAGE)" || docker build -f Dockerfile.base -t "$(DOCKER_AUTHOR)/$(BASE_IMAGE)" .
 
 docker-image: docker-base-image
 	figlet production image
-	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE) .
+	docker build -f Dockerfile -t $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG) .
 
 docker-push:
 	@docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
-	docker push gabrielfalcao/$(BASE_IMAGE)
-	docker push gabrielfalcao/$(PROD_IMAGE)
+	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)
+	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
 
 wheels:
 	mkdir -p wheels
@@ -65,7 +66,7 @@ deploy: deploy-with-helm
 
 deploy-with-helm:
 	helm template operations/helm > /dev/null
-	newstore k8s stack install --set image.tag=$(PROD_TAG) --timeout $(DEPLOY_TIMEOUT) --no-update --atomic --debug operations/helm
+	newstore k8s stack install --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --timeout $(DEPLOY_TIMEOUT) --no-update --atomic --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
