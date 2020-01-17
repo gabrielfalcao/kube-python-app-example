@@ -50,6 +50,12 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 
+{{- define "namespace.svc.hostname" -}}
+{{- printf "%s.svc.cluster.local" .Release.Name -}}
+{{- end -}}
+
+
+
 {{- define "postgresql.hostname" -}}
-{{ include "postgresql.fullname" . }}.{{ .Release.Namespace }}
+{{ include "postgresql.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}

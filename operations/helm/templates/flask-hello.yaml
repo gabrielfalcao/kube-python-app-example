@@ -8,10 +8,10 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   POSTGRES_HOST: {{ template "postgresql.hostname" . }}
-  POSTGRES_PORT: {{ .Values.postgresql.port | quote }}
-  POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
-  POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
-  POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword }}
+  POSTGRES_PORT: {{ .Values.postgresql.service.port | quote }}
+  POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
+  POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
+  POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
 
 ---
 apiVersion: apps/v1
