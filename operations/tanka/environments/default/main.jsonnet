@@ -20,11 +20,7 @@
         container.new($._config.flaskhello.name, "gabrielfalcao/flask-hello")
         + container.withPorts([port.new("ui", $._config.flaskhello.port)]) + container.withImagePullPolicy("Always"),
       ],
-    ) + deployment.mixin.spec.template.metadata.withInitContainers([
-      container.new($._config.flaskhello.name, "gabrielfalcao/flask-hello") + container.withCommand([
-        'application/check.py'
-      ])
-    ]),
+    ),
     service: $.util.serviceFor(self.deployment) + service.mixin.spec.withType("NodePort"),
     secret: secret.new(
       name=$._config.flaskhello.name, data={}) + secret.withStringData({
