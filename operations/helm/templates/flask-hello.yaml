@@ -44,11 +44,17 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}-db-check
         command: ['/venv/bin/flask-hello', 'check-db']
+        envFrom:
+          - configMapRef:
+              name: {{ include "flask-hello.fullname" . }}-env
 
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}-db-migrate
         command: ['/venv/bin/flask-hello', 'migrate-db']
+        envFrom:
+          - configMapRef:
+              name: {{ include "flask-hello.fullname" . }}-env
 
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
