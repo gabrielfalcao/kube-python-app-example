@@ -11,8 +11,6 @@ from application.models import metadata
 from application import version
 
 
-logger = logging.getLogger("flask-hello")
-
 level_choices = click.Choice(
     ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False
 )
@@ -22,13 +20,16 @@ def set_log_level_by_name(loglevel: str, loggername=None):
     if loggername:
         logger = logging.getLogger(loggername)
     else:
-        logging.getLogger()
+        logger = logging.getLogger()
 
     logger.setLevel(getattr(logging, loglevel.upper(), logging.INFO))
 
 
 def set_debug_mode():
     set_log_level_by_name("DEBUG")
+
+
+logger = logging.getLogger("flask-hello")
 
 
 @click.group()
