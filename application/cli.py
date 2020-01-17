@@ -23,6 +23,7 @@ def check_database_host_reachable():
         logger.info(f"Database host {config.host!r} resolves to {host!r}")
     except Exception:
         logger.exception("failed to resolve database hostname {config.host!r}")
+        raise SystemExit(1)
 
 
 def set_log_level_by_name(loglevel: str, loggername=None):
@@ -65,8 +66,7 @@ def check():
 
     set_debug_mode()
     logger.info("Python installation works!")
-    check_database_host_reachable()
-    logger.info(f"DATABASE: {config.sqlalchemy_url()}")
+    logger.info(f"DATABASE HOSTNAME: {config.host}")
 
 
 @main.command("web")
