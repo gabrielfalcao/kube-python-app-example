@@ -41,11 +41,11 @@ run: $(VENV)/bin/python
 
 docker-base-image:
 	figlet base image
-	docker images | grep "$(BASE_IMAGE)" || docker build -f Dockerfile.base -t "gabrielfalcao/$(BASE_IMAGE):latest" .
+	docker images | grep "$(BASE_IMAGE)" || docker build -f Dockerfile.base -t "gabrielfalcao/$(BASE_IMAGE)" .
 
 docker-image: docker-base-image
 	figlet production image
-	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE):latest .
+	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE) .
 
 docker-push:
 	docker push gabrielfalcao/$(PROD_IMAGE)
