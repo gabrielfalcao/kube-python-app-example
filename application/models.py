@@ -15,10 +15,13 @@ class config:
     auth = os.getenv('POSTGRES_AUTH') or (password and f'{username}:{password}' or username)
     domain = os.getenv('POSTGRES_DOMAIN') or f'{host}:{port}'
 
+    @classmethod
+    def url(config):
+        return f"postgresql+psycopg2://{config.auth}@{config.domain}/{config.database}"
 
-engine = set_default_uri(
-    f"postgresql+psycopg2://{config.auth}@{config.domain}/{config.database}"
-)
+print(f'using SQLAlchemy URL {config.url()!r}')
+engine = set_default_uri(config.url())
+
 
 
 class User(Model):
