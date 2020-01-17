@@ -53,6 +53,17 @@ postgresql:
   image:
     repository: postgres
     tag: 10.6
+
+  postgresqlDataDir: /data/pgdata
+  persistence:
+    mountPath: /data/
+
   postgresqlPassword: b5fi41dz1BE4C22F44u
   postgresqlDatabase: flask_hello
   postgresqlUsername: web
+  # master:
+  #   extraInitContainers:
+  #   - image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
+  #     imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
+  #     name: create postgres users
+  #     command: ['bash', '-c', '"echo \"grant all privileges on database flask_hello to postgres\""']
