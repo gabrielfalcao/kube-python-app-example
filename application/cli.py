@@ -25,15 +25,15 @@ def check_database_host_reachable():
     except Exception as e:
         return e
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        logger.info(f"Checking TCP connection to {host!r}")
-        sock.connect((host, int(config.port)))
-        logger.info(f"SUCCESS: TCP connection to database works!!")
-    except Exception as e:
-        return e
-    finally:
-        sock.close()
+    # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # try:
+    #     logger.info(f"Checking TCP connection to {host!r}")
+    #     sock.connect((host, int(config.port)))
+    #     logger.info(f"SUCCESS: TCP connection to database works!!")
+    # except Exception as e:
+    #     return e
+    # finally:
+    #     sock.close()
 
 
 def set_log_level_by_name(loglevel: str, loggername=None):
