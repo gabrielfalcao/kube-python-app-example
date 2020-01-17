@@ -1,6 +1,6 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy
 
-DEPLOY_TIMEOUT		:= 300
+DEPLOY_TIMEOUT		:= 30
 BASE_TAG		:= $(shell git log -n1  --oneline Dockerfile.base *.txt | awk '{print $$1}')
 PROD_TAG		:= $(shell git log -n1  --oneline Dockerfile application | awk '{print $$1}')
 DOCKER_AUTHOR		:= gabrielfalcao
@@ -66,7 +66,7 @@ deploy: deploy-with-helm
 
 deploy-with-helm:
 	helm template operations/helm > /dev/null
-	newstore k8s stack install --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --timeout $(DEPLOY_TIMEOUT) --no-update --atomic --debug operations/helm
+	newstore k8s stack install --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --timeout $(DEPLOY_TIMEOUT) --no-update --wait --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
