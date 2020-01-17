@@ -38,7 +38,8 @@ def check():
     "runs the web server"
 
     coloredlogs.install(level="DEBUG")
-    logger.info('IT WORKS!')
+    logger.info('Python installation works')
+    logger.info(f'DATABASE: {config.sqlalchemy_url()}')
 
 
 @main.command("web")

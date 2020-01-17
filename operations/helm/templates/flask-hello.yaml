@@ -42,8 +42,8 @@ spec:
 
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}-db-check
-        command: ['/venv/bin/flask-hello', 'check-db']
+        name: {{ .Chart.Name }}-check-installation
+        command: ['/venv/bin/flask-hello', 'check']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
