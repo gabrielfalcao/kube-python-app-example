@@ -90,7 +90,7 @@ def check():
     default=int(os.getenv("FLASK_PORT", 5000)),
 )
 @click.option(
-    "--host", "-H", help="HTTP HOST", default=str(os.getenv("FLASK_HOST", "0.0.0.0"))
+    "--host", "-H", help="HTTP HOST", default=os.getenv("FLASK_HOST")
 )
 @click.option(
     "--debug",
