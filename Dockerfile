@@ -1,18 +1,14 @@
 FROM gabrielfalcao/flask-hello-base
 
-RUN apk --update --no-cache add \
-    build-base \
-    bash \
-    figlet
-
-ENV PYTHONPATH /app/
+ENV PYTHONPATH="/app/:${PYTHONPATH}"
 ENV VENV /venv/
-ENV PATH /venv/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
+ENV PATH="/venv/bin:${PATH}"
+
 COPY . /app/
 
 RUN make tests
 
-ENV FLASK_HELLO_VERSION 2
+ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
 

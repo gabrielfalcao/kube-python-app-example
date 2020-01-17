@@ -1,14 +1,16 @@
 FROM python:3.7-alpine
 
 RUN apk --update --no-cache add \
+    bash \
     build-base \
     ca-certificates \
+    figlet \
+    gcc \
     libffi-dev \
     make \
-    gcc \
     musl-dev \
-    postgresql-libs \
     postgresql-dev \
+    postgresql-libs \
     python3-dev
 
 RUN mkdir -p /app /pip/cache
