@@ -48,6 +48,7 @@ docker-image: docker-base-image
 	docker build -f Dockerfile -t gabrielfalcao/$(PROD_IMAGE) .
 
 docker-push:
+	docker push gabrielfalcao/$(BASE_IMAGE)
 	docker push gabrielfalcao/$(PROD_IMAGE)
 
 wheels:
