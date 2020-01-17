@@ -55,8 +55,8 @@ docker-image: docker-base-image
 
 docker-push:
 	@docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
-	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)
 	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
+	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)
 	docker push $(DOCKER_AUTHOR)/$(BASE_IMAGE)
 	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
