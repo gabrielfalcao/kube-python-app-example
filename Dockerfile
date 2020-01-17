@@ -11,14 +11,16 @@ RUN apk --update --no-cache add \
     postgresql-dev \
     python3-dev
 
+ENV PATH $PATH:/app/.venv/bin
+ENV PYTHONPATH $PYTHONPATH:/app/
+
 COPY . /app
 
 WORKDIR /app
 
 RUN make dependencies
 
-ENV PATH $PATH:/app/.venv/bin
-ENV PYTHONPATH $PYTHONPATH:/app/
+ENV FLASK_HELLO_VERSION 1
 
 ENTRYPOINT [ "bash" ]
 

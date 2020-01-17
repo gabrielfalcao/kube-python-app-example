@@ -1,3 +1,5 @@
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy
+
 export FLASK_DEBUG	:= 1
 
 all: dependencies tests
@@ -19,7 +21,7 @@ tests: .venv/bin/nosetests  # runs all tests
 	.venv/bin/nosetests tests
 
 # Install dependencies
-dependencies: | .venv/bin/pip
+dependencies: | .venv/bin/nosetests
 
 
 migrate:
@@ -41,12 +43,16 @@ docker-image:
 	docker build -t gabrielfalcao/k8s-flask-hello .
 
 docker-push:
-	docker push gabrielfalcao/flask-hello
+	docker push gabrielfalcao/k8s-flask-hello
 
 docker: docker-image docker-push
 
-.PHONY: tests all unit functional run docker-image docker-push docker migrate
 
+deploy:
+	newstore k8s stack install --no-update --atomic --debug operations/helm
+
+rollback:
+	newstore k8s stack delete helm
 
 db:
 	-@2>/dev/null dropdb flask_hello || echo ''
