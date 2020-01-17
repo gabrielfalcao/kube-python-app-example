@@ -12,12 +12,12 @@ all: dependencies tests
 
 $(VENV):  # creates $(VENV) folder if does not exist
 	python3 -mvenv $(VENV)
-
-
-$(VENV)/bin/nosetests $(VENV)/bin/python $(VENV)/bin/pip: # installs latest pip
-	test -e $(VENV)/bin/pip || make $(VENV)
 	$(VENV)/bin/pip install -U pip setuptools
+
+$(VENV)/bin/flask-hello $(VENV)/bin/nosetests $(VENV)/bin/python $(VENV)/bin/pip: # installs latest pip
+	test -e $(VENV)/bin/pip || make $(VENV)
 	$(VENV)/bin/pip install -r development.txt
+	$(VENV)/bin/pip install -e .
 
 # Runs the unit and functional tests
 tests: $(VENV)/bin/nosetests  # runs all tests
@@ -73,12 +73,14 @@ port-forward:
 rollback:
 	-newstore k8s stack delete helm
 
-db:
+db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
 	-@2>/dev/null dropuser flask_hello || echo 'no db user'
 	-@2>/dev/null createuser flask_hello --createrole --createdb
 	-@2>/dev/null createdb flask_hello
 	-psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
 	-psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
+	$(VENV)/bin/flask-hello check-db
+	$(VENV)/bin/flask-hello migrate-db
 
 redeploy: rollback deploy

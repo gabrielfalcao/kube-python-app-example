@@ -13,7 +13,7 @@ from application.core import application
 from application.models import User, metadata, engine
 
 
-logging.getLogger().setLevel(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @application.route("/", methods=["GET"])
@@ -23,24 +23,27 @@ def frontend():
 
 api = Api(application, doc="/api/")
 
-user_json = api.model('User', {
-    'uuid': fields.String(required=False, description="the user uuid"),
-    'email': fields.String(required=False, description="email address"),
-    'password': fields.String(required=False, description="password"),
-})
+user_json = api.model(
+    "User",
+    {
+        "uuid": fields.String(required=False, description="the user uuid"),
+        "email": fields.String(required=False, description="email address"),
+        "password": fields.String(required=False, description="password"),
+    },
+)
 
-ns = api.namespace('users', description='User operations', path='/api/')
+ns = api.namespace("users", description="User operations", path="/api/")
 
 
 def connect_db():
-    print('trying to connect')
+    logger.info("trying to connect")
     try:
         engine.connect()
     except Exception as e:
         return e
 
 
-@ns.route('/user')
+@ns.route("/user")
 class UserListEndpoint(Resource):
     def get(self):
         users = User.all()
@@ -48,21 +51,21 @@ class UserListEndpoint(Resource):
 
     @ns.expect(user_json)
     def post(self):
-        email = api.payload.get('email')
-        password = api.payload.get('password')
+        email = api.payload.get("email")
+        password = api.payload.get("password")
         try:
             user = User.create(email=email, password=password)
             return user.to_dict(), 201
         except Exception as e:
-            return {'error': str(e)}, 400
+            return {"error": str(e)}, 400
 
 
-@ns.route('/user/<user_id>')
+@ns.route("/user/<user_id>")
 class UserEndpoint(Resource):
     def get(self, user_id):
         user = User.find_one_by(id=user_id)
         if not user:
-            return {'error': 'user not found'}, 404
+            return {"error": "user not found"}, 404
 
         return user.to_dict()
 
@@ -70,25 +73,17 @@ class UserEndpoint(Resource):
     def put(self, user_id):
         user = User.find_by(id=user_id)
         if not user:
-            return {'error': 'user not found'}, 404
+            return {"error": "user not found"}, 404
 
         user = user.update_and_save(**api.payload)
         return user.to_dict(), 200
 
 
-@api.route('/health')
+@api.route("/health")
 class HealthCheck(Resource):
     def get(self):
         error = connect_db()
         if error:
-            return {'error': f'{error}'}, 500
+            return {"error": f"{error}"}, 500
 
-        return {'system': 'ok'}
-
-
-if __name__ == "__main__":
-    application.run(
-        debug=bool(os.getenv('FLASK_DEBUG')),
-        host=str(os.getenv('FLASK_HOST', '0.0.0.0')),
-        port=int(os.getenv('FLASK_PORT', 5000)),
-    )
+        return {"system": "ok"}
