@@ -49,7 +49,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-
-# global:
-#   postgresql:

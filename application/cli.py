@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import json
 import socket
 import click
 import logging
@@ -76,6 +77,8 @@ def check():
     set_debug_mode()
     logger.info("Python installation works!")
     logger.info(f"DATABASE HOSTNAME: {config.sqlalchemy_url()!r}")
+    env = json.dumps(dict(os.environ), indent=4)
+    print(f'\033[1;33m{env}\033[0m')
 
 
 @main.command("web")
