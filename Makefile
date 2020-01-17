@@ -6,7 +6,7 @@ PROD_TAG		:= $(shell git rev-parse HEAD)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
-HELM_SET_VARS		:=  --set postgresql.postgresqlPassword="b5fi41dz1BE4C22F44u" --set postgresql.postgresqlDatabase="flask_hello" --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
+HELM_SET_VARS		:= # --set postgresql.postgresqlPassword="b5fi41dz1BE4C22F44u" --set postgresql.postgresqlDatabase="flask_hello" --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
