@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import time
 import sys
 import json
 import socket
@@ -16,6 +17,14 @@ from application import version
 level_choices = click.Choice(
     ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False
 )
+
+
+def check_db_connection(engine):
+    url = engine.url
+    logger.info(f"Trying to connect to DB: {str(url)!r}")
+    result = engine.connect()
+    logger.info(f"SUCCESS: {url}")
+    result.close()
 
 
 def check_database_dns():
@@ -123,12 +132,7 @@ def check_db(ctx):
         raise SystemExit(1)
 
     engine = ctx.obj["engine"]
-    url = engine.url
-    logger.info(f"Trying to connect to DB")
-    result = engine.connect()
-    logger.info(f"SUCCESS: {url}")
-    result.close()
-
+    check_db_connection(engine)
 
 @main.command("migrate-db")
 @click.pass_context
@@ -140,6 +144,11 @@ def migrate_db(ctx):
     if error:
         logger.error(f'could not resolve {config.host!r}: {error}')
         raise SystemExit(1)
+
+    try:
+        check_db_connection(engine)
+    except Exception:
+        time.sleep(5)
 
     engine = ctx.obj["engine"]
     url = engine.url
