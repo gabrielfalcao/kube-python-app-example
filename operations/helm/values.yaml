@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: gabrielfalcao/k8s-flask-hello
-  tag: latest
+  tag: v1
   pullPolicy: Always
 
 imagePullSecrets: []

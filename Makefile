@@ -1,7 +1,7 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image
 
 BASE_IMAGE		:= flask-hello-base
-PROD_IMAGE		:= k8s-flask-hello
+PROD_IMAGE		:= k8s-flask-hello:v1
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
