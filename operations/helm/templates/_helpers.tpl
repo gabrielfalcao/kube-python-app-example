@@ -51,7 +51,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 
 {{- define "namespace.svc.hostname" -}}
-{{- printf "%s" .Release.Name -}}
+{{- printf "%s.svc.cluster.local" .Release.Namespace -}}
 {{- end -}}
 
 
