@@ -16,7 +16,7 @@ def frontend():
     return render_template("index.html")
 
 
-api = Api(application, endpoint='/api/', doc="/api/")
+api = Api(application, doc="/api/")
 
 user_json = api.model('User', {
     'uuid': fields.String(required=False, description="the user uuid"),
@@ -25,7 +25,6 @@ user_json = api.model('User', {
 })
 
 ns = api.namespace('users', description='User operations', path='/api/')
-
 
 
 @ns.route('/user')

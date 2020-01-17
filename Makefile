@@ -37,7 +37,11 @@ run: .venv/bin/python
 	.venv/bin/python application/web.py
 
 docker-image:
+	figlet base image
 	docker build -f Dockerfile.base -t gabrielfalcao/flask-hello-base .
+
+docker-base-image:
+	figlet production image
 	docker build -f Dockerfile -t gabrielfalcao/k8s-flask-hello .
 
 docker-push:
