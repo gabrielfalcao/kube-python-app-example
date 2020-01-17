@@ -1,8 +1,8 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy
 
 DEPLOY_TIMEOUT		:= 300
-BASE_TAG		:= $(shell git log -n1  --format=oneline Dockerfile.base *.txt | awk '{print $$1}')
-PROD_TAG		:= $(shell git log -n1  --format=oneline Dockerfile application | awk '{print $$1}')
+BASE_TAG		:= $(shell git log -n1  --oneline Dockerfile.base *.txt | awk '{print $$1}')
+PROD_TAG		:= $(shell git log -n1  --oneline Dockerfile application | awk '{print $$1}')
 BASE_IMAGE		:= flask-hello-base:$(BASE_TAG)
 PROD_IMAGE		:= k8s-flask-hello:$(PROD_TAG)
 export FLASK_DEBUG	:= 1
