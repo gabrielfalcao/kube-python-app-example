@@ -12,7 +12,7 @@ data:
   POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
   POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
   POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
-
+  FLASK_HELLO_PORT: {{ .Values.service.port }}
 ---
 apiVersion: apps/v1
 kind: Deployment
