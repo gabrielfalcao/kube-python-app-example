@@ -33,27 +33,31 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       initContainers:
-      - name: wait-for-db
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nslookup $POSTGRES_HOST; do echo waiting for $POSTGRES_HOST; sleep 2; done;']
-        envFrom:
-          - configMapRef:
-              name: {{ include "flask-hello.fullname" . }}-env
+        - name: wait-for-db
+          image: busybox:1.28
+          command: ['sh', '-c', 'until nslookup $POSTGRES_HOST; do echo waiting for $POSTGRES_HOST; sleep 2; done;']
+          envFrom:
+            - configMapRef:
+                name: {{ include "flask-hello.fullname" . }}-env
 
-      # initContainers:
-      # - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-      #   imagePullPolicy: {{ .Values.image.pullPolicy }}
-      #   name: {{ .Chart.Name }}-db-migrate
-      #   command: ['flask-hello', 'migrate-db']
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Chart.Name }}-db-check
+          command: ['/venv/bin/flask-hello', 'check-db']
+
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Chart.Name }}-db-migrate
+          command: ['/venv/bin/flask-hello', 'migrate-db']
 
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}
-        envFrom:
-          - configMapRef:
-              name: {{ include "flask-hello.fullname" . }}-env
-        # env:
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Chart.Name }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "flask-hello.fullname" . }}-env
+          # env:
         # - name: POSTGRES_PASSWORD
         #   valueFrom:
         #     secretKeyRef:
