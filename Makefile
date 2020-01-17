@@ -6,6 +6,7 @@ PROD_TAG		:= $(shell git rev-parse HEAD)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
+HELM_SET_VARS		:=  --set postgresql.postgresqlPassword="b5fi41dz1BE4C22F44u" --set postgresql.postgresqlDatabase="flask_hello" --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -71,14 +72,15 @@ docker: docker-image docker-push
 deploy: deploy-with-helm
 
 deploy-with-helm:
-	helm template operations/helm > /dev/null
-	newstore k8s stack install --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
+	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
 
 rollback:
-	-newstore k8s stack delete helm
+	@echo rolling back
+	-@(2>/dev/null newstore k8s stack delete helm) > /dev/null
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''

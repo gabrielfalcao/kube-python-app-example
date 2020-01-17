@@ -75,7 +75,7 @@ def check():
 
     set_debug_mode()
     logger.info("Python installation works!")
-    logger.info(f"DATABASE HOSTNAME: {config.host}")
+    logger.info(f"DATABASE HOSTNAME: {config.sqlalchemy_url()!r}")
 
 
 @main.command("web")

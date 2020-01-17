@@ -51,5 +51,5 @@ tolerations: []
 affinity: {}
 
 
-global.postgresql.postgresqlPassword: b5fi41dz1BE4C22F44u
-global.postgresql.postgresqlDatabase: flask_hello
+# global:
+#   postgresql:
