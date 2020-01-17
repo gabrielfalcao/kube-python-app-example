@@ -16,6 +16,26 @@ spec:
         app.kubernetes.io/name: {{ include "flask-hello.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Chart.Name }}-db-migrate
+        command: ['application/migrate.py']
+        env:
+        - name: POSTGRES_HOST
+          value: '{{ include "postgresql.fullname" . }}.default.svc.cluster.local'
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DATABASE
+          value: "{{ .Values.postgresql.database }}"
+        - name: POSTGRES_USERNAME
+          value: "{{ .Values.postgresql.username }}"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "postgresql.fullname" . }}
+              key: postgresql-password
+
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
