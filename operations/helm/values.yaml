@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: gabrielfalcao/k8s-flask-hello
-  tag: v1
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -51,12 +51,5 @@ tolerations: []
 affinity: {}
 
 
-postgresql:
-  service:
-    type: ClusterIP
-    port: 5432
-
-  postgresqlPassword: b5fi41dz1BE4C22F44u
-  postgresqlDatabase: flask_hello
-  postgresqlUsername: postgres
-  postgresqlPostgresPassword: b5fi41dz1BE4C22F44u
+global.postgresql.postgresqlPassword: b5fi41dz1BE4C22F44u
+global.postgresql.postgresqlDatabase: flask_hello
