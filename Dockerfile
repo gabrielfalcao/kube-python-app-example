@@ -12,6 +12,8 @@ RUN /venv/bin/pip install /app
 
 RUN make tests
 
+RUN flask-hello check
+
 
 ENV FLASK_HELLO_VERSION 3
 
