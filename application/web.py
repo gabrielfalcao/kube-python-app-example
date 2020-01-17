@@ -9,7 +9,7 @@ from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
 from application.core import application
-from application.utils import json_response
+
 from application.models import User, metadata, engine
 
 
@@ -37,7 +37,7 @@ def connect_db():
         metadata.create_all(engine)
         return True
     except Exception as e:
-        logging.error(f'failed to connect to db: {e}')
+        print(f'failed to connect to db: {e}')
         return False
 
 
