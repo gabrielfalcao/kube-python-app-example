@@ -7,6 +7,7 @@ DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
+NAMESPACE		:= $(shell newstore k8s space current)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -82,17 +83,9 @@ deploy-with-helm:
 	# 2>/dev/null newstore k8s space current || newstore k8s space create
 	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
-port-forward-web:
-	# newstore kubectl get endpoints
-	# newstore kubectl get services
-	# newstore kubectl get deployments
-	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello-web 5000:5000"
+port-forward:
+	newstore k8s run kubepfm --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*device:4242:4242" --target "$(NAMESPACE):.*device:6969:6969"
 
-port-forward-device:
-	# newstore kubectl get endpoints
-	# newstore kubectl get services
-	# newstore kubectl get deployments
-	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello-device 4242 6969"
 
 rollback:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
