@@ -211,18 +211,27 @@ def worker(ctx, address):
     type=int,
     default=5,
 )
+@click.option(
+    "--times",
+    "-x",
+    help="of execution",
+    type=int,
+    default=1,
+)
 @click.pass_context
-def enqueue(ctx, address, data, number):
+def enqueue(ctx, address, data, number, times):
     "runs a worker"
 
     client = EchoClient(zmq_uri=address)
 
-    for i in range(1, number + 1):
-        response = client.request(data)
-        if response:
-            break
+    for x in range(1, times + 1):
+        logger.warning(f'request {x}/{times}')
+        for i in range(1, number + 1):
+            response = client.request(data)
+            if response:
+                break
 
-        logger.warning(f'attempt {i}/{number}')
+            logger.warning(f'attempt {i}/{number}')
 
 
 @main.command("device")
