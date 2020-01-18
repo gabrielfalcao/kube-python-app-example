@@ -304,7 +304,7 @@ spec:
         app.kubernetes.io/managed-by: Tiller
     spec:
       initContainers:
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello-check-installation
         command: ['/venv/bin/flask-hello', 'check']
@@ -312,7 +312,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello-check-db-connection
         command: ['/venv/bin/flask-hello', 'check-db']
@@ -320,7 +320,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello-db-migrate
         command: ['/venv/bin/flask-hello', 'migrate-db']
@@ -334,7 +334,7 @@ spec:
               name: release-name-flask-hello-secrets
               key: postgresql-password
 
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello-zeromq-connection
         command: ['/venv/bin/flask-hello', 'enqueue', 'hello-world']
@@ -343,7 +343,7 @@ spec:
               name: release-name-flask-hello-env
 
       containers:
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello
         command: ['/venv/bin/flask-hello', 'web']
@@ -419,7 +419,7 @@ spec:
         app.kubernetes.io/managed-by: Tiller
     spec:
       containers:
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello
         command: ['/venv/bin/flask-hello', 'device']
@@ -445,7 +445,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
 
 spec:
-  type: Clu
+  type: ClusterIP
   ports:
 
     - port: 4242
@@ -485,7 +485,7 @@ spec:
         app.kubernetes.io/managed-by: Tiller
     spec:
       containers:
-      - image: "gabrielfalcao/k8s-flask-hello:eea146ce9a13f0c351c07bc45618baf3a3059697"
+      - image: "gabrielfalcao/k8s-flask-hello:bf2547b51cf8cfdfd49b9720b3e47ed79a58408b"
         imagePullPolicy: Always
         name: flask-hello
         command: ['/venv/bin/flask-hello', 'worker']

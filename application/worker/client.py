@@ -11,7 +11,7 @@ logger = logging.getLogger('server')
 
 
 class EchoClient(object):
-    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS):
+    def __init__(self, zmq_uri=DEFAULT_ROUTER_ADDRESS):
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
              "requester",
