@@ -27,9 +27,7 @@ spec:
 
         ports:
         - containerPort: {{ .Values.zmq.router_port }}
-          name: router
         - containerPort: {{ .Values.zmq.dealer_port }}
-          name: dealer
 ---
 apiVersion: v1
 kind: Service

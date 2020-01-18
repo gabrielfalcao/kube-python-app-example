@@ -63,8 +63,7 @@ spec:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
         ports:
-        - containerPort: 5000
-          name: webapi
+        - containerPort: {{ .Values.service.port }}
 ---
 apiVersion: v1
 kind: Service
@@ -81,7 +80,6 @@ spec:
 
   selector:
 {{ include "flask-hello.labels" . | indent 4 }}
-
 
 ---
 apiVersion: v1
