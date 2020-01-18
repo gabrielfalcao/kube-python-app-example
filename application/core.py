@@ -31,9 +31,9 @@ cors = CORS(application, resources="/*")
 session = Session(application)
 
 
-application.config['SESSION_REDIS'] = redis.Redis(
-    host=os.getenv('REDIS_HOST') or 'localhost',
-    port=int(os.getenv('REDIS_PORT') or 6379),
+application.config["SESSION_REDIS"] = redis.Redis(
+    host=os.getenv("REDIS_HOST") or "localhost",
+    port=int(os.getenv("REDIS_PORT") or 6379),
     db=0,
 )
-application.config['SESSION_TYPE'] = 'redis'
+application.config["SESSION_TYPE"] = "redis"

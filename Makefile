@@ -104,7 +104,7 @@ db: $(VENV)/bin/flask-hello
 redeploy: rollback deploy
 
 enqueue:
-	$(VENV)/bin/flask-hello enqueue -x 300 -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
+	$(VENV)/bin/flask-hello enqueue -x 3000 -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
 
 worker:
 	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'

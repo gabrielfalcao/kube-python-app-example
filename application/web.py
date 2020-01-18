@@ -31,10 +31,7 @@ user_json = api.model(
     },
 )
 rpc_request = api.model(
-    "request",
-    {
-        "data": fields.String(required=True, description="some data"),
-    },
+    "request", {"data": fields.String(required=True, description="some data")}
 )
 
 ns = api.namespace("users", description="User operations", path="/api/")
@@ -88,4 +85,4 @@ class RPCRequest(Resource):
     def post(self):
         data = api.payload.get("data")
         client = EchoClient()
-        return {'data': client.request(data)}
+        return {"data": client.request(data)}

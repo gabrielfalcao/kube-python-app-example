@@ -19,17 +19,19 @@ from application.worker.server import EchoServer
 from application import version
 
 
-DEFAULT_ROUTER_PORT = os.getenv('ZMQ_ROUTER_PORT') or 4242
-DEFAULT_ROUTER_HOST = os.getenv('ZMQ_ROUTER_HOST') or '0.0.0.0'
+DEFAULT_ROUTER_PORT = os.getenv("ZMQ_ROUTER_PORT") or 4242
+DEFAULT_ROUTER_HOST = os.getenv("ZMQ_ROUTER_HOST") or "0.0.0.0"
 
-DEFAULT_ROUTER_ADDRESS = os.getenv('ZMQ_ROUTER_ADDRESS') or (
-    f'tcp://{DEFAULT_ROUTER_HOST}:{DEFAULT_ROUTER_PORT}')
+DEFAULT_ROUTER_ADDRESS = os.getenv("ZMQ_ROUTER_ADDRESS") or (
+    f"tcp://{DEFAULT_ROUTER_HOST}:{DEFAULT_ROUTER_PORT}"
+)
 
-DEFAULT_DEALER_PORT = os.getenv('ZMQ_DEALER_PORT') or 6969
-DEFAULT_DEALER_HOST = os.getenv('ZMQ_DEALER_HOST') or '0.0.0.0'
+DEFAULT_DEALER_PORT = os.getenv("ZMQ_DEALER_PORT") or 6969
+DEFAULT_DEALER_HOST = os.getenv("ZMQ_DEALER_HOST") or "0.0.0.0"
 
-DEFAULT_DEALER_ADDRESS = os.getenv('ZMQ_DEALER_ADDRESS') or (
-    f'tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}')
+DEFAULT_DEALER_ADDRESS = os.getenv("ZMQ_DEALER_ADDRESS") or (
+    f"tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}"
+)
 
 
 level_choices = click.Choice(
@@ -107,7 +109,7 @@ def check():
     logger.info("Python installation works!")
     logger.info(f"DATABASE HOSTNAME: {config.sqlalchemy_url()!r}")
     env = json.dumps(dict(os.environ), indent=4)
-    print(f'\033[1;33m{env}\033[0m')
+    print(f"\033[1;33m{env}\033[0m")
 
 
 @main.command("web")
@@ -118,9 +120,7 @@ def check():
     type=int,
     default=int(os.getenv("FLASK_PORT", 5000)),
 )
-@click.option(
-    "--host", "-H", help="HTTP HOST", default=os.getenv("FLASK_HOST")
-)
+@click.option("--host", "-H", help="HTTP HOST", default=os.getenv("FLASK_HOST"))
 @click.option(
     "--debug",
     "-d",
@@ -147,11 +147,12 @@ def check_db(ctx):
 
     error = check_database_dns()
     if error:
-        logger.error(f'could not resolve {config.host!r}: {error}')
+        logger.error(f"could not resolve {config.host!r}: {error}")
         raise SystemExit(1)
 
     engine = ctx.obj["engine"]
     check_db_connection(engine)
+
 
 @main.command("migrate-db")
 @click.pass_context
@@ -161,7 +162,7 @@ def migrate_db(ctx):
     set_debug_mode()
     error = check_database_dns()
     if error:
-        logger.error(f'could not resolve {config.host!r}: {error}')
+        logger.error(f"could not resolve {config.host!r}: {error}")
         raise SystemExit(1)
 
     try:
@@ -194,30 +195,16 @@ def worker(ctx, address):
     server.run()
 
 
-@main.command("enqueue", context_settings=dict(
-    ignore_unknown_options=True,
-))
-@click.argument('data')
+@main.command("enqueue", context_settings=dict(ignore_unknown_options=True))
+@click.argument("data")
 @click.option(
     "--address",
     "-p",
     help="the zeromq address of the router",
     default=DEFAULT_ROUTER_ADDRESS,
 )
-@click.option(
-    "--number",
-    "-n",
-    help="of attempts",
-    type=int,
-    default=5,
-)
-@click.option(
-    "--times",
-    "-x",
-    help="of execution",
-    type=int,
-    default=1,
-)
+@click.option("--number", "-n", help="of attempts", type=int, default=5)
+@click.option("--times", "-x", help="of execution", type=int, default=1)
 @click.pass_context
 def enqueue(ctx, address, data, number, times):
     "runs a worker"
@@ -225,36 +212,36 @@ def enqueue(ctx, address, data, number, times):
     client = EchoClient(zmq_uri=address)
 
     for x in range(1, times + 1):
-        logger.warning(f'request {x}/{times}')
+        logger.warning(f"request {x}/{times}")
         for i in range(1, number + 1):
             response = client.request(data)
             if response:
                 break
 
-            logger.warning(f'attempt {i}/{number}')
+            logger.warning(f"attempt {i}/{number}")
 
 
 @main.command("device")
 @click.option(
     "--router",
     help="the zeromq address of the router",
-    default=f'tcp://0.0.0.0:{DEFAULT_ROUTER_PORT}',
+    default=f"tcp://0.0.0.0:{DEFAULT_ROUTER_PORT}",
 )
 @click.option(
     "--dealer",
     help="the zeromq address of the dealer",
-    default=f'tcp://0.0.0.0:{DEFAULT_DEALER_PORT}',
+    default=f"tcp://0.0.0.0:{DEFAULT_DEALER_PORT}",
 )
 @click.pass_context
 def device(ctx, router, dealer):
     "runs a worker"
 
     device = Device(zmq.QUEUE, zmq.ROUTER, zmq.DEALER)
-    device.setsockopt_in(zmq.IDENTITY, b'requester')
-    device.setsockopt_out(zmq.IDENTITY, b'responder')
+    device.setsockopt_in(zmq.IDENTITY, b"requester")
+    device.setsockopt_out(zmq.IDENTITY, b"responder")
     device.bind_in(router)
     device.bind_out(dealer)
-    logger.info(f'ROUTER: {router!r}')
-    logger.info(f'DEALER: {dealer!r}')
+    logger.info(f"ROUTER: {router!r}")
+    logger.info(f"DEALER: {dealer!r}")
     device.start()
     device.join()
