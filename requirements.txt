@@ -9,7 +9,7 @@ flask-session==0.3.1
 flask==1.1.1
 gevent==1.4.0
 psycopg2-binary==2.8.4
-pyzmq==18.1.1
+pyzmq==18.0.1
 redis==3.3.11
 requests==2.22.0
 uwsgi==2.0.18
