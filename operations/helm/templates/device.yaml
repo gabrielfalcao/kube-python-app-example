@@ -27,8 +27,10 @@ spec:
 
         ports:
         - containerPort: {{ .Values.zmq.router_port }}
+          protocol: TCP
           name: router
         - containerPort: {{ .Values.zmq.dealer_port }}
+          protocol: TCP
           name: dealer
 ---
 apiVersion: v1
