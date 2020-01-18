@@ -227,7 +227,7 @@ def enqueue(ctx, address, data):
 def device(ctx, router, dealer):
     "runs a worker"
 
-    device = Device(zmq.ROUTER, zmq.REQ, zmq.REP)
+    device = Device(zmq.QUEUE, zmq.ROUTER, zmq.DEALER)
     device.setsockopt_in(zmq.IDENTITY, b'requester')
     device.setsockopt_out(zmq.IDENTITY, b'responder')
     device.bind_in(router)
