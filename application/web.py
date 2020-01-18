@@ -88,4 +88,4 @@ class RPCRequest(Resource):
     def post(self):
         data = api.payload.get("data")
         client = EchoClient()
-        return client.request(data)
+        return {'data': client.request(data)}
