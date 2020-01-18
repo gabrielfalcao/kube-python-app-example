@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-{{ include "flask-hello.device-labels" . | indent 8 }}
+{{ include "flask-hello.labels" . | indent 8 }}
     spec:
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "flask-hello.device.service" . }}
+  name: {{ include "flask-hello.fullname" . }}-device
   labels:
 {{ include "flask-hello.device-labels" . | indent 4 }}
 
