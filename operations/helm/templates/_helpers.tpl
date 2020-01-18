@@ -56,6 +56,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 
+{{- define "flask-hello.device.hostname" -}}
+{{ include "flask-hello.fullname" . }}-device.{{ include "namespace.svc.hostname" . }}
+{{- end -}}
+
 {{/*
 PostgreSQL
 */}}

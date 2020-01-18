@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "flask-hello.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-web
     app.kubernetes.io/instance: {{ .Release.Name }}
 
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-web
     app.kubernetes.io/instance: {{ .Release.Name }}
