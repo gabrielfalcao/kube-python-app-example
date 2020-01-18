@@ -20,6 +20,7 @@ class EchoClient(object):
              zmq.POLLIN | zmq.POLLOUT
         )
         self.should_run = True
+        self.zmq_uri = zmq_uri
         logger.info(f'Initializing ZMQ Request Client: {self.zmq_uri!r}')
 
     def request(self, data):
