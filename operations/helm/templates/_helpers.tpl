@@ -45,16 +45,6 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{- define "flask-hello.device-labels" -}}
-app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
-helm.sh/chart: {{ include "flask-hello.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end -}}
-
 {{/*
    utils
 */}}
@@ -62,12 +52,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "namespace.svc.hostname" -}}
 {{- printf "%s.svc.cluster.local" .Release.Namespace -}}
 {{- end -}}
-
-{{- define "flask-hello.device.service" -}}
-{{ include "flask-hello.fullname" . }}-device
-{{- end -}}
-{{- define "flask-hello.device.hostname" -}}
-{{ include "flask-hello.device.service" . }}.{{ include "namespace.svc.hostname" . }}
+{{- define "flask-hello.hostname" -}}
+{{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 
 {{/*

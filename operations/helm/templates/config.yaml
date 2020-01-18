@@ -17,5 +17,5 @@ data:
 
   ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
   ZMQ_DEALER_PORT: {{ .Values.zmq.dealer_port | quote }}
-  ZMQ_ROUTER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
-  ZMQ_DEALER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
+  ZMQ_ROUTER_HOST: {{ include "flask-hello.hostname" . | quote }}
+  ZMQ_DEALER_HOST: {{ include "flask-hello.hostname" . | quote }}
