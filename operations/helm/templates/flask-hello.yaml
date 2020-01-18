@@ -47,6 +47,14 @@ spec:
               name: {{ template "flask-hello.fullname" . }}-secrets
               key: postgresql-password
 
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Chart.Name }}-zeromq-connection
+        command: ['/venv/bin/flask-hello', 'enqueue', 'ping']
+        envFrom:
+          - configMapRef:
+              name: {{ include "flask-hello.fullname" . }}-env
+
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
