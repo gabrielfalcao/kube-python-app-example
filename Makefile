@@ -7,7 +7,7 @@ DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
-NAMESPACE		:= $(shell newstore k8s space current)
+NAMESPACE		:= $$(newstore k8s space current)
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
