@@ -63,11 +63,9 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
-
-
         ports:
         - containerPort: 5000
-          name: api
+          name: http
 ---
 apiVersion: v1
 kind: Service
@@ -79,13 +77,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port }}
+      targetPort: http
       protocol: TCP
       name: http
 
   selector:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "flask-hello.labels" . | indent 4 }}
 
 
 ---

@@ -42,11 +42,11 @@ spec:
   type: {{ .Values.zmq.type }}
   ports:
     - port: {{ .Values.zmq.router_port }}
-      targetPort: {{ .Values.zmq.router_port }}
+      targetPort: router
       protocol: TCP
       name: router
     - port: {{ .Values.zmq.dealer_port }}
-      targetPort: {{ .Values.zmq.dealer_port }}
+      targetPort: dealer
       protocol: TCP
       name: dealer
   selector:
