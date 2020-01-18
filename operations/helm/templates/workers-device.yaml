@@ -39,7 +39,7 @@ metadata:
 {{ include "flask-hello.labels" . | indent 4 }}
 
 spec:
-  type: Clu
+  type: ClusterIP
   ports:
 
     - port: {{ .Values.zmq.router_port }}
