@@ -14,5 +14,5 @@ data:
   FLASK_DEBUG: "true"
   ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
   ZMQ_DEALER_PORT: {{ .Values.zmq.dealer_port | quote }}
-  ZMQ_ROUTER_HOST: {{ template "flask-hello.device.hostname" . }}
-  ZMQ_DEALER_HOST: {{ template "flask-hello.device.hostname" . }}
+  ZMQ_ROUTER_HOST: {{ include "flask-hello.device.hostname" . }}
+  ZMQ_DEALER_HOST: {{ include "flask-hello.device.hostname" . }}

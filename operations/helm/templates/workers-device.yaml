@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "flask-hello.fullname" . }}-device
+  name: {{ template "flask-hello.device.service" . }}
   labels:
 {{ include "flask-hello.labels" . | indent 4 }}
 
