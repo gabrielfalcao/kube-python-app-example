@@ -7,7 +7,8 @@ replicaCount: 1
 image:
   repository: gabrielfalcao/k8s-flask-hello
   tag: latest
-  pullPolicy: Always
+  pullPolicy: ifNotPresent
+            # Always
 
 imagePullSecrets: []
 nameOverride: ""

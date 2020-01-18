@@ -58,7 +58,7 @@ docker-image: docker-base-image
 	docker tag $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG) $(DOCKER_AUTHOR)/$(PROD_IMAGE):latest
 
 docker-push:
-	@docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
+	@2>/dev/null docker login -p $$(echo  "a2ltazI1MDIK" | base64 -d) -u gabrielfalcao
 	docker push $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
 
 docker-push-all: docker-push
