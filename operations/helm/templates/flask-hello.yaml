@@ -59,13 +59,12 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command: ['/venv/bin/flask-hello', 'web']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
         ports:
         - containerPort: 5000
-          name: http
+          name: webapi
 ---
 apiVersion: v1
 kind: Service
@@ -77,9 +76,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
       protocol: TCP
-      name: http
+      name: webapi
 
   selector:
 {{ include "flask-hello.labels" . | indent 4 }}
