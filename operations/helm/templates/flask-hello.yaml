@@ -10,11 +10,10 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-{{ include "flask-hello.labels" . | indent 6 }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "flask-hello.name" . }}
 {{ include "flask-hello.labels" . | indent 8 }}
     spec:
       initContainers:
@@ -85,7 +84,6 @@ kind: Service
 metadata:
   name: {{ include "flask-hello.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
 {{ include "flask-hello.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
@@ -95,7 +93,6 @@ spec:
       targetPort: webapi
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
 {{ include "flask-hello.labels" . | indent 4 }}
 
 ---
