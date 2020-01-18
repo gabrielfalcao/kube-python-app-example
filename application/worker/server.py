@@ -9,6 +9,7 @@ logger = logging.getLogger('server')
 
 class EchoServer(object):
     def __init__(self, zmq_uri):
+        logger.info(f'Initializing server')
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
              "responder",

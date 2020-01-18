@@ -22,7 +22,7 @@ class EchoClient(object):
 
     def request(self, data):
         logger.info(f'request: {data}')
-        if self.sockets.send_safe('requester', data):
-            response = self.sockets.recv_safe('requester')
-            logger.info(f'response: {response}')
-            return response
+        self.sockets.send_safe('requester', data)
+        response = self.sockets.recv_safe('requester')
+        logger.info(f'response: {response}')
+        return response
