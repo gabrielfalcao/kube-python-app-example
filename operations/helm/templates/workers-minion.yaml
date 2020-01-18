@@ -5,16 +5,18 @@ metadata:
   name: {{ include "flask-hello.fullname" . }}-worker
 spec:
   minReadySeconds: 5
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+      app.kubernetes.io/name: {{ include "flask-hello.name" . }}-worker
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-{{ include "flask-hello.labels" . | indent 8 }}
+        app.kubernetes.io/name: {{ include "flask-hello.name" . }}-worker
+        app.kubernetes.io/instance: {{ .Release.Name }}
+
     spec:
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

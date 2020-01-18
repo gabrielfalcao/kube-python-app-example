@@ -66,21 +66,6 @@ spec:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
 
-
         ports:
         - containerPort: 5000
           name: api
-
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}-device
-        command: ['/venv/bin/flask-hello', 'device']
-        envFrom:
-          - configMapRef:
-              name: {{ include "flask-hello.fullname" . }}-env
-
-        ports:
-        - containerPort: {{ .Values.zmq.router_port }}
-          protocol: TCP
-        - containerPort: {{ .Values.zmq.dealer_port }}
-          protocol: TCP
