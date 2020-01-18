@@ -75,12 +75,11 @@ metadata:
   name: {{ include "flask-hello.fullname" . }}
   labels:
 {{ include "flask-hello.labels" . | indent 4 }}
-
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
       name: http
 
