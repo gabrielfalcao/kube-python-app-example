@@ -3,9 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "flask-hello.fullname" . }}-env
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "flask-hello.labels" . | indent 4 }}
 data:
   POSTGRES_HOST: {{ template "postgresql.hostname" . }}
   POSTGRES_PORT: {{ .Values.postgresql.service.port | quote }}
@@ -30,8 +28,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "flask-hello.labels" . | indent 8 }}
     spec:
       initContainers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -83,8 +80,7 @@ kind: Service
 metadata:
   name: {{ include "flask-hello.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "flask-hello.labels" . | indent 4 }}
 
 spec:
   type: {{ .Values.service.type }}
@@ -105,6 +101,6 @@ type: Opaque
 metadata:
   name: {{ template "flask-hello.fullname" . }}-secrets
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+{{ include "flask-hello.labels" . | indent 4 }}
 data:
   postgresql-password: {{ .Values.postgresql.postgresqlPassword | b64enc | quote }}
