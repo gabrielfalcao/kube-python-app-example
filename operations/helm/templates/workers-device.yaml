@@ -39,9 +39,8 @@ metadata:
 {{ include "flask-hello.labels" . | indent 4 }}
 
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-
     - port: {{ .Values.zmq.router_port }}
       targetPort: {{ .Values.zmq.router_port }}
       protocol: TCP
