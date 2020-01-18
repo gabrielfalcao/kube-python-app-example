@@ -73,7 +73,7 @@ spec:
 
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}
+        name: {{ .Chart.Name }}-device
         command: ['/venv/bin/flask-hello', 'device']
         envFrom:
           - configMapRef:
