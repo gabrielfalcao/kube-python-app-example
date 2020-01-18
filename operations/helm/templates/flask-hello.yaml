@@ -50,7 +50,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}-zeromq-connection
-        command: ['/venv/bin/flask-hello', 'enqueue', 'ping']
+        command: ['/venv/bin/flask-hello', 'enqueue', 'hello-world']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env

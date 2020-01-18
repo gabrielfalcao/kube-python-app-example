@@ -26,9 +26,9 @@ spec:
               name: {{ include "flask-hello.fullname" . }}-env
 
         ports:
-        - containerPort: {{ .Values.zmq.router_port | quote }}
+        - containerPort: {{ .Values.zmq.router_port }}
           name: router
-        - containerPort: {{ .Values.zmq.dealer_port | quote }}
+        - containerPort: {{ .Values.zmq.dealer_port }}
           name: dealer
 ---
 apiVersion: v1
@@ -39,14 +39,15 @@ metadata:
 {{ include "flask-hello.labels" . | indent 4 }}
 
 spec:
-  type: {{ .Values.service.type }}
+  type: Clu
   ports:
-    - port: {{ .Values.zmq.router_port | quote }}
-      targetPort: http
+
+    - port: {{ .Values.zmq.router_port }}
+      targetPort: {{ .Values.zmq.router_port }}
       protocol: TCP
       name: router
-    - port: {{ .Values.zmq.dealer_port | quote }}
-      targetPort: http
+    - port: {{ .Values.zmq.dealer_port }}
+      targetPort: {{ .Values.zmq.dealer_port }}
       protocol: TCP
       name: dealer
   selector:
