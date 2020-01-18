@@ -9,7 +9,8 @@ logger = logging.getLogger('server')
 
 class EchoServer(object):
     def __init__(self, zmq_uri):
-        logger.info(f'Initializing server')
+
+
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
              "responder",
@@ -19,9 +20,10 @@ class EchoServer(object):
         )
         self.should_run = True
         self.zmq_uri = zmq_uri
+        logger.info(f'Initializing ZMQ Response Server: {self.zmq_uri!r}')
 
     def run(self):
-        logger.info(f'Starting {self} in self.zmq_uri')
+        logger.info(f'Starting {self} in {self.zmq_uri}')
         while self.should_run:
             request = self.sockets.recv_safe('responder')
 
