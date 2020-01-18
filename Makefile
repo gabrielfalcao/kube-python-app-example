@@ -83,6 +83,9 @@ deploy-with-helm:
 	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
+	newstore kubectl get endpoints
+	newstore kubectl get services
+	newstore kubectl get deployments
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000 6969:6969 4242:4242"
 
 rollback:
