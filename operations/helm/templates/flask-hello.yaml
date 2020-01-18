@@ -64,6 +64,7 @@ spec:
               name: {{ include "flask-hello.fullname" . }}-env
         ports:
         - containerPort: {{ .Values.service.port }}
+          name: webapi
 ---
 apiVersion: v1
 kind: Service
@@ -76,7 +77,7 @@ spec:
   ports:
     - port: {{ .Values.service.port }}
       protocol: TCP
-      name: webapi
+      targetPort: webapi
 
   selector:
 {{ include "flask-hello.labels" . | indent 4 }}

@@ -27,7 +27,9 @@ spec:
 
         ports:
         - containerPort: {{ .Values.zmq.router_port }}
+          name: router
         - containerPort: {{ .Values.zmq.dealer_port }}
+          name: dealer
 ---
 apiVersion: v1
 kind: Service
@@ -42,11 +44,9 @@ spec:
     - port: {{ .Values.zmq.router_port }}
       targetPort: router
       protocol: TCP
-      name: router
     - port: {{ .Values.zmq.dealer_port }}
       targetPort: dealer
       protocol: TCP
-      name: dealer
   selector:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
     app.kubernetes.io/instance: {{ .Release.Name }}
