@@ -83,6 +83,7 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+
   selector:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

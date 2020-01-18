@@ -45,7 +45,7 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{- define "flask-hello.device.labels" -}}
+{{- define "flask-hello.device-labels" -}}
 app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
 helm.sh/chart: {{ include "flask-hello.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
