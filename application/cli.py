@@ -217,7 +217,7 @@ def enqueue(ctx, address, data, number):
 
     client = EchoClient(zmq_uri=address)
 
-    for i in range(number):
+    for i in range(1, number + 1):
         response = client.request(data)
         if response:
             break
