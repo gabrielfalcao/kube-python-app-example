@@ -97,7 +97,7 @@ redis:
     create: true
   usePassword: false
   metrics:
-    enabled: true
+    enabled: false
     podAnnotations:
       sidecar.istio.io/inject: "false"
     resources:
