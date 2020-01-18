@@ -44,9 +44,11 @@ spec:
     - port: {{ .Values.zmq.router_port }}
       targetPort: router
       protocol: TCP
+      name: zmq-router
     - port: {{ .Values.zmq.dealer_port }}
       targetPort: dealer
       protocol: TCP
+      name: zmq-dealer
   selector:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
     app.kubernetes.io/instance: {{ .Release.Name }}

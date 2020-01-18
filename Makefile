@@ -79,7 +79,7 @@ vanilla:
 
 deploy-with-helm:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	2>/dev/null newstore k8s space current || newstore k8s space create
+	# 2>/dev/null newstore k8s space current || newstore k8s space create
 	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:

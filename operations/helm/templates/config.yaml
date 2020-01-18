@@ -10,6 +10,7 @@ data:
   POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
   POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
   POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
+  FLASK_HELLO_HOST: {{ template "flask-hello.device.hostname" . }}
   FLASK_HELLO_PORT: {{ .Values.service.port | quote }}
   FLASK_DEBUG: "true"
   ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
