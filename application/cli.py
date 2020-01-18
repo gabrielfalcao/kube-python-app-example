@@ -17,18 +17,19 @@ from application.models import metadata
 from application.worker.client import EchoClient
 from application.worker.server import EchoServer
 from application import version
-from zmq.devices import monitored_queue
 
 
 DEFAULT_ROUTER_PORT = os.getenv('ZMQ_ROUTER_PORT') or 4242
-DEFAULT_ROUTER_HOST = os.getenv('ZMQ_ROUTER_HOST') or '127.0.0.1'
+DEFAULT_ROUTER_HOST = os.getenv('ZMQ_ROUTER_HOST') or '0.0.0.0'
 
-DEFAULT_ROUTER_ADDRESS = f'tcp://{DEFAULT_ROUTER_HOST}:{DEFAULT_ROUTER_PORT}'
+DEFAULT_ROUTER_ADDRESS = os.getenv('ZMQ_ROUTER_ADDRESS') or (
+    f'tcp://{DEFAULT_ROUTER_HOST}:{DEFAULT_ROUTER_PORT}')
 
 DEFAULT_DEALER_PORT = os.getenv('ZMQ_DEALER_PORT') or 6969
-DEFAULT_DEALER_HOST = os.getenv('ZMQ_DEALER_HOST') or '127.0.0.1'
+DEFAULT_DEALER_HOST = os.getenv('ZMQ_DEALER_HOST') or '0.0.0.0'
 
-DEFAULT_DEALER_ADDRESS = f'tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}'
+DEFAULT_DEALER_ADDRESS = os.getenv('ZMQ_DEALER_ADDRESS') or (
+    f'tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}')
 
 
 level_choices = click.Choice(
