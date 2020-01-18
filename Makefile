@@ -1,4 +1,4 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check docker-pull
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
@@ -72,6 +72,11 @@ wheels:
 	docker run --rm -w /python -v $$(pwd):/python -v $$(pwd)/wheels:/wheels python:3.7-alpine sh -c 'pip wheel -r development.txt'
 
 docker: docker-image docker-push
+
+docker-pull:
+	docker pull $(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)
+	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
+	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
 deploy: deploy-with-helm
 
