@@ -74,13 +74,16 @@ docker: docker-image docker-push
 
 deploy: deploy-with-helm
 
-deploy-with-helm:
+vanilla:
 	helm template $(HELM_SET_VARS) operations/helm > operations/vanilla/flask-hello.yaml
+
+deploy-with-helm:
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	2>/dev/null newstore k8s space current || newstore k8s space create
 	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
-	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000"
+	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000 4242:4242"
 
 rollback:
 	-newstore k8s stack delete helm
