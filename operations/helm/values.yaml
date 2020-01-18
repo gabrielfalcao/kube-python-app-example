@@ -18,6 +18,7 @@ service:
   port: 5000
 
 zmq:
+  type: NodePort
   router_port: 4242
   dealer_port: 6969
 

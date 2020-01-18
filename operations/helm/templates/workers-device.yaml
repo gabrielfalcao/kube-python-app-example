@@ -39,7 +39,7 @@ metadata:
 {{ include "flask-hello.device-labels" . | indent 4 }}
 
 spec:
-  type: NodePort
+  type: {{ .Values.zmq.type }}
   ports:
     - port: {{ .Values.zmq.router_port }}
       targetPort: {{ .Values.zmq.router_port }}
