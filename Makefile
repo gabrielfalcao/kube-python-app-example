@@ -100,3 +100,9 @@ db: $(VENV)/bin/flask-hello
 	$(VENV)/bin/flask-hello migrate-db
 
 redeploy: rollback deploy
+
+enqueue:
+	$(VENV)/bin/flask-hello enqueue --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
+
+worker:
+	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'

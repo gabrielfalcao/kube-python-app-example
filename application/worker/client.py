@@ -12,7 +12,7 @@ logger = logging.getLogger('server')
 
 class EchoClient(object):
     def __init__(self, zmq_uri=DEFAULT_ROUTER_ADDRESS):
-        self.sockets = SocketManager(zmq, context)
+        self.sockets = SocketManager(zmq, context, polling_timeout=20000, timeout=30)
         self.sockets.ensure_and_connect(
              "requester",
              zmq.REQ,
