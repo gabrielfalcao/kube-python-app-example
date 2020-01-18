@@ -67,6 +67,17 @@ spec:
         - containerPort: {{ .Values.service.port }}
           protocol: TCP
           name: webapi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: webapi
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: webapi
+          initialDelaySeconds: 10
+
 ---
 apiVersion: v1
 kind: Service

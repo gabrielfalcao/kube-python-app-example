@@ -11,7 +11,7 @@ data:
   POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
   POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
 
-  # FLASK_HOST: {{ template "flask-hello.device.hostname" . }}
+  FLASK_HOST: "0.0.0.0"
   FLASK_PORT: {{ .Values.service.port | quote }}
   FLASK_DEBUG: "true"
 
