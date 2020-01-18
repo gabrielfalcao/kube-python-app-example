@@ -204,12 +204,25 @@ def worker(ctx, address):
     help="the zeromq address of the router",
     default=DEFAULT_ROUTER_ADDRESS,
 )
+@click.option(
+    "--number",
+    "-n",
+    help="of attempts",
+    type=int,
+    default=5,
+)
 @click.pass_context
-def enqueue(ctx, address, data):
+def enqueue(ctx, address, data, attempts):
     "runs a worker"
 
     client = EchoClient(zmq_uri=address)
-    client.request(data)
+
+    for i in range(attempts):
+        response = client.request(data)
+        if response:
+            break
+
+        logger.warning(f'attempt {i}/{attempts}')
 
 
 @main.command("device")
