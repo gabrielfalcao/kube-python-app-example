@@ -17,6 +17,10 @@ service:
   type: NodePort
   port: 5000
 
+zmq:
+  router_port: 4242
+  dealer_port: 6969
+
 ingress:
   enabled: false
   annotations: {}

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "flask-hello.fullname" . }}-env
+  labels:
+{{ include "flask-hello.labels" . | indent 4 }}
+data:
+  POSTGRES_HOST: {{ template "postgresql.hostname" . }}
+  POSTGRES_PORT: {{ .Values.postgresql.service.port | quote }}
+  POSTGRES_DATABASE: {{ .Values.postgresql.postgresqlDatabase | quote }}
+  POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
+  POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
+  FLASK_HELLO_PORT: {{ .Values.service.port | quote }}
+  FLASK_DEBUG: "true"
+  ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
+  ZMQ_DEALER_PORT: {{ .Values.zmq.dealer_port | quote }}
+  ZMQ_ROUTER_HOST: {{ template "flask-hello.device.hostname" . }}
+  ZMQ_DEALER_HOST: {{ template "flask-hello.device.hostname" . }}

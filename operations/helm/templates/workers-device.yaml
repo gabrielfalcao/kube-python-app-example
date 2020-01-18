@@ -25,10 +25,11 @@ spec:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
 
-
         ports:
-        - containerPort: 5000
-          name: api
+        - containerPort: {{ .Values.zmq.router_port | quote }}
+          name: router
+        - containerPort: {{ .Values.zmq.dealer_port | quote }}
+          name: dealer
 ---
 apiVersion: v1
 kind: Service
@@ -40,10 +41,14 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.zmq.router_port | quote }}
       targetPort: http
       protocol: TCP
-      name: http
+      name: router
+    - port: {{ .Values.zmq.dealer_port | quote }}
+      targetPort: http
+      protocol: TCP
+      name: dealer
   selector:
     app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
     app.kubernetes.io/instance: {{ .Release.Name }}
