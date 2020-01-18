@@ -14,11 +14,11 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 5000
 
 zmq:
-  type: ClusterIP
+  type: NodePort
   router_port: 4242
   dealer_port: 6969
 
