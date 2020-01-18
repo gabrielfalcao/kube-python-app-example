@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "flask-hello.fullname" . }}-device
+spec:
+  minReadySeconds: 5
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "flask-hello.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+{{ include "flask-hello.labels" . | indent 8 }}
+    spec:
+      containers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Chart.Name }}
+        command: ['/venv/bin/flask-hello', 'device']
+        envFrom:
+          - configMapRef:
+              name: {{ include "flask-hello.fullname" . }}-env
+
+
+        ports:
+        - containerPort: 5000
+          name: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "flask-hello.fullname" . }}-device
+  labels:
+{{ include "flask-hello.labels" . | indent 4 }}
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
+    app.kubernetes.io/instance: {{ .Release.Name }}

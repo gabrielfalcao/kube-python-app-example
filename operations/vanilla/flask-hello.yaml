@@ -168,7 +168,7 @@ spec:
         app.kubernetes.io/managed-by: Tiller
     spec:
       initContainers:
-      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
+      - image: "gabrielfalcao/k8s-flask-hello:b5c6778d433b944e19f96f81adaa9034dcef1f57"
         imagePullPolicy: Always
         name: flask-hello-check-installation
         command: ['/venv/bin/flask-hello', 'check']
@@ -176,7 +176,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
+      - image: "gabrielfalcao/k8s-flask-hello:b5c6778d433b944e19f96f81adaa9034dcef1f57"
         imagePullPolicy: Always
         name: flask-hello-check-db-connection
         command: ['/venv/bin/flask-hello', 'check-db']
@@ -184,7 +184,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
+      - image: "gabrielfalcao/k8s-flask-hello:b5c6778d433b944e19f96f81adaa9034dcef1f57"
         imagePullPolicy: Always
         name: flask-hello-db-migrate
         command: ['/venv/bin/flask-hello', 'migrate-db']
@@ -199,7 +199,7 @@ spec:
               key: postgresql-password
 
       containers:
-      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
+      - image: "gabrielfalcao/k8s-flask-hello:b5c6778d433b944e19f96f81adaa9034dcef1f57"
         imagePullPolicy: Always
         name: flask-hello
         command: ['/venv/bin/flask-hello', 'web']
@@ -378,6 +378,66 @@ spec:
       command: ['wget']
       args:  ['release-name-flask-hello:5000']
   restartPolicy: Never
+
+---
+# Source: flask-hello/templates/workers.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-flask-hello-device
+spec:
+  minReadySeconds: 5
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: flask-hello
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: flask-hello
+        helm.sh/chart: flask-hello-1.0.1
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/version: "1.0"
+        app.kubernetes.io/managed-by: Tiller
+    spec:
+      containers:
+      - image: "gabrielfalcao/k8s-flask-hello:b5c6778d433b944e19f96f81adaa9034dcef1f57"
+        imagePullPolicy: Always
+        name: flask-hello
+        command: ['/venv/bin/flask-hello', 'device']
+        envFrom:
+          - configMapRef:
+              name: release-name-flask-hello-env
+
+
+        ports:
+        - containerPort: 5000
+          name: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-flask-hello-device
+  labels:
+    app.kubernetes.io/name: flask-hello
+    helm.sh/chart: flask-hello-1.0.1
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Tiller
+
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: flask-hello-device
+    app.kubernetes.io/instance: release-name
 
 ---
 # Source: flask-hello/charts/postgresql/templates/statefulset.yaml
