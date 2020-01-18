@@ -212,17 +212,17 @@ def worker(ctx, address):
     default=5,
 )
 @click.pass_context
-def enqueue(ctx, address, data, attempts):
+def enqueue(ctx, address, data, number):
     "runs a worker"
 
     client = EchoClient(zmq_uri=address)
 
-    for i in range(attempts):
+    for i in range(number):
         response = client.request(data)
         if response:
             break
 
-        logger.warning(f'attempt {i}/{attempts}')
+        logger.warning(f'attempt {i}/{number}')
 
 
 @main.command("device")
