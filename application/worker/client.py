@@ -1,27 +1,21 @@
-import os
-import uuid
-import gevent.monkey
 
-
-import gevent
-import coloredlogs
 import logging
 from zmq import green as zmq
 from agentzero.core import SocketManager
-from names import generate_name
+
 context = zmq.Context()
-coloredlogs.install(level='DEBUG')
+
 
 logger = logging.getLogger('server')
 
 
 class EchoClient(object):
-    def __init__(self):
+    def __init__(self, zmq_uri='tcp://127.0.0.1:5051'):
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
              "requester",
              zmq.REQ,
-             'tcp://127.0.0.1:5051',
+             zmq_uri,
              zmq.POLLIN | zmq.POLLOUT
         )
         self.should_run = True
@@ -31,14 +25,4 @@ class EchoClient(object):
         if self.sockets.send_safe('requester', data):
             response = self.sockets.recv_safe('requester')
             logger.info(f'response: {response}')
-
-
-if __name__ == '__main__':
-    gevent.monkey.patch_all()
-    PID = os.getpid()
-    try:
-        while True:
-            EchoClient().request(f'{PID}\t{generate_name()}')
-            gevent.sleep(0.3)
-    except KeyboardInterrupt:
-        raise SystemExit(1)
+            return response

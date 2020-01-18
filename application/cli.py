@@ -7,11 +7,28 @@ import socket
 import click
 import logging
 import coloredlogs
+import gevent.monkey
+import zmq
+from zmq.devices import Device
 from chemist import set_default_uri
 from application.web import application
 from application.core import config
 from application.models import metadata
+from application.worker.client import EchoClient
+from application.worker.server import EchoServer
 from application import version
+from zmq.devices import monitored_queue
+
+
+DEFAULT_ROUTER_PORT = os.getenv('ZMQ_ROUTER_PORT') or 4242
+DEFAULT_ROUTER_HOST = os.getenv('ZMQ_ROUTER_HOST') or '127.0.0.1'
+
+DEFAULT_ROUTER_ADDRESS = f'tcp://{DEFAULT_ROUTER_HOST}:{DEFAULT_ROUTER_PORT}'
+
+DEFAULT_DEALER_PORT = os.getenv('ZMQ_DEALER_PORT') or 6969
+DEFAULT_DEALER_HOST = os.getenv('ZMQ_DEALER_HOST') or '127.0.0.1'
+
+DEFAULT_DEALER_ADDRESS = f'tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}'
 
 
 level_choices = click.Choice(
@@ -70,8 +87,10 @@ logger = logging.getLogger("flask-hello")
 @click.pass_context
 def main(ctx, loglevel):
     "flask-hello command-line manager"
+    gevent.monkey.patch_all()
     set_log_level_by_name(loglevel)
     ctx.obj = dict(engine=set_default_uri(config.sqlalchemy_url()))
+
 
 
 @main.command(name="version")
@@ -158,3 +177,62 @@ def migrate_db(ctx):
         logger.info(f"SUCCESS")
     except Exception as e:
         logger.exception(f"failed to connect to migrate {url}: {e}")
+
+
+@main.command("worker")
+@click.option(
+    "--address",
+    "-c",
+    help="the zeromq address of the router",
+    default=DEFAULT_DEALER_ADDRESS,
+)
+@click.pass_context
+def worker(ctx, address):
+    "runs a worker"
+
+    server = EchoServer(zmq_uri=address)
+    server.run()
+
+
+@main.command("enqueue", context_settings=dict(
+    ignore_unknown_options=True,
+))
+@click.argument('data')
+@click.option(
+    "--address",
+    "-p",
+    help="the zeromq address of the router",
+    default=DEFAULT_ROUTER_ADDRESS,
+)
+@click.pass_context
+def enqueue(ctx, address, data):
+    "runs a worker"
+
+    client = EchoClient(zmq_uri=address)
+    client.request(data)
+
+
+@main.command("device")
+@click.option(
+    "--router",
+    help="the zeromq address of the router",
+    default=f'tcp://0.0.0.0:{DEFAULT_ROUTER_PORT}',
+)
+@click.option(
+    "--dealer",
+    help="the zeromq address of the dealer",
+    default=f'tcp://0.0.0.0:{DEFAULT_DEALER_PORT}',
+)
+@click.pass_context
+def device(ctx, router, dealer):
+    "runs a worker"
+
+    device = Device(zmq.ROUTER, zmq.REQ, zmq.REP)
+    device.setsockopt_in(zmq.IDENTITY, b'requester')
+    device.setsockopt_out(zmq.IDENTITY, b'responder')
+    device.bind_in(router)
+    device.bind_out(dealer)
+    logger.info(f'ROUTER: {router!r}')
+    logger.info(f'DEALER: {dealer!r}')
+    device.start()
+    device.join()
