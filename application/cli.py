@@ -93,7 +93,6 @@ def main(ctx, loglevel):
     ctx.obj = dict(engine=set_default_uri(config.sqlalchemy_url()))
 
 
-
 @main.command(name="version")
 def print_version():
     "prints the version to the STDOUT"
@@ -102,7 +101,7 @@ def print_version():
 
 @main.command("check")
 def check():
-    "runs the web server"
+    "checks python installation"
 
     set_debug_mode()
     logger.info("Python installation works!")
