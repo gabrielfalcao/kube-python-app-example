@@ -9,6 +9,7 @@ from flask_restplus import fields
 from application.core import application
 
 from application.models import User
+from application.worker.client import EchoClient
 
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,12 @@ user_json = api.model(
         "uuid": fields.String(required=False, description="the user uuid"),
         "email": fields.String(required=False, description="email address"),
         "password": fields.String(required=False, description="password"),
+    },
+)
+rpc_request = api.model(
+    "request",
+    {
+        "data": fields.String(required=True, description="some data"),
     },
 )
 
@@ -73,3 +80,12 @@ class UserEndpoint(Resource):
 class HealthCheck(Resource):
     def get(self):
         return {"system": "ok"}
+
+
+@api.route("/rpc")
+class RPCRequest(Resource):
+    @ns.expect(rpc_request)
+    def post(self):
+        data = api.payload.get("data")
+        client = EchoClient()
+        return client.request(data)

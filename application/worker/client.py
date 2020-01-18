@@ -2,6 +2,7 @@
 import logging
 from zmq import green as zmq
 from agentzero.core import SocketManager
+from application.worker.config import DEFAULT_ROUTER_ADDRESS
 
 context = zmq.Context()
 
@@ -10,7 +11,7 @@ logger = logging.getLogger('server')
 
 
 class EchoClient(object):
-    def __init__(self, zmq_uri='tcp://127.0.0.1:5051'):
+    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS):
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
              "requester",
