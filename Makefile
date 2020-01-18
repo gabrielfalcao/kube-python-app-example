@@ -86,7 +86,7 @@ port-forward:
 	newstore kubectl port-forward "deployments/$$(newstore k8s space current)-helm-flask-hello 5000:5000 4242:4242"
 
 rollback:
-	helm template $(HELM_SET_VARS) operations/helm > operations/vanilla/flask-hello.yaml
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	-newstore k8s stack delete helm
 
 db: $(VENV)/bin/flask-hello
