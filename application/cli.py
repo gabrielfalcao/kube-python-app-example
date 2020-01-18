@@ -216,6 +216,7 @@ def enqueue(ctx, address, data, number, times):
         for i in range(1, number + 1):
             response = client.request(data)
             if response:
+                logger.info(f"received: {number}")
                 break
 
             logger.warning(f"attempt {i}/{number}")
@@ -245,3 +246,25 @@ def device(ctx, router, dealer):
     logger.info(f"DEALER: {dealer!r}")
     device.start()
     device.join()
+
+
+@main.command("enqueue", context_settings=dict(ignore_unknown_options=True))
+@click.argument("data")
+@click.option(
+    "--address",
+    "-p",
+    help="the zeromq address of the router",
+    default=DEFAULT_ROUTER_ADDRESS,
+)
+@click.option("--number", "-n", help="of attempts", type=int, default=5)
+@click.option("--times", "-x", help="of execution", type=int, default=1)
+@click.pass_context
+def close_server(ctx, address, data, number, times):
+    "tells the RPC server to kill itself"
+
+    client = EchoClient(zmq_uri=address)
+    response = client.close_server()
+    if response:
+        logger.info(f'server responded: {response}')
+    else:
+        logger.warning(f'no response from server')
