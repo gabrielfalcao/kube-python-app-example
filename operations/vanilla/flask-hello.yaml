@@ -133,7 +133,7 @@ metadata:
   name: release-name-flask-hello-env
   labels:
     app.kubernetes.io/name: flask-hello
-    helm.sh/chart: flask-hello-1.0.0
+    helm.sh/chart: flask-hello-1.0.1
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Tiller
@@ -162,13 +162,13 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: flask-hello
-        helm.sh/chart: flask-hello-1.0.0
+        helm.sh/chart: flask-hello-1.0.1
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/version: "1.0"
         app.kubernetes.io/managed-by: Tiller
     spec:
       initContainers:
-      - image: "gabrielfalcao/k8s-flask-hello:f04594225036f41a4f41e3c19f808aaa6152a368"
+      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
         imagePullPolicy: Always
         name: flask-hello-check-installation
         command: ['/venv/bin/flask-hello', 'check']
@@ -176,7 +176,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:f04594225036f41a4f41e3c19f808aaa6152a368"
+      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
         imagePullPolicy: Always
         name: flask-hello-check-db-connection
         command: ['/venv/bin/flask-hello', 'check-db']
@@ -184,7 +184,7 @@ spec:
           - configMapRef:
               name: release-name-flask-hello-env
 
-      - image: "gabrielfalcao/k8s-flask-hello:f04594225036f41a4f41e3c19f808aaa6152a368"
+      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
         imagePullPolicy: Always
         name: flask-hello-db-migrate
         command: ['/venv/bin/flask-hello', 'migrate-db']
@@ -199,7 +199,7 @@ spec:
               key: postgresql-password
 
       containers:
-      - image: "gabrielfalcao/k8s-flask-hello:f04594225036f41a4f41e3c19f808aaa6152a368"
+      - image: "gabrielfalcao/k8s-flask-hello:7b87b1653077293f3c9ac50114b25923127a9c26"
         imagePullPolicy: Always
         name: flask-hello
         command: ['/venv/bin/flask-hello', 'web']
@@ -218,7 +218,7 @@ metadata:
   name: release-name-flask-hello
   labels:
     app.kubernetes.io/name: flask-hello
-    helm.sh/chart: flask-hello-1.0.0
+    helm.sh/chart: flask-hello-1.0.1
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Tiller
@@ -243,7 +243,7 @@ metadata:
   name: release-name-flask-hello-secrets
   labels:
     app.kubernetes.io/name: flask-hello
-    helm.sh/chart: flask-hello-1.0.0
+    helm.sh/chart: flask-hello-1.0.1
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Tiller
@@ -335,33 +335,6 @@ spec:
     release: "release-name"
 
 ---
-# Source: flask-hello/charts/redis/templates/metrics-svc.yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: release-name-redis-metrics
-  labels:
-    app: redis
-    chart: redis-8.0.1
-    release: "release-name"
-    heritage: "Tiller"
-  annotations:
-    prometheus.io/port: "9121"
-    prometheus.io/scrape: "true"
-    
-spec:
-  type: ClusterIP
-  ports:
-  - name: metrics
-    port: 9121
-    targetPort: metrics
-  selector:
-    app: redis
-    release: release-name
-    role: metrics
-
----
 # Source: flask-hello/charts/redis/templates/redis-master-svc.yaml
 
 apiVersion: v1
@@ -392,7 +365,7 @@ metadata:
   name: "release-name-flask-hello-test-connection"
   labels:
     app.kubernetes.io/name: flask-hello
-    helm.sh/chart: flask-hello-1.0.0
+    helm.sh/chart: flask-hello-1.0.1
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Tiller
@@ -405,58 +378,6 @@ spec:
       command: ['wget']
       args:  ['release-name-flask-hello:5000']
   restartPolicy: Never
-
----
-# Source: flask-hello/charts/redis/templates/metrics-deployment.yaml
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: release-name-redis-metrics
-  labels:
-    app: redis
-    chart: redis-8.0.1
-    release: "release-name"
-    heritage: "Tiller"
-spec:
-  selector:
-    matchLabels:
-        release: "release-name"
-        role: metrics
-        app: redis
-  template:
-    metadata:
-      labels:
-        release: "release-name"
-        chart: redis-8.0.1
-        role: metrics
-        app: redis
-      annotations:
-        checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-        sidecar.istio.io/inject: "false"
-        
-    spec:      
-      serviceAccountName: "default"
-      containers:
-      - name: metrics
-        image: docker.io/oliver006/redis_exporter:v0.31.0
-        imagePullPolicy: "IfNotPresent"
-        args:
-        env:
-        - name: REDIS_ADDR
-          value: "release-name-redis-master:6379"
-        - name: REDIS_ALIAS
-          value: release-name-redis
-        volumeMounts:
-        ports:
-        - name: metrics
-          containerPort: 9121
-        resources:
-          requests:
-            cpu: 100m
-            memory: 50Mi
-          
-      volumes:
 
 ---
 # Source: flask-hello/charts/postgresql/templates/statefulset.yaml
@@ -775,7 +696,15 @@ spec:
 
 
 ---
+# Source: flask-hello/charts/redis/templates/metrics-deployment.yaml
+
+
+---
 # Source: flask-hello/charts/redis/templates/metrics-prometheus.yaml
+
+---
+# Source: flask-hello/charts/redis/templates/metrics-svc.yaml
+
 
 ---
 # Source: flask-hello/charts/redis/templates/networkpolicy.yaml
