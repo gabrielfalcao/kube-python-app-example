@@ -13,7 +13,9 @@ class EchoServer(object):
 
         self.sockets = SocketManager(zmq, context)
         self.sockets.ensure_and_connect(
-            "responder", zmq.REP, zmq_uri, zmq.POLLIN | zmq.POLLOUT
+            "responder", zmq.REP, zmq_uri, zmq.POLLIN | zmq.POLLOUT,
+            polling_timeout=500,
+            timeout=1,
         )
         self.should_run = True
         self.zmq_uri = zmq_uri
