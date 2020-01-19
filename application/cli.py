@@ -33,6 +33,20 @@ DEFAULT_DEALER_ADDRESS = os.getenv("ZMQ_DEALER_ADDRESS") or (
     f"tcp://{DEFAULT_DEALER_HOST}:{DEFAULT_DEALER_PORT}"
 )
 
+DEFAULT_PUBLISHER_PORT = os.getenv("ZMQ_PUBLISHER_PORT") or 5353
+DEFAULT_PUBLISHER_HOST = os.getenv("ZMQ_PUBLISHER_HOST") or "0.0.0.0"
+
+DEFAULT_PUBLISHER_ADDRESS = os.getenv("ZMQ_PUBLISHER_ADDRESS") or (
+    f"tcp://{DEFAULT_PUBLISHER_HOST}:{DEFAULT_PUBLISHER_PORT}"
+)
+
+DEFAULT_SUBSCRIBER_PORT = os.getenv("ZMQ_SUBSCRIBER_PORT") or 5858
+DEFAULT_SUBSCRIBER_HOST = os.getenv("ZMQ_SUBSCRIBER_HOST") or "0.0.0.0"
+
+DEFAULT_SUBSCRIBER_ADDRESS = os.getenv("ZMQ_SUBSCRIBER_ADDRESS") or (
+    f"tcp://{DEFAULT_SUBSCRIBER_HOST}:{DEFAULT_SUBSCRIBER_PORT}"
+)
+
 
 level_choices = click.Choice(
     ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False
@@ -222,7 +236,7 @@ def enqueue(ctx, address, data, number, times):
             logger.warning(f"attempt {i}/{number}")
 
 
-@main.command("device")
+@main.command("queue")
 @click.option(
     "--router",
     help="the zeromq address of the router",
@@ -234,7 +248,7 @@ def enqueue(ctx, address, data, number, times):
     default=f"tcp://0.0.0.0:{DEFAULT_DEALER_PORT}",
 )
 @click.pass_context
-def device(ctx, router, dealer):
+def queue(ctx, router, dealer):
     "runs a worker"
 
     device = Device(zmq.QUEUE, zmq.ROUTER, zmq.DEALER)
@@ -246,6 +260,30 @@ def device(ctx, router, dealer):
     logger.info(f"DEALER: {dealer!r}")
     device.start()
     device.join()
+
+
+@main.command("forwarder")
+@click.option(
+    "--publisher",
+    help="the zeromq address of the publisher",
+    default=f"tcp://0.0.0.0:{DEFAULT_PUBLISHER_PORT}",
+)
+@click.option(
+    "--subscriber",
+    help="the zeromq address of the subscriber",
+    default=f"tcp://0.0.0.0:{DEFAULT_SUBSCRIBER_PORT}",
+)
+@click.pass_context
+def forwarder(ctx, publisher, subscriber):
+    "runs a worker"
+
+    forwarder = Device(zmq.FORWARDER, zmq.PUB, zmq.SUB)
+    forwarder.bind_in(publisher)
+    forwarder.bind_out(subscriber)
+    logger.info(f"PUBLISHER: {publisher!r}")
+    logger.info(f"SUBSCRIBER: {subscriber!r}")
+    forwarder.start()
+    forwarder.join()
 
 
 @main.command("close", context_settings=dict(ignore_unknown_options=True))

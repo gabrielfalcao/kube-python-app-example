@@ -21,6 +21,8 @@ zmq:
   type: NodePort
   router_port: 4242
   dealer_port: 6969
+  publisher_port: 5353
+  subscriber_port: 5858
 
 ingress:
   enabled: false
