@@ -29,8 +29,8 @@ class EchoServer(object):
                 continue
 
             self.should_run = request != "close"
-            logger.info('received request {request!r}')
-            print(f'\033[1;32m{request}\033[0m')
+            logger.info(f'received request {request!r}')
+            print(f'\033[1;32m{request!r}\033[0m')
             # logger.info(f'request: {request!r}')
 
             if not self.should_run:
