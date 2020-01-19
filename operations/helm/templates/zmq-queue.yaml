@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "flask-hello.fullname" . }}-device
+  name: {{ include "flask-hello.fullname" . }}-queue
 spec:
   minReadySeconds: 5
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
+      app.kubernetes.io/name: {{ include "flask-hello.name" . }}-queue
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
+        app.kubernetes.io/name: {{ include "flask-hello.name" . }}-queue
         app.kubernetes.io/instance: {{ .Release.Name }}
 
     spec:
@@ -38,9 +38,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "flask-hello.fullname" . }}-device
+  name: {{ include "flask-hello.fullname" . }}-queue
   labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-queue
     app.kubernetes.io/instance: {{ .Release.Name }}
 
 spec:
@@ -55,5 +55,5 @@ spec:
       protocol: TCP
       name: dealer
   selector:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-device
+    app.kubernetes.io/name: {{ include "flask-hello.name" . }}-queue
     app.kubernetes.io/instance: {{ .Release.Name }}
