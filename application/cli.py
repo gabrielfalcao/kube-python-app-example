@@ -9,6 +9,7 @@ import logging
 import coloredlogs
 import gevent.monkey
 import zmq
+from datetime import datetime
 from zmq.devices import Device
 from chemist import set_default_uri
 from application.web import application
@@ -16,6 +17,7 @@ from application.core import config
 from application.models import metadata
 from application.worker.client import EchoClient
 from application.worker.server import EchoServer
+from application.es import es
 from application import version
 
 
@@ -303,3 +305,23 @@ def close_server(ctx, address):
         logger.info(f'server responded: {response}')
     else:
         logger.warning(f'no response from server')
+
+
+@main.command("index", context_settings=dict(ignore_unknown_options=True))
+@click.argument('data')
+@click.pass_context
+def es_index(ctx, ):
+    "tells the RPC server to kill itself"
+
+    doc = {
+        'author': os.environ['USER'],
+        'text': data,
+        'timestamp': datetime.now(),
+    }
+    res = es.index(
+        index="random-index",
+        doc_type='cli',
+        id=1,
+        body=doc
+    )
+    print(res)
