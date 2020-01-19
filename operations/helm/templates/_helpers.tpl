@@ -81,3 +81,14 @@ Redis
 {{- define "redis.hostname" -}}
 {{ include "redis.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
+
+{{/*
+Elasticsearch
+*/}}
+
+{{- define "elasticsearch.fullname" -}}
+{{- printf "%s-elasticsearch" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- define "elasticsearch.hostname" -}}
+{{ include "elasticsearch.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+{{- end -}}

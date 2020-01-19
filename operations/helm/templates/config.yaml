@@ -11,6 +11,9 @@ data:
   POSTGRES_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote }}
   POSTGRES_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote }}
 
+  REDIS_HOST: {{ template "redis.hostname" . }}
+  ELASTICSEARCH_HOST: {{ template "elasticsearch.hostname" . }}
+
   FLASK_HOST: "0.0.0.0"
   FLASK_PORT: {{ .Values.service.port | quote }}
   FLASK_DEBUG: "true"
