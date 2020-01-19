@@ -116,3 +116,6 @@ close:
 
 worker:
 	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'
+
+helm-setup:
+	helm repo add elastic https://helm.elastic.co

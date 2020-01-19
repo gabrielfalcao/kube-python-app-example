@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: {{ include "flask-hello.fullname" . }}-cron
 spec:
   schedule: "*/30 * * * *"
   jobTemplate:

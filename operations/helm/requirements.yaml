@@ -6,3 +6,8 @@ dependencies:
   - name: redis
     version: 8.0.1
     repository: "@stable"
+
+
+  - name: elasticsearch
+    version: 7.5.1
+    repository: "@elastic"
