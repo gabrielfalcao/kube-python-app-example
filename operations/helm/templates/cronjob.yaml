@@ -12,7 +12,7 @@ spec:
           - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             name: {{ .Chart.Name }}
-            command: ['/venv/bin/flask-hello', 'enqueue', '"$(date)"']
+            command: ['flask-hello', 'enqueue', '{{ .Chart.Name }}']
             envFrom:
               - configMapRef:
                   name: {{ include "flask-hello.fullname" . }}-env
