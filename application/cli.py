@@ -248,18 +248,15 @@ def device(ctx, router, dealer):
     device.join()
 
 
-@main.command("enqueue", context_settings=dict(ignore_unknown_options=True))
-@click.argument("data")
+@main.command("close", context_settings=dict(ignore_unknown_options=True))
 @click.option(
     "--address",
     "-p",
     help="the zeromq address of the router",
     default=DEFAULT_ROUTER_ADDRESS,
 )
-@click.option("--number", "-n", help="of attempts", type=int, default=5)
-@click.option("--times", "-x", help="of execution", type=int, default=1)
 @click.pass_context
-def close_server(ctx, address, data, number, times):
+def close_server(ctx, address):
     "tells the RPC server to kill itself"
 
     client = EchoClient(zmq_uri=address)
