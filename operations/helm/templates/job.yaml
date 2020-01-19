@@ -2,18 +2,21 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "flask-hello.fullname" . }}-zeromq
+  name: {{ include "flask-hello.fullname" . }}-worker
 spec:
   template:
     spec:
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: {{ .Chart.Name }}-zeromq-connection
-        command: ['/venv/bin/flask-hello', 'enqueue', 'hello-world']
+        name: {{ .Chart.Name }}-worker
+        command: ['/venv/bin/flask-hello', 'worker']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
 
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 6 # number of retries before throwing error
+  completions: 6 # number of times to run
+  parallelism: 2 # number of pods that can run in parallel
+  activeDeadlineSeconds: 60 # time to allow job to run
