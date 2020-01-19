@@ -39,3 +39,5 @@ class EchoServer(object):
             response = request
             if self.sockets.send_safe("responder", response):
                 logger.info(f"echo: {response!r}")
+
+        logger.warning('shutting down server')

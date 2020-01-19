@@ -112,7 +112,7 @@ enqueue:
 	$(VENV)/bin/flask-hello enqueue -x 99 -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
 
 close:
-	$(VENV)/bin/flask-hello enqueue -x 1 -n 10 --address='tcp://127.0.0.1:4242' "close"
+	$(VENV)/bin/flask-hello close --address='tcp://127.0.0.1:4242'
 
 worker:
 	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'
