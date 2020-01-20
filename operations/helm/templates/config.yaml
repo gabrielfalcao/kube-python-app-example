@@ -23,7 +23,7 @@ data:
   ZMQ_PUBLISHER_PORT: {{ .Values.zmq.publisher_port | quote }}
   ZMQ_SUBSCRIBER_PORT: {{ .Values.zmq.subscriber_port | quote }}
 
-  ZMQ_ROUTER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
-  ZMQ_DEALER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
-  ZMQ_PUBLISHER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
-  ZMQ_SUBSCRIBER_HOST: {{ include "flask-hello.device.hostname" . | quote }}
+  ZMQ_ROUTER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
+  ZMQ_DEALER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
+  ZMQ_PUBLISHER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
+  ZMQ_SUBSCRIBER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}

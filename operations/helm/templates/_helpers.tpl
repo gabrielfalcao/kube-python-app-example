@@ -56,8 +56,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 
-{{- define "flask-hello.device.hostname" -}}
-{{ include "flask-hello.fullname" . }}-device.{{ include "namespace.svc.hostname" . }}
+{{- define "flask-hello.zmq-queue.hostname" -}}
+{{ include "flask-hello.fullname" . }}-queue.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 
 {{/*
