@@ -8,7 +8,7 @@ BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
 NAMESPACE		:= $$(newstore k8s space current)
-TIMES			?= ${X}
+X			?= 10
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -113,7 +113,7 @@ db: $(VENV)/bin/flask-hello
 redeploy: rollback deploy
 
 enqueue:
-	$(VENV)/bin/flask-hello enqueue -x $(TIMES) -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
+	$(VENV)/bin/flask-hello enqueue -x $(X) -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
 
 close:
 	$(VENV)/bin/flask-hello close --address='tcp://127.0.0.1:4242'
