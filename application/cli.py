@@ -211,7 +211,7 @@ def migrate_db(ctx):
     "--join-timeout",
     help="in seconds. How long to wait for coroutine",
     type=float,
-    default=None,
+    default=0,
 )
 @click.pass_context
 def worker(ctx, address, polling_timeout, join_timeout):
@@ -235,7 +235,7 @@ def worker(ctx, address, polling_timeout, join_timeout):
 @click.option("--times", "-x", help="of execution", type=int, default=1)
 @click.pass_context
 def enqueue(ctx, address, data, number, times):
-    "runs a worker"
+    "sends a message"
 
     client = EchoClient(zmq_uri=address)
 
@@ -263,7 +263,7 @@ def enqueue(ctx, address, data, number, times):
 )
 @click.pass_context
 def queue(ctx, router, dealer):
-    "runs a worker"
+    "runs a queue"
 
     device = Device(zmq.QUEUE, zmq.ROUTER, zmq.DEALER)
     device.setsockopt_in(zmq.IDENTITY, b"requester")
@@ -289,7 +289,7 @@ def queue(ctx, router, dealer):
 )
 @click.pass_context
 def forwarder(ctx, publisher, subscriber):
-    "runs a worker"
+    "runs a pubsub forwarder"
 
     forwarder = Device(zmq.FORWARDER, zmq.PUB, zmq.SUB)
     forwarder.bind_in(publisher)
