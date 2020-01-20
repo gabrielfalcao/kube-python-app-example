@@ -208,7 +208,7 @@ def migrate_db(ctx):
     default=60000,
 )
 @click.pass_context
-def worker(ctx, address, polling_timeout, join_timeout):
+def worker(ctx, address, polling_timeout):
     "runs a worker"
 
     server = EchoServer(
