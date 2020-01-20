@@ -33,11 +33,12 @@ class EchoServer(object):
             print(f'\033[1;32m{request!r}\033[0m')
             # logger.info(f'request: {request!r}')
 
-            if not self.should_run:
-                logger.warning('shutting-down because of client "close"')
-
             response = request
             if self.sockets.send_safe("responder", response):
                 logger.info(f"echo: {response!r}")
+
+            if not self.should_run:
+                logger.warning('shutting-down because of client "close"')
+                raise SystemExit(1)
 
         logger.warning('shutting down server')
