@@ -19,7 +19,7 @@ Deployment
 
 Helm chart deploys all dependencies to a Kubernetes namespace.
 
-`<operations/helm>`_
+found in folder: `<operations/helm>`_
 
 Developing
 ----------
