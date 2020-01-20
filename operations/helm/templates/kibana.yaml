@@ -24,7 +24,7 @@ spec:
         name: {{ .Chart.Name }}
         env:
         - name: ELASTICSEARCH_HOSTS
-          value: {{ template "elasticsearch.hostname" . }}
+          value: http://{{ template "elasticsearch.hostname" . }}
 
         ports:
         - containerPort: {{ .Values.kibana.service.port }}
