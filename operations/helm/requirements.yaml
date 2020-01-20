@@ -1,13 +1,16 @@
 dependencies:
-  - name: postgresql
-    version: 8.1.3
-    repository: "@stable"
+  # - name: postgresql
+  #   version: 8.1.3
+  #   repository: "@stable"
 
-  - name: redis
-    version: 8.0.1
-    repository: "@stable"
+  # - name: redis
+  #   version: 8.0.1
+  #   repository: "@stable"
 
+  # - name: kibana
+  #   version: 3.2.5
+  #   repository: "@stable"
 
-  - name: elasticsearch
-    version: 7.5.1
-    repository: "@elastic"
+  # - name: elasticsearch
+  #   version: 7.5.1
+  #   repository: "@elastic"
