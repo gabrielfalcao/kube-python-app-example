@@ -205,13 +205,13 @@ def migrate_db(ctx):
     "--polling-timeout",
     help="in miliseconds. Lower times means faster responses, but more CPU consumption.",
     type=float,
-    default=100,
+    default=60000,
 )
 @click.option(
     "--join-timeout",
     help="in seconds. How long to wait for coroutine",
     type=float,
-    default=1,
+    default=None,
 )
 @click.pass_context
 def worker(ctx, address, polling_timeout, join_timeout):

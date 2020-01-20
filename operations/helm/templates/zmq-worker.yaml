@@ -22,7 +22,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command: ['/venv/bin/flask-hello', 'worker']
+        command: ['/venv/bin/flask-hello', 'worker', '--polling-timeout=30000']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
