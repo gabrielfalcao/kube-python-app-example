@@ -19,10 +19,9 @@ spec:
 
     spec:
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      - image: "docker.elastic.co/kibana/kibana:751"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command: ['/venv/bin/flask-hello', 'kibana']
         env:
         - name: ELASTICSEARCH_HOSTS
           value: {{ template "elasticsearch.hostname" . }}
