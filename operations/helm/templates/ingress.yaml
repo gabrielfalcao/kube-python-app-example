@@ -1,23 +1,17 @@
 {{- if .Values.ingress.enabled }}
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: {{ include "flask-hello.fullname" . }}-ingress
-  labels:
-    app.kubernetes.io/name: {{ include "flask-hello.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  hosts:
-    - {{ printf "web" $.Release.Namespace . $.Values.ingress.domain | quote }}
-  {{- with .Values.ingress.gateways }}
-  gateways:
-    {{ toYaml . | nindent 4 }}
-  {{- end }}
-  http:
-    - route:
-        - destination:
-            host: {{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
-            port:
-              number: 5000
+  rules:
+  - host: flask-hello
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "flask-hello.fullname" . }}
+          servicePort: 5000
 {{- end }}
