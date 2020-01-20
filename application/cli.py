@@ -204,21 +204,15 @@ def migrate_db(ctx):
 @click.option(
     "--polling-timeout",
     help="in miliseconds. Lower times means faster responses, but more CPU consumption.",
-    type=float,
+    type=int,
     default=60000,
-)
-@click.option(
-    "--join-timeout",
-    help="in seconds. How long to wait for coroutine",
-    type=float,
-    default=0,
 )
 @click.pass_context
 def worker(ctx, address, polling_timeout, join_timeout):
     "runs a worker"
 
     server = EchoServer(
-        zmq_uri=address, polling_timeout=polling_timeout, timeout=join_timeout
+        zmq_uri=address, polling_timeout=polling_timeout,
     )
     server.run()
 
