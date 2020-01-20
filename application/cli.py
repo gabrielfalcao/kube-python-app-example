@@ -7,7 +7,6 @@ import socket
 import click
 import logging
 import coloredlogs
-import gevent.monkey
 import zmq
 from datetime import datetime
 from zmq.devices import Device
@@ -106,7 +105,6 @@ logger = logging.getLogger("flask-hello")
 @click.pass_context
 def main(ctx, loglevel):
     "flask-hello command-line manager"
-    gevent.monkey.patch_all()
     set_log_level_by_name(loglevel)
     ctx.obj = dict(engine=set_default_uri(config.sqlalchemy_url()))
 
