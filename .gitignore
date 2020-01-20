@@ -63,3 +63,4 @@ docs/source/api/
 # VSCode
 /.vscode
 pip-wheel-metadata
+operations/helm/charts/

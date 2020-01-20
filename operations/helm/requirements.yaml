@@ -9,11 +9,6 @@ dependencies:
     repository: "file://dependency_charts/redis"
     condition: redis.enabled
 
-  - name: kibana
-    version: 3.2.5
-    repository: "file://dependency_charts/kibana"
-    condition: kibana.enabled
-
   - name: elasticsearch
     version: 7.5.1
     repository: "file://dependency_charts/elasticsearch"

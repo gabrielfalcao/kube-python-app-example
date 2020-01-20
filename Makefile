@@ -85,7 +85,7 @@ vanilla:
 
 deploy-with-helm:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	# 2>/dev/null newstore k8s space current || newstore k8s space create
+	helm dependency update --skip-refresh operations/helm/
 	newstore k8s stack install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
@@ -119,3 +119,4 @@ worker:
 
 helm-setup:
 	helm repo add elastic https://helm.elastic.co
+	2>/dev/null newstore k8s space current || newstore k8s space create

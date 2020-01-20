@@ -1,1 +1,12 @@
-
+dependencies:
+- name: postgresql
+  repository: file://dependency_charts/postgresql
+  version: 8.1.3
+- name: redis
+  repository: file://dependency_charts/redis
+  version: 8.0.1
+- name: elasticsearch
+  repository: file://dependency_charts/elasticsearch
+  version: 7.5.1
+digest: sha256:f57d5455c04074e1193e818dc47d6a1dd78144efb87ec141df44f3fbba296860
+generated: "2020-01-20T04:25:14.178139+01:00"
