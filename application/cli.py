@@ -201,11 +201,25 @@ def migrate_db(ctx):
     help="the zeromq address of the router",
     default=DEFAULT_DEALER_ADDRESS,
 )
+@click.option(
+    "--polling-timeout",
+    help="in miliseconds. Lower times means faster responses, but more CPU consumption.",
+    type=float,
+    default=100,
+)
+@click.option(
+    "--join-timeout",
+    help="in seconds. How long to wait for coroutine",
+    type=float,
+    default=1,
+)
 @click.pass_context
-def worker(ctx, address):
+def worker(ctx, address, polling_timeout, join_timeout):
     "runs a worker"
 
-    server = EchoServer(zmq_uri=address)
+    server = EchoServer(
+        zmq_uri=address, polling_timeout=polling_timeout, timeout=join_timeout
+    )
     server.run()
 
 
@@ -300,26 +314,17 @@ def close_server(ctx, address):
     client = EchoClient(zmq_uri=address)
     response = client.close_server()
     if response:
-        logger.info(f'server responded: {response}')
+        logger.info(f"server responded: {response}")
     else:
-        logger.warning(f'no response from server')
+        logger.warning(f"no response from server")
 
 
 @main.command("index", context_settings=dict(ignore_unknown_options=True))
-@click.argument('data')
+@click.argument("data")
 @click.pass_context
-def es_index(ctx, ):
+def es_index(ctx,):
     "tells the RPC server to kill itself"
 
-    doc = {
-        'author': os.environ['USER'],
-        'text': data,
-        'timestamp': datetime.now(),
-    }
-    res = es.index(
-        index="random-index",
-        doc_type='cli',
-        id=1,
-        body=doc
-    )
+    doc = {"author": os.environ["USER"], "text": data, "timestamp": datetime.now()}
+    res = es.index(index="random-index", doc_type="cli", id=1, body=doc)
     print(res)

@@ -29,6 +29,6 @@ class EchoClient(object):
 
     def close_server(self):
         logger.info(f"requesting to stop server")
-        self.sockets.send_safe("requester", 'close')
+        self.sockets.send_safe("requester", "close")
         response = self.sockets.recv_safe("requester")
         return response

@@ -8,6 +8,7 @@ BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
 NAMESPACE		:= $$(newstore k8s space current)
+TIMES			?= ${X}
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 
@@ -78,11 +79,11 @@ docker-pull:
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
-deploy: deploy-with-helm
 
 vanilla:
 	helm template $(HELM_SET_VARS) operations/helm > operations/vanilla/flask-hello.yaml
 
+deploy: deploy-with-helm
 deploy-with-helm:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	helm dependency update --skip-refresh operations/helm/
@@ -90,6 +91,9 @@ deploy-with-helm:
 
 port-forward:
 	newstore k8s run kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
+
+forward-queue-port:
+	newstore k8s run kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
 
 
 rollback:
@@ -109,7 +113,7 @@ db: $(VENV)/bin/flask-hello
 redeploy: rollback deploy
 
 enqueue:
-	$(VENV)/bin/flask-hello enqueue -x 99 -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
+	$(VENV)/bin/flask-hello enqueue -x $(TIMES) -n 10 --address='tcp://127.0.0.1:4242' "$${USER}@$$(hostname):[SENT=$$(date +'%s')]"
 
 close:
 	$(VENV)/bin/flask-hello close --address='tcp://127.0.0.1:4242'

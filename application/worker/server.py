@@ -9,11 +9,13 @@ logger = logging.getLogger("server")
 
 
 class EchoServer(object):
-    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS):
+    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS, polling_timeout=100, timeout=1):
 
-        self.sockets = SocketManager(zmq, context, polling_timeout=500, timeout=1)
+        self.sockets = SocketManager(
+            zmq, context, polling_timeout=polling_timeout, timeout=timeout
+        )
         self.sockets.ensure_and_connect(
-            "responder", zmq.REP, zmq_uri, zmq.POLLIN | zmq.POLLOUT,
+            "responder", zmq.REP, zmq_uri, zmq.POLLIN | zmq.POLLOUT
         )
         self.should_run = True
         self.zmq_uri = zmq_uri
@@ -29,8 +31,8 @@ class EchoServer(object):
                 continue
 
             self.should_run = request != "close"
-            logger.info(f'received request {request!r}')
-            print(f'\033[1;32m{request!r}\033[0m')
+            logger.info(f"received request {request!r}")
+            print(f"\033[1;32m{request!r}\033[0m")
             # logger.info(f'request: {request!r}')
 
             response = request
@@ -41,4 +43,4 @@ class EchoServer(object):
                 logger.warning('shutting-down because of client "close"')
                 raise SystemExit(1)
 
-        logger.warning('shutting down server')
+        logger.warning("shutting down server")
