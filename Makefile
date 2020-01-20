@@ -2,7 +2,7 @@
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git rev-parse HEAD)
+PROD_TAG		:= $(shell git log --pretty="format:%h" -n1 application *.* Dockerfile)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
