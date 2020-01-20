@@ -1,9 +1,25 @@
 ------
 
-Kubernetes Sandbox
-==================
+Python Application in Kubernetes Stack
+======================================
 
+What is
+-------
 
+- Flask Web API
+- ZeroMQ Client (REQ)
+- ZeroMQ Worker (REP)
+- ZeroMQ Queue (ROUTER + DEALER)
+- ZeroMQ Forwarder (PUB/SUB)
+- PostgreSQL
+- Redis
+
+Deployment
+----------
+
+Helm chart deploys all dependencies to a Kubernetes namespace.
+
+`operations/helm`_
 
 Developing
 ----------
@@ -26,14 +42,3 @@ Developing
 .. code:: bash
 
    make run
-
-
-
-
-Deploying
----------
-
-
-.. code:: bash
-
-   helm install --atomic operations/helm
