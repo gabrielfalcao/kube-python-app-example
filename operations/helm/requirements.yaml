@@ -1,16 +1,20 @@
-# dependencies:
-#   - name: postgresql
-#     version: 8.1.3
-#     repository: "file://./charts"
+dependencies:
+  - name: postgresql
+    version: 8.1.3
+    repository: "file://dependency_charts/postgresql"
+    condition: postgresql.enabled
 
-#   - name: redis
-#     version: 8.0.1
-#     repository: "file://./charts"
+  - name: redis
+    version: 8.0.1
+    repository: "file://dependency_charts/redis"
+    condition: redis.enabled
 
-#   - name: kibana
-#     version: 3.2.5
-#     repository: "file://./charts"
+  - name: kibana
+    version: 3.2.5
+    repository: "file://dependency_charts/kibana"
+    condition: kibana.enabled
 
-#   - name: elasticsearch
-#     version: 7.5.1
-#     repository: "file://./charts"
+  - name: elasticsearch
+    version: 7.5.1
+    repository: "file://dependency_charts/elasticsearch"
+    condition: elasticsearch.enabled
