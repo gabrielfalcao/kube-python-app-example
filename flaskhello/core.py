@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
 
-from application.filesystem import templates_path
+from flaskhello.filesystem import templates_path
 
 
 class config:

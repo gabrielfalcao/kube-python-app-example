@@ -6,10 +6,10 @@ from flask import render_template
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
-from application.core import application
+from flaskhello.core import application
 
-from application.models import User
-from application.worker.client import EchoClient
+from flaskhello.models import User
+from flaskhello.worker.client import EchoClient
 
 
 logger = logging.getLogger(__name__)

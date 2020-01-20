@@ -11,13 +11,13 @@ import zmq
 from datetime import datetime
 from zmq.devices import Device
 from chemist import set_default_uri
-from application.web import application
-from application.core import config
-from application.models import metadata
-from application.worker.client import EchoClient
-from application.worker.server import EchoServer
-from application.es import es
-from application import version
+from flaskhello.web import application
+from flaskhello.core import config
+from flaskhello.models import metadata
+from flaskhello.worker.client import EchoClient
+from flaskhello.worker.server import EchoServer
+from flaskhello.es import es
+from flaskhello import version
 
 
 DEFAULT_ROUTER_PORT = os.getenv("ZMQ_ROUTER_PORT") or 4242

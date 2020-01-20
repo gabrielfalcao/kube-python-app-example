@@ -1,5 +1,5 @@
 from flask import Response
-from application.utils import json_response
+from flaskhello.utils import json_response
 
 
 def test_json_response_returns_flask_response():

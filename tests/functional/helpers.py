@@ -1,4 +1,4 @@
-from application.web import application
+from flaskhello.web import application
 from sure import scenario
 
 

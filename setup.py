@@ -27,7 +27,7 @@ class VersionFinder(ast.NodeVisitor):
 
 def read_version():
     finder = VersionFinder()
-    finder.visit(ast.parse(local_file("application", "version.py")))
+    finder.visit(ast.parse(local_file("flaskhello", "version.py")))
     return finder.version
 
 
@@ -36,17 +36,18 @@ setup(
     version=read_version(),
     description="\n".join(
         [
-            "Application Belt is a command-line tool and python library",
-            "to enhance the workflow of Application engineers.",
+            "A python application consisting of "
+            "an HTTP server, ZMQ Components and "
+            "a command-line tool to help put everything together",
         ]
     ),
     long_description=local_file("README.rst"),
-    entry_points={"console_scripts": ["flask-hello = application.cli:main"]},
-    url="https://github.com/application/flask-hello",
+    entry_points={"console_scripts": ["flask-hello = flaskhello.cli:main"]},
+    url="https://github.com/gabrielfalcao/kube-python-app-example",
     packages=find_packages(exclude=["*tests*"]),
     include_package_data=True,
     package_data={
-        "application": [
+        "flaskhello": [
             "README.rst",
             "*.png",
             "*.rst",
@@ -54,10 +55,10 @@ setup(
             "docs/*/*",
         ]
     },
-    package_dir={"flask-hello": "application"},
+    package_dir={"flask-hello": "flaskhello"},
     zip_safe=False,
-    author="Application Inc.",
-    author_email="dev@application.com",
+    author="Gabriel Falcão",
+    author_email="gabriel@nacaolivre.org",
     install_requires=local_file("requirements.txt").splitlines(),
     dependency_links=[],
 )

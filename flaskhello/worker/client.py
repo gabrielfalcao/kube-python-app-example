@@ -2,7 +2,7 @@ from uuid import uuid4
 import logging
 from zmq import green as zmq
 from agentzero.core import SocketManager
-from application.worker.config import DEFAULT_ROUTER_ADDRESS
+from flaskhello.worker.config import DEFAULT_ROUTER_ADDRESS
 
 context = zmq.Context()
 

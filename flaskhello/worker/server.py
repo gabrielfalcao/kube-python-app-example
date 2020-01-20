@@ -1,7 +1,7 @@
 import logging
 from zmq import green as zmq
 from agentzero.core import SocketManager
-from application.worker.config import DEFAULT_DEALER_ADDRESS
+from flaskhello.worker.config import DEFAULT_DEALER_ADDRESS
 
 context = zmq.Context()
 

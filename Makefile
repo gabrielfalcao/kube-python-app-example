@@ -2,7 +2,7 @@
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%h" -n1 application *.* Dockerfile)
+PROD_TAG		:= $(shell git log --pretty="format:%h" -n1 flaskhello *.* Dockerfile)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
@@ -34,7 +34,7 @@ check:
 	$(VENV)/bin/flask-hello check
 
 migrate:
-	$(VENV)/bin/python application/migrate.py
+	$(VENV)/bin/flask-hello migrate-db
 
 # runs unit tests
 
