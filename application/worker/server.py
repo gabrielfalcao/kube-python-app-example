@@ -9,10 +9,10 @@ logger = logging.getLogger("server")
 
 
 class EchoServer(object):
-    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS, polling_timeout=10000, timeout=0):
+    def __init__(self, zmq_uri=DEFAULT_DEALER_ADDRESS, polling_timeout=10000):
 
         self.sockets = SocketManager(
-            zmq, context, polling_timeout=polling_timeout, timeout=timeout
+            zmq, context, polling_timeout=polling_timeout,
         )
         self.sockets.ensure_and_connect(
             "responder", zmq.REP, zmq_uri, zmq.POLLIN | zmq.POLLOUT
