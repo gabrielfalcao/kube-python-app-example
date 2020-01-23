@@ -124,3 +124,6 @@ worker:
 helm-setup:
 	helm repo add elastic https://helm.elastic.co
 	2>/dev/null newstore k8s space current || newstore k8s space create
+
+tunnel:
+	ngrok http --subdomain=newstoresauth0ldap 5000

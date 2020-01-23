@@ -37,3 +37,7 @@ application.config["SESSION_REDIS"] = redis.Redis(
     db=0,
 )
 application.config["SESSION_TYPE"] = "redis"
+application.config["AUTH0_DOMAIN"] = 'dev-newstore.auth0.com'
+application.config["API_IDENTIFIER"] = 'https://dev-ldap-py'
+application.config["AUTH0_CLIENT_ID"] = 'N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1'
+application.config["AUTH0_CLIENT_SECRET"] = 'QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL'
