@@ -1,4 +1,6 @@
 agentzero==0.4.4
+auth0-python==3.9.1
+authlib==0.13
 bcrypt==3.1.7
 chemist==1.6.3
 click==7.0

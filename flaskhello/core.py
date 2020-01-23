@@ -3,6 +3,7 @@ import redis
 from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
+from authlib.flask.client import OAuth
 
 from flaskhello.filesystem import templates_path
 
@@ -28,8 +29,19 @@ params = {"template_folder": templates_path}
 application = Flask(__name__, **params)
 
 cors = CORS(application, resources="/*")
-session = Session(application)
 
+session = Session(application)
+oauth = OAuth(application)
+
+auth0 = oauth.register(
+    "auth0",
+    client_id="N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1",
+    client_secret="QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL",
+    api_base_url="https://dev-newstore.auth0.com",
+    access_token_url="https://dev-newstore.auth0.com/oauth/token",
+    authorize_url="https://dev-newstore.auth0.com/authorize",
+    client_kwargs={"scope": "openid profile email"},
+)
 
 application.config["SESSION_REDIS"] = redis.Redis(
     host=os.getenv("REDIS_HOST") or "localhost",
@@ -37,7 +49,11 @@ application.config["SESSION_REDIS"] = redis.Redis(
     db=0,
 )
 application.config["SESSION_TYPE"] = "redis"
-application.config["AUTH0_DOMAIN"] = 'dev-newstore.auth0.com'
-application.config["API_IDENTIFIER"] = 'https://dev-ldap-py'
-application.config["AUTH0_CLIENT_ID"] = 'N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1'
-application.config["AUTH0_CLIENT_SECRET"] = 'QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL'
+application.config["AUTH0_DOMAIN"] = "dev-newstore.auth0.com"
+application.config["API_IDENTIFIER"] = "https://dev-ldap-py"
+
+application.config["AUTH0_CALLBACK_URI"] = "https://newstoresauth0ldap.ngrok.io"
+application.config["AUTH0_CLIENT_ID"] = "N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1"
+application.config[
+    "AUTH0_CLIENT_SECRET"
+] = "QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL"

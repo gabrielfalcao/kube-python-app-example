@@ -211,9 +211,7 @@ def migrate_db(ctx):
 def worker(ctx, address, polling_timeout):
     "runs a worker"
 
-    server = EchoServer(
-        zmq_uri=address, polling_timeout=polling_timeout,
-    )
+    server = EchoServer(zmq_uri=address, polling_timeout=polling_timeout)
     server.run()
 
 

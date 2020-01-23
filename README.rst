@@ -42,3 +42,7 @@ Developing
 .. code:: bash
 
    make run
+
+
+
+    https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings

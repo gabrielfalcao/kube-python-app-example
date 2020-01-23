@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+import json
 import logging
 from flask import render_template
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
 from flaskhello.core import application
+from flaskhello.core import session
+from flaskhello.auth import require_auth0
 
 from flaskhello.models import User
 from flaskhello.worker.client import EchoClient
@@ -18,6 +21,16 @@ logger = logging.getLogger(__name__)
 @application.route("/", methods=["GET"])
 def frontend():
     return render_template("index.html")
+
+
+@application.route("/dashboard", methods=["GET"])
+@require_auth0
+def user_info():
+    return render_template(
+        "dashboard.html",
+        userinfo=session["profile"],
+        userinfo_pretty=json.dumps(session["jwt_payload"], indent=4),
+    )
 
 
 api = Api(application, doc="/api/")
