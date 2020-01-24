@@ -15,7 +15,7 @@ else:
 
 
 SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
-SESSION_TYPE = "redis"
+
 AUTH0_DOMAIN = "dev-newstore.auth0.com"
 AUTH0_CALLBACK_URI = (
     "https://newstoresauth0ldap.ngrok.io/callback/auth0")
