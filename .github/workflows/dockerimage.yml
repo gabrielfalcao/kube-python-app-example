@@ -12,41 +12,26 @@ jobs:
     - uses: actions/checkout@v1
 
     - uses: actions/cache@v1
-      if: startsWith(runner.os, 'Linux')
       with:
         path: /var/lib/docker
         key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile*') }}
         restore-keys: |
           ${{ runner.os }}-docker-
 
-    - uses: actions/cache@v1
-      if: startsWith(runner.os, 'macOS')
+    - name: Build base docker image
+      uses: whoan/docker-build-with-cache-action@v3
       with:
-        path: ~/Library/Caches/com.docker.docker/
-        key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile*') }}
-        restore-keys: |
-          ${{ runner.os }}-docker-
+        username: gabrielfalcao
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: gabrielfalcao/flask-hello-base
+        image_tag: "${{ github.sha }}"
+        dockefile: Dockerfile.base
 
-    - name: Build the Docker images
-      run: make docker-image
-
-    - name: Push docker images
-      run: make docker-push-all
-
-    # - name: Build base docker image
-    #   uses: whoan/docker-build-with-cache-action@v3
-    #   with:
-    #     username: gabrielfalcao
-    #     password: "${{ secrets.DOCKER_PASSWORD }}"
-    #     image_name: gabrielfalcao/flask-hello-base
-    #     image_tag: "${{ github.sha }}"
-    #     dockefile: Dockerfile.base
-
-    # - name: Build docker image for kubernetes
-    #   uses: whoan/docker-build-with-cache-action@v3
-    #   with:
-    #     username: gabrielfalcao
-    #     password: "${{ secrets.DOCKER_PASSWORD }}"
-    #     image_name: gabrielfalcao/k8s-flask-hello
-    #     image_tag: "${{ github.sha }}"
-    #     dockefile: Dockerfile
+    - name: Build docker image for kubernetes
+      uses: whoan/docker-build-with-cache-action@v3
+      with:
+        username: gabrielfalcao
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: gabrielfalcao/k8s-flask-hello
+        image_tag: "${{ github.sha }}"
+        dockefile: Dockerfile
