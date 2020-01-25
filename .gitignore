@@ -64,4 +64,3 @@ docs/source/api/
 /.vscode
 pip-wheel-metadata
 operations/helm/charts/
-flask_session/
