@@ -12,7 +12,6 @@ X			?= 10
 FIGLET			:= (2>/dev/null which figlet && figlet) || echo
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
-export REDIS_HOST	?= localhost
 
 all: dependencies tests
 
