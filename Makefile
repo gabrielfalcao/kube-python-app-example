@@ -9,6 +9,7 @@ PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
 NAMESPACE		:= $$(newstore k8s space current)
 X			?= 10
+FIGLET			:= (2>/dev/null which figlet && figlet) || echo
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
 export REDIS_HOST	?= localhost
@@ -51,11 +52,11 @@ run: $(VENV)/bin/python
 
 
 docker-base-image:
-	figlet base image
+	@$(FIGLET) base image
 	docker images | grep "$(BASE_IMAGE):$(BASE_TAG)" || docker build -f Dockerfile.base -t "$(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)" .
 
 docker-image: docker-base-image
-	figlet production image
+	$(FIGLET) production image
 	docker tag "$(DOCKER_AUTHOR)/$(BASE_IMAGE):$(BASE_TAG)" "$(DOCKER_AUTHOR)/$(BASE_IMAGE)"
 	docker build -f Dockerfile -t $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG) .
 	docker tag $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG) $(DOCKER_AUTHOR)/$(PROD_IMAGE):latest
