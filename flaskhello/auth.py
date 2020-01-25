@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 import logging
+from typing import List
 from functools import wraps
 
 from flask import redirect, url_for
@@ -38,16 +39,19 @@ def auth0_callback():
     return redirect("/dashboard")
 
 
-def require_auth0(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if "profile" not in session:
-            # Redirect to Login page here
-            return redirect("/")
+def require_auth0(permissions: List[str]):
+    def wrapper(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if "jwt_payload" not in session:
+                # Redirect to Login page here
+                return redirect("/")
 
-        return f(*args, **kwargs)
+            # TODO: check if roles match
+            return f(*args, **kwargs)
 
-    return decorated
+        return decorated
+    return wrapper
 
 
 @application.route("/logout")

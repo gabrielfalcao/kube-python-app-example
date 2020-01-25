@@ -11,6 +11,7 @@ NAMESPACE		:= $$(newstore k8s space current)
 X			?= 10
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
+export REDIS_HOST	?= localhost
 
 all: dependencies tests
 

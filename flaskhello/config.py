@@ -19,9 +19,9 @@ SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 AUTH0_DOMAIN = "dev-newstore.auth0.com"
 AUTH0_CALLBACK_URI = (
     "https://newstoresauth0ldap.ngrok.io/callback/auth0")
-AUTH0_CLIENT_ID = "1J2tdk1J6hjloR3arVH4cZHfOor71uab"
+AUTH0_CLIENT_ID = "N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1"
 AUTH0_CLIENT_SECRET = (
-    "O3-tFXQSf0L9Z-dNq4XQ0gFEboJJQQYwnd9eKVKKbX3FhGIAfWgUOkBcStQKSyp2"
+    "QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL"
 )
 
 # https://manage.auth0.com/dashboard/us/dev-newstore/apis/5e2a25ea4d0204077e6a2fd5/settings

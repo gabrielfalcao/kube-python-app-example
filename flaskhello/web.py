@@ -52,11 +52,13 @@ ns = api.namespace("users", description="User operations", path="/api/")
 
 @ns.route("/user")
 class UserListEndpoint(Resource):
+    @require_auth0('read:user')
     def get(self):
         users = User.all()
         return [u.to_dict() for u in users]
 
     @ns.expect(user_json)
+    @require_auth0('write:user')
     def post(self):
         email = api.payload.get("email")
         password = api.payload.get("password")
@@ -69,6 +71,7 @@ class UserListEndpoint(Resource):
 
 @ns.route("/user/<user_id>")
 class UserEndpoint(Resource):
+    @require_auth0('read:user')
     def get(self, user_id):
         user = User.find_one_by(id=user_id)
         if not user:
@@ -77,6 +80,7 @@ class UserEndpoint(Resource):
         return user.to_dict()
 
     @ns.expect(user_json)
+    @require_auth0('write:user')
     def put(self, user_id):
         user = User.find_by(id=user_id)
         if not user:
