@@ -5,9 +5,8 @@ import logging
 from typing import List
 from functools import wraps
 
-from flask import redirect, url_for
+from flask import redirect, url_for, session
 from flaskhello.core import application
-from flaskhello.core import session
 from flaskhello.core import auth0
 from six.moves.urllib.parse import urlencode
 
