@@ -19,7 +19,7 @@ jobs:
         image_tag: "${{ github.sha }}"
         dockefile: Dockerfile.base
 
-    - name: Build base docker image
+    - name: Build docker image for kubernetes
       uses: whoan/docker-build-with-cache-action@v3
       with:
         username: gabrielfalcao
