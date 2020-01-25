@@ -10,5 +10,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: make docker docker-push-all
+    - name: Build base docker image
+      uses: whoan/docker-build-with-cache-action@v3
+      with:
+        username: gabrielfalcao
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: gabrielfalcao/flask-hello-base
+        image_tag: "${{ github.sha }}"
+        dockefile: Dockerfile.base
+
+    - name: Build base docker image
+      uses: whoan/docker-build-with-cache-action@v3
+      with:
+        username: gabrielfalcao
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: gabrielfalcao/k8s-flask-hello
+        image_tag: "${{ github.sha }}"
+        dockefile: Dockerfile
