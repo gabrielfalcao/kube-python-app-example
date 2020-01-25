@@ -11,7 +11,7 @@ if REDIS_HOST:
         db=0,
     )
 else:
-    SESSION_TYPE = "null"
+    SESSION_TYPE = "filesystem"
 
 
 SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
