@@ -16,10 +16,7 @@ from flaskhello.models import metadata
 from flaskhello.worker.client import EchoClient
 from flaskhello.worker.server import EchoServer
 from flaskhello.es import es
-from flaskhello.logs import (
-    set_log_level_by_name,
-    set_debug_mode,
-)
+from flaskhello.logs import set_log_level_by_name, set_debug_mode
 from flaskhello import version
 
 
@@ -304,10 +301,6 @@ def close_server(ctx, address):
 def es_index(ctx, data):
     "tells the RPC server to kill itself"
 
-    doc = {
-        "author": os.environ["USER"],
-        "text": data,
-        "timestamp": datetime.now()
-    }
+    doc = {"author": os.environ["USER"], "text": data, "timestamp": datetime.now()}
     res = es.index(index="random-index", doc_type="cli", id=1, body=doc)
     print(res)

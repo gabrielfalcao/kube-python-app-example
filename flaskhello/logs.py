@@ -7,24 +7,23 @@ __INSTALLED = {}
 
 
 __STYLES = {
-    'critical': {
-        'color': 'red',
-        'bold': True
-    },
-    'debug': {
-        'color': 'green'
-    },
-    'error': {
-        'color': 'red'}, 'info': {}, 'notice': {'color': 'magenta'}, 'spam': {'color': 'green', 'faint': True}, 'success': {'color': 'green', 'bold': True}, 'verbose': {'color': 'blue'}, 'warning': {'color': 'yellow'}}
+    "critical": {"color": "red", "bold": True},
+    "debug": {"color": "green"},
+    "error": {"color": "red"},
+    "info": {},
+    "notice": {"color": "magenta"},
+    "spam": {"color": "green", "faint": True},
+    "success": {"color": "green", "bold": True},
+    "verbose": {"color": "blue"},
+    "warning": {"color": "yellow"},
+}
 
 
 def install(levelname):
     if __INSTALLED:
         return
 
-    params = dict(
-        fmt='[%(asctime)s] %(name)s %(levelname)s %(message)s'
-    )
+    params = dict(fmt="[%(asctime)s] %(name)s %(levelname)s %(message)s")
     coloredlogs.install(levelname, **params)
     __INSTALLED[levelname] = time.time()
 

@@ -50,6 +50,7 @@ def require_auth0(permissions: List[str]):
             return f(*args, **kwargs)
 
         return decorated
+
     return wrapper
 
 

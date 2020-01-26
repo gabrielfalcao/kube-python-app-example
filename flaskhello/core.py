@@ -21,21 +21,23 @@ class config:
 
     @classmethod
     def sqlalchemy_url(config):
-        return "/".join([
-            f"postgresql+psycopg2:/",
-            f"{config.auth}@{config.domain}",
-            f"{config.database}"
-        ])
+        return "/".join(
+            [
+                f"postgresql+psycopg2:/",
+                f"{config.auth}@{config.domain}",
+                f"{config.database}",
+            ]
+        )
 
 
 params = {
     "template_folder": templates_path,
-    "static_url_path": '',
-    "static_folder": 'web/static',
+    "static_url_path": "",
+    "static_folder": "web/static",
 }
 
 application = Flask(__name__, **params)
-application.config.from_object('flaskhello.config')
+application.config.from_object("flaskhello.config")
 
 cors = CORS(application, resources="/*")
 
