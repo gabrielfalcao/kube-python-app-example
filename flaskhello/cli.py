@@ -6,7 +6,6 @@ import json
 import socket
 import click
 import logging
-import coloredlogs
 import zmq
 from datetime import datetime
 from zmq.devices import Device
@@ -17,6 +16,10 @@ from flaskhello.models import metadata
 from flaskhello.worker.client import EchoClient
 from flaskhello.worker.server import EchoServer
 from flaskhello.es import es
+from flaskhello.logs import (
+    set_log_level_by_name,
+    set_debug_mode,
+)
 from flaskhello import version
 
 
@@ -79,22 +82,6 @@ def check_database_dns():
         return e
     finally:
         sock.close()
-
-
-def set_log_level_by_name(loglevel: str, loggername=None):
-    loglevel = loglevel.upper()
-    coloredlogs.install(loglevel)
-    if loggername:
-        logger = logging.getLogger(loggername)
-    else:
-        logger = logging.getLogger()
-
-    logger.setLevel(getattr(logging, loglevel.upper(), logging.INFO))
-
-
-def set_debug_mode():
-    # logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
-    set_log_level_by_name("DEBUG")
 
 
 logger = logging.getLogger("flask-hello")
@@ -314,9 +301,13 @@ def close_server(ctx, address):
 @main.command("index", context_settings=dict(ignore_unknown_options=True))
 @click.argument("data")
 @click.pass_context
-def es_index(ctx,):
+def es_index(ctx, data):
     "tells the RPC server to kill itself"
 
-    doc = {"author": os.environ["USER"], "text": data, "timestamp": datetime.now()}
+    doc = {
+        "author": os.environ["USER"],
+        "text": data,
+        "timestamp": datetime.now()
+    }
     res = es.index(index="random-index", doc_type="cli", id=1, body=doc)
     print(res)
