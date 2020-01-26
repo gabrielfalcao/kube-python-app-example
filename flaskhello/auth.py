@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @application.route("/login")
 def login():
     return auth0.authorize_redirect(
-        redirect_uri=application.config["AUTH0_CALLBACK_URI"]
+        redirect_uri=application.config["OAUTH2_CALLBACK_URL"]
     )
 
 
@@ -68,7 +68,6 @@ def logout():
     session.clear()
     # Redirect user to logout endpoint
     params = {
-        "returnTo": application.config["APP_URL_EXTERNAL"],
-        "client_id": application.config["AUTH0_CLIENT_ID"],
+        "client_id": application.config["OAUTH2_CLIENT_ID"],
     }
     return redirect(auth0.api_base_url + "/v2/logout?" + urlencode(params))

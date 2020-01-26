@@ -23,6 +23,11 @@ kibana:
     type: NodePort
     port: 5601
 
+ngrok:
+  enabled: true
+  token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
+  subdomain: newstoresauth0ldap  # from "https:///newstoresauth0ldap.ngrok.io/"
+
 zmq:
   type: NodePort
   router_port: 4242

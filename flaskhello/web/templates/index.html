@@ -1,0 +1,34 @@
+{% extends "__base__.html" %}
+{% block middle %}
+<div class="jumbotron alert-info">
+  <h1>LDAP Integration Test App</h1>
+  {% if authenticated %}
+  <a class="btn btn-success btn-lg" href="/api/" role="button">Browse the RESTful API</a>
+  {% else %}
+  <a class="btn btn-primary btn-lg btn-login" href="/login">Log In with Auth0</a>
+  {% endif %}
+  </p>
+</div>
+<h2>Container Config</h2>
+<div class="list-group">
+  {% for key, value in config.items() %}
+  {% if key.startswith("OAUTH2_") %}
+      {% if 'SECRET' in key %}
+          {% set kind="danger disabled" %}
+          {% set value="**REDACTED**" %}
+      {% elif 'URL' in key %}
+          {% set kind="warning" %}
+      {% else %}
+          {% set kind="info" %}
+      {% endif %}
+  <div class="list-group-item list-group-item-{{ kind }}">
+    <h4 class="list-group-item-heading">{{ key }}</h4>
+    <p class="list-group-item-text">
+      <pre class="text-danger">{{ value }}</pre>
+    </p>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "dashboard/__base__.html" %}
+
+{% block profile_bar %}
+<div class="panel panel-default">
+  <div class="panel-heading text-center">
+    <strong>{{ userinfo['name'] }}</strong>
+    <i class="fa fa-link fa-1x"></i></div>
+  <div class="panel-body">
+    <div class="text-center">
+      <img src="{{userinfo['picture']}}" class="avatar img-circle img-thumbnail" alt="avatar">
+    </div>
+  </div>
+</div>
+
+
+<ul class="list-group">
+  <li class="list-group-item text-muted">Permissions <i class="fa fa-dashboard fa-1x"></i></li>
+  {% for name in permissions %}
+  <li class="list-group-item text-right"><strong>{{ name }}</strong></li>
+  {% else %}
+  <li class="list-group-item text-right">No Data from LDAP</li>
+  {% endfor %}
+</ul>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Scopes</div>
+  <div class="panel-body">
+    {% for scope in userinfo['token']['scope'].split() %}
+    <pre class="code">{{ scope }}</pre>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+
+{% block tabs %}
+<li class="active"><a data-toggle="tab" href="#json">JSON</a></li>
+<li><a data-toggle="tab" href="#ldap">LDAP metadata</a></li>
+{% endblock %}
+
+
+{% block tabs_content %}
+{% include "tabs/json.html" %}
+{% include "tabs/ldap.html" %}
+{% endblock %}

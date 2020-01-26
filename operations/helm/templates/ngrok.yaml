@@ -1,0 +1,41 @@
+---
+{{- if .Values.ngrok.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "flask-hello.fullname" . }}-ngrok-tunnel
+spec:
+  minReadySeconds: 5
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "flask-hello.name" . }}-ngrok-tunnel
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "flask-hello.name" . }}-ngrok-tunnel
+        app.kubernetes.io/instance: {{ .Release.Name }}
+
+    spec:
+      containers:
+      - image: "wernight/ngrok"
+        imagePullPolicy: {{ .Values.ngrok.image.pullPolicy }}
+        name: {{ .Chart.Name }}
+        env:
+          - name: NGROK_REMOTE_ADDR
+            value: {{ include "flask-hello.web.hostname" . | quote }}
+
+          - name: NGROK_AUTH
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "flask-hello.fullname" . }}-secrets
+                key: ngrok-token
+
+          - name: NGROK_SUBDOMAIN
+            value: {{ .Values.ngrok.subdomain | quote}}
+
+          - name: NGROK_PORT
+            value: {{ .Values.service.port }}
+{{- end }}

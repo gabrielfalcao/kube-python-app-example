@@ -2,11 +2,11 @@
 {% block container %}
 <div class="container">
   <div class="row">
-    <div class="col-sm-3"><!--left col-->
+    <div class="col-sm-3 col-md-3"><!--left col-->
       {% block profile_bar %}
       {% endblock %}
     </div><!--/col-3-->
-    <div class="col-sm-9">
+    <div class="col-sm-9 col-md-9">
       <ul class="nav nav-tabs">
         {% block tabs %}
         <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
@@ -14,7 +14,6 @@
         <li><a data-toggle="tab" href="#settings">Menu 2</a></li>
         {% endblock %}
       </ul>
-
       <div class="tab-content">
         {% block tabs_content %}
         <div class="tab-pane active" id="home">

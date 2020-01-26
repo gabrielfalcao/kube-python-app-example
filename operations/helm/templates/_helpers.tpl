@@ -52,12 +52,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "namespace.svc.hostname" -}}
 {{- printf "%s.svc.cluster.local" .Release.Namespace -}}
 {{- end -}}
-{{- define "flask-hello.hostname" -}}
-{{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
+{{- define "flask-hello.web.hostname" -}}
+{{ include "flask-hello.fullname" . }}-web.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
-
 {{- define "flask-hello.zmq-queue.hostname" -}}
 {{ include "flask-hello.fullname" . }}-queue.{{ include "namespace.svc.hostname" . }}
+{{- end -}}
+
+{{- define "flask-hello.ngrok.hostname" -}}
+{{ include "flask-hello.fullname" . }}-ngrok-tunnel.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 
 {{/*
