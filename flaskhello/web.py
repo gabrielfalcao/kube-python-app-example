@@ -3,12 +3,11 @@
 #
 import json
 import logging
-from flask import render_template
+from flask import render_template, session
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
 from flaskhello.core import application
-from flaskhello.core import session
 from flaskhello.auth import require_auth0
 
 from flaskhello.models import User
@@ -19,12 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 @application.route("/", methods=["GET"])
-def frontend():
+def index():
     return render_template("index.html")
 
 
 @application.route("/dashboard", methods=["GET"])
-@require_auth0
+@require_auth0('read:user')
 def user_info():
     return render_template(
         "dashboard.html",
@@ -52,13 +51,12 @@ ns = api.namespace("users", description="User operations", path="/api/")
 
 @ns.route("/user")
 class UserListEndpoint(Resource):
-    @require_auth0("read:user")
+
     def get(self):
         users = User.all()
         return [u.to_dict() for u in users]
 
     @ns.expect(user_json)
-    @require_auth0("write:user")
     def post(self):
         email = api.payload.get("email")
         password = api.payload.get("password")
@@ -71,7 +69,6 @@ class UserListEndpoint(Resource):
 
 @ns.route("/user/<user_id>")
 class UserEndpoint(Resource):
-    @require_auth0("read:user")
     def get(self, user_id):
         user = User.find_one_by(id=user_id)
         if not user:
@@ -80,7 +77,6 @@ class UserEndpoint(Resource):
         return user.to_dict()
 
     @ns.expect(user_json)
-    @require_auth0("write:user")
     def put(self, user_id):
         user = User.find_by(id=user_id)
         if not user:

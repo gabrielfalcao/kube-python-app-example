@@ -1,9 +1,9 @@
 import os
-import redis
+
 from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
-from authlib.flask.client import OAuth
+from authlib.integrations.flask_client import OAuth
 
 from flaskhello.filesystem import templates_path
 
@@ -41,7 +41,7 @@ application.config.from_object("flaskhello.config")
 
 cors = CORS(application, resources="/*")
 
-session = Session(application)
+session_manager = Session(application)
 oauth = OAuth(application)
 
 auth0 = oauth.register(
