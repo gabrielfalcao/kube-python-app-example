@@ -92,27 +92,11 @@ docker-pull:
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
-
-vanilla:
-	helm template $(HELM_SET_VARS) operations/helm > operations/vanilla/flask-hello.yaml
-
-deploy: deploy-with-helm
-deploy-with-helm:
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	helm dependency update --skip-refresh operations/helm/
-	-2>/dev/null newstore k8s space current && newstore k8s stack delete all || newstore k8s space create
-	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
-
 port-forward:
 	newstore k8s run kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
 
 forward-queue-port:
 	newstore k8s run kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
-
-
-rollback:
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	-newstore k8s space delete all --confirm
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
@@ -122,6 +106,18 @@ db: $(VENV)/bin/flask-hello
 	-@psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
 	-@psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
 	$(VENV)/bin/flask-hello migrate-db
+
+deploy:
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
+	helm dependency update --skip-refresh operations/helm/
+	-2>/dev/null newstore k8s space current && newstore k8s stack delete all
+	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+
+
+rollback:
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
+	-newstore k8s space delete all --confirm
+	-newstore k8s space create
 
 redeploy: rollback deploy
 
