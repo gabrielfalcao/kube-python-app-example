@@ -111,7 +111,8 @@ forward-queue-port:
 
 rollback:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	-newstore k8s stack delete all
+	newstore k8s space delete current --confirm
+	newstore k8s space create
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
