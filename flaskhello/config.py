@@ -2,7 +2,7 @@ import os
 import redis
 
 
-APP_URL_EXTERNAL = "https://newstoresauth0ldap.ngrok.io/"
+APP_URL_EXTERNAL = os.getenv("APP_URL_EXTERNAL") or "https://newstoresauth0ldap.ngrok.io/"
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 if REDIS_HOST:

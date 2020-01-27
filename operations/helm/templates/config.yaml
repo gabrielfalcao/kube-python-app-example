@@ -23,6 +23,7 @@ data:
   ZMQ_PUBLISHER_PORT: {{ .Values.zmq.publisher_port | quote }}
   ZMQ_SUBSCRIBER_PORT: {{ .Values.zmq.subscriber_port | quote }}
 
+  HTTPS_API: true
   ZMQ_ROUTER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_DEALER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_PUBLISHER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
@@ -37,3 +38,6 @@ data:
   OAUTH2_ACCESS_TOKEN_URL: {{ .Values.oauth2.access_token_url |quote }}
   OAUTH2_AUTHORIZE_URL: {{ .Values.oauth2.authorize_url |quote }}
   OAUTH2_CLIENT_SCOPE: {{ .Values.oauth2.client_scope |quote }}
+
+
+  APP_URL_EXTERNAL: "https://newstoresauth0ldap.ngrok.io/"
