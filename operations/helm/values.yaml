@@ -39,9 +39,9 @@ kibana:
 ngrok:
   enabled: true
   image:
-    repository: gabrielfalcao/k8s-flask-hello
+    repository: wernight/ngrok
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
   subdomain: newstoresauth0ldap  # from "https:///newstoresauth0ldap.ngrok.io/"
