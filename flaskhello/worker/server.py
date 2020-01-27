@@ -20,12 +20,12 @@ class EchoServer(object):
         logger.info(f"Initializing ZMQ Response Server: {self.zmq_uri!r}")
 
     def run(self):
-        logger.info(f"Starting {self} in {self.zmq_uri}")
+        logger.info(f"Starting {self} in {self.zmq_uri}, ready for request")
+
         while self.should_run:
             request = self.sockets.recv_safe("responder")
 
             if not request:
-                logger.info("ready for request")
                 continue
 
             self.should_run = request != "close"

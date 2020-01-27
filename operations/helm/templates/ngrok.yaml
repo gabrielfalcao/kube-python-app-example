@@ -24,13 +24,10 @@ spec:
         imagePullPolicy: {{ .Values.ngrok.image.pullPolicy }}
         name: {{ .Chart.Name }}
         env:
-          - name: NGROK_LOOK_DOMAIN
-            value: {{ template "flask-hello.web.hostname" . | quote }}
-
           - name: NGROK_AUTH
             valueFrom:
               secretKeyRef:
-                name: {{ template "flask-hello.fullname" . }}-secrets
+                name: {{ include "flask-hello.fullname" . }}-secrets
                 key: ngrok-token
 
           - name: NGROK_SUBDOMAIN
@@ -41,6 +38,10 @@ spec:
 
           - name: NGROK_BINDTLS
             value: "true"
+
+          # due to a problem with the ngrok image the hostname:port
+          # needs be provided here
           - name: NGROK_PORT
-            value: {{ .Values.service.port | quote }}
+            value: {{ include "flask-hello.web.fqdn" . | quote }}
+
 {{- end }}

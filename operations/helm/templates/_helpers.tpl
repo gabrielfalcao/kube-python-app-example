@@ -55,6 +55,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "flask-hello.web.hostname" -}}
 {{ include "flask-hello.fullname" . }}-web.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
+{{- define "flask-hello.web.fqdn" -}}
+{{ include "flask-hello.web.hostname" . }}:{{ .Values.service.port }}
+{{- end -}}
 {{- define "flask-hello.zmq-queue.hostname" -}}
 {{ include "flask-hello.fullname" . }}-queue.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
