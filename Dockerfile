@@ -15,11 +15,6 @@ RUN /venv/bin/pip install uwsgi
 
 RUN make tests
 
-RUN flask-hello check
-ENV FLASK_HELLO_PORT 5000
-
-ENV FLASK_HELLO_VERSION 3
-
 ENV OAUTH2_DOMAIN           dev-newstore.auth0.com
 ENV OAUTH2_CALLBACK_URL     https://newstoresauth0ldap.ngrok.io/callback/auth0
 ENV OAUTH2_CLIENT_ID        FROM_DOCKERFILE_PLEASE_OVERRIDE
@@ -28,6 +23,11 @@ ENV OAUTH2_BASE_URL         https://dev-newstore.auth0.com
 ENV OAUTH2_ACCESS_TOKEN_URL https://dev-newstore.auth0.com/oauth/token
 ENV OAUTH2_AUTHORIZE_URL    https://dev-newstore.auth0.com/authorize
 ENV OAUTH2_CLIENT_SCOPE     openid profile email
+
+RUN flask-hello check
+ENV FLASK_HELLO_PORT 5000
+
+ENV FLASK_HELLO_VERSION 3
 
 EXPOSE 5000
 EXPOSE 4242
