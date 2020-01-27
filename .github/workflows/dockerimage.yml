@@ -16,19 +16,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-docker-
 
-    - name: Build base docker image
+    - name: Build and push base Docker image
       uses: whoan/docker-build-with-cache-action@v3
       with:
-        username: gabrielfalcao
+        username: "${{ secrets.DOCKER_USERNAME }}"
         password: "${{ secrets.DOCKER_PASSWORD }}"
         image_name: gabrielfalcao/flask-hello-base
         image_tag: "${{ github.sha }}"
         dockefile: Dockerfile.base
 
-    - name: Build docker image for kubernetes
+    - name: Build and push Docker image for Kubernetes
       uses: whoan/docker-build-with-cache-action@v3
       with:
-        username: gabrielfalcao
+        username: "${{ secrets.DOCKER_USERNAME }}"
         password: "${{ secrets.DOCKER_PASSWORD }}"
         image_name: gabrielfalcao/k8s-flask-hello
         image_tag: "${{ github.sha }}"
