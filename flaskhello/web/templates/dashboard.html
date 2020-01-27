@@ -3,19 +3,25 @@
 {% block profile_bar %}
 <div class="panel panel-default">
   <div class="panel-heading text-center">
-    <strong>{{ userinfo['name'] }}</strong>
+    <strong>{{ user['name'] }}</strong>
     <i class="fa fa-link fa-1x"></i></div>
   <div class="panel-body">
     <div class="text-center">
-      <img src="{{userinfo['picture']}}" class="avatar img-circle img-thumbnail" alt="avatar">
+      <img src="{{user['picture']}}" class="avatar img-circle img-thumbnail" alt="avatar">
     </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">API Access Token</div>
+  <div class="panel-body">
+    <pre class="code">{{ session['access_token'] }}</pre>
   </div>
 </div>
 
 
 <ul class="list-group">
-  <li class="list-group-item text-muted">Permissions <i class="fa fa-dashboard fa-1x"></i></li>
-  {% for name in permissions %}
+  <li class="list-group-item text-muted">Roles <i class="fa fa-dashboard fa-1x"></i></li>
+  {% for name in roles %}
   <li class="list-group-item text-right"><strong>{{ name }}</strong></li>
   {% else %}
   <li class="list-group-item text-right">No Data from LDAP</li>
@@ -25,7 +31,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">Scopes</div>
   <div class="panel-body">
-    {% for scope in userinfo['token']['scope'].split() %}
+    {% for scope in token.get('scope', '').split() %}
     <pre class="code">{{ scope }}</pre>
     {% endfor %}
   </div>
@@ -35,7 +41,7 @@
 
 {% block tabs %}
 <li class="active"><a data-toggle="tab" href="#json">JSON</a></li>
-<li><a data-toggle="tab" href="#ldap">LDAP metadata</a></li>
+<li><a data-toggle="tab" href="#ldap">Roles and LDAP metadata</a></li>
 {% endblock %}
 
 

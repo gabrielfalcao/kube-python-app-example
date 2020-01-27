@@ -29,11 +29,13 @@ def auth0_callback():
         token = auth0.authorize_access_token()
     except Exception as e:
         args = dict(request.args)
-        return render_template('error.html', exception=e, args=json.dumps(args, indent=4))
+        return render_template(
+            "error.html", exception=e, args=json.dumps(args, indent=4)
+        )
 
     resp = auth0.get("userinfo")
     userinfo = resp.json()
-
+    import ipdb;ipdb.set_trace()
     # Store the user information in flask session.
     session["jwt_payload"] = userinfo
     session["token"] = token
@@ -67,7 +69,5 @@ def logout():
     # Clear session stored data
     session.clear()
     # Redirect user to logout endpoint
-    params = {
-        "client_id": application.config["OAUTH2_CLIENT_ID"],
-    }
+    params = {"client_id": application.config["OAUTH2_CLIENT_ID"]}
     return redirect(auth0.api_base_url + "/v2/logout?" + urlencode(params))

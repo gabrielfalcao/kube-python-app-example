@@ -15,7 +15,6 @@ from .core import application
 from .core import auth0
 
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -27,9 +26,9 @@ def inject_functions():
 @application.context_processor
 def inject_user_when_present():
     if not is_authenticated():
-        return {'user': None}
+        return {"user": None}
 
-    user = getattr(g, 'user', None)
+    user = getattr(g, "user", None)
     return dict(user=user)
 
 
@@ -48,33 +47,35 @@ def auth0_callback():
         token = auth0.authorize_access_token()
     except Exception as e:
         args = dict(request.args)
-        return render_template('error.html', exception=e,
-                               args=json.dumps(args, indent=4))
+        return render_template(
+            "error.html", exception=e, args=json.dumps(args, indent=4)
+        )
 
     resp = auth0.get("userinfo")
     userinfo = resp.json()
-    token = userinfo.get('token') or {}
     session["user"] = userinfo
-    session["token"] = token
-    session["access_token"] = token.get('access_token')
-    session["jwt_token"] = token.get('id_token')
+    session["oauth2_id"] = userinfo.get('sub')
 
-    try:
-        user, token = db.get_user_and_token_from_userinfo(userinfo)
-        session["user"] = user.to_dict()
-        session["access_token"] = token.access_token
-        session["jwt_token"] = token.id_token
-    except Exception:
-        logger.exception(f'failed to create user with {userinfo!r}')
+    session["token"] = token
+    session["access_token"] = token.get("access_token")
+    session["jwt_token"] = token.get("id_token")
+
+    user, token = db.get_user_and_token_from_userinfo(
+        token=token,
+        userinfo=userinfo
+    )
+    session["user"] = user.to_dict()
+    session["token"] = token.to_dict()
+    session["oauth2_id"] = user.oauth2_id
+    session["access_token"] = token.access_token
+    session["jwt_token"] = token.id_token
 
     return redirect("/dashboard")
 
 
 def is_authenticated():
-    auth_keys = {"user", 'access_token', 'jwt_token', 'token'}
-    return auth_keys.intersection(
-        set(session.keys())
-    )
+    auth_keys = {"user", "access_token", "jwt_token", "token"}
+    return auth_keys.intersection(set(session.keys()))
 
 
 def require_auth0(permissions: List[str]):
@@ -83,7 +84,7 @@ def require_auth0(permissions: List[str]):
         def decorated(*args, **kwargs):
             if not is_authenticated():
                 # Redirect to Login page here
-                return redirect(url_for('login'))
+                return redirect(url_for("login"))
 
             # TODO: check if roles match
             return f(*args, **kwargs)
@@ -100,6 +101,6 @@ def logout():
     # Redirect user to logout endpoint
     params = {
         "client_id": application.config["OAUTH2_CLIENT_ID"],
-        'returnTo': application.config["OAUTH2_RETURN_TO"],
+        "returnTo": application.config["APP_URL_EXTERNAL"],
     }
     return redirect(auth0.api_base_url + "/v2/logout?" + urlencode(params))

@@ -2,7 +2,7 @@ import os
 import redis
 
 
-APP_URL_EXTERNAL = 'https://newstoresauth0ldap.ngrok.io/'
+APP_URL_EXTERNAL = "https://newstoresauth0ldap.ngrok.io/"
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 if REDIS_HOST:
@@ -13,19 +13,29 @@ if REDIS_HOST:
 else:
     SESSION_TYPE = "filesystem"
 
+# set this to true when serving the application via HTTPS or else the
+# flask-restful routes won't show up on swagger.
+HTTPS_API = os.getenv("HTTPS_API")
 
 SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 
-OAUTH2_DOMAIN = "dev-newstore.auth0.com"
-OAUTH2_CALLBACK_URL = "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "dev-newstore.auth0.com"
+OAUTH2_CALLBACK_URL = (
+    os.getenv("OAUTH2_CALLBACK_URL")
+    or "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+)
 
 # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
-OAUTH2_CLIENT_ID = "N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1"
-OAUTH2_CLIENT_SECRET = "QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL"
-OAUTH2_BASE_URL = "https://dev-newstore.auth0.com"
-OAUTH2_ACCESS_TOKEN_URL = "https://dev-newstore.auth0.com/oauth/token"
-OAUTH2_AUTHORIZE_URL = "https://dev-newstore.auth0.com/authorize"
-OAUTH2_CLIENT_SCOPE = "openid profile email"
+OAUTH2_CLIENT_ID = os.getenv("OAUTH2_CLIENT_ID")
+OAUTH2_CLIENT_SECRET = os.getenv("OAUTH2_CLIENT_SECRET")
+OAUTH2_BASE_URL = os.getenv("OAUTH2_BASE_URL") or "https://dev-newstore.auth0.com"
+OAUTH2_ACCESS_TOKEN_URL = (
+    os.getenv("OAUTH2_ACCESS_TOKEN_URL") or f"{OAUTH2_BASE_URL}/oauth/token"
+)
+OAUTH2_AUTHORIZE_URL = (
+    os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/authorize"
+)
+OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email read:user write:user browse:api"
 
 
 class dbconfig:

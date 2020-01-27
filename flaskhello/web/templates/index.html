@@ -2,33 +2,19 @@
 {% block middle %}
 <div class="jumbotron alert-info">
   <h1>LDAP Integration Test App</h1>
-  {% if authenticated %}
-  <a class="btn btn-success btn-lg" href="/api/" role="button">Browse the RESTful API</a>
-  {% else %}
-  <a class="btn btn-primary btn-lg btn-login" href="/login">Log In with Auth0</a>
-  {% endif %}
-  </p>
+  <br />
 </div>
-<h2>Container Config</h2>
-<div class="list-group">
-  {% for key, value in config.items() %}
-  {% if key.startswith("OAUTH2_") %}
-      {% if 'SECRET' in key %}
-          {% set kind="danger disabled" %}
-          {% set value="**REDACTED**" %}
-      {% elif 'URL' in key %}
-          {% set kind="warning" %}
+<div class="panel panel-info">
+  <div class="panel-body">
+    <p class="text-center">
+      {% if authenticated %}
+      <a class="btn btn-success" href="/api/" role="button">Browse the RESTful API</a>
       {% else %}
-          {% set kind="info" %}
+      <a class="btn btn-primary btn-login" href="/login">Log in with OAuth2 Identity Provider</a>
       {% endif %}
-  <div class="list-group-item list-group-item-{{ kind }}">
-    <h4 class="list-group-item-heading">{{ key }}</h4>
-    <p class="list-group-item-text">
-      <pre class="text-danger">{{ value }}</pre>
+      <a class="btn btn-info" href="/config">View OAuth2 config</a>
     </p>
   </div>
-  {% endif %}
-  {% endfor %}
 </div>
 
 {% endblock %}

@@ -12,6 +12,18 @@ X			?= 10
 FIGLET			:= (2>/dev/null which figlet && figlet) || echo
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
+export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
+
+
+export # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
+export OAUTH2_CALLBACK_URL	:= https://newstoresauth0ldap.ngrok.io/callback/auth0
+export OAUTH2_CLIENT_ID		:= N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1
+export OAUTH2_CLIENT_SECRET	:= QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL
+export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
+export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
+export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
+export OAUTH2_CLIENT_SCOPE	:= openid profile email read:user write:user browse:api
 
 all: dependencies tests
 
@@ -106,9 +118,8 @@ db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropuser flask_hello || echo 'no db user'
 	-@2>/dev/null createuser flask_hello --createrole --createdb
 	-@2>/dev/null createdb flask_hello
-	-psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
-	-psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
-	$(VENV)/bin/flask-hello check-db
+	-@psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
+	-@psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
 	$(VENV)/bin/flask-hello migrate-db
 
 redeploy: rollback deploy

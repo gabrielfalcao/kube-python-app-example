@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>{% block title %}Flask Hello{% endblock %}</title>
+    <title>{% block title %}LDAP Integration App{% endblock %}</title>
 
     <!-- Bootstrap -->
     {% block head_css %}
@@ -44,7 +44,10 @@
           {% block navbar_subnavs %}{% endblock %}
           <ul class="nav navbar-nav navbar-right">
             <li>
-              {% if not userinfo %}
+              <a href="/config">View OAuth2 Config</a>
+            </li>
+              <li>
+              {% if not is_authenticated %}
               <a href="/login">
                 Login
                 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>

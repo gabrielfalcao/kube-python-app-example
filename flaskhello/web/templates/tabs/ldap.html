@@ -1,5 +1,12 @@
 <div class="tab-pane" id="ldap">
-  <hr />
-  <pre></pre>
-  <hr />
+  <br />
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Roles</h3>
+    </div>
+    <div class="panel-body">
+      <pre>{{ roles | tojson(indent=4) }}</pre>
+    </div>
+  </div>
+
 </div>

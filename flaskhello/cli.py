@@ -166,11 +166,6 @@ def migrate_db(ctx):
         logger.error(f"could not resolve {dbconfig.host!r}: {error}")
         raise SystemExit(1)
 
-    try:
-        check_db_connection(engine)
-    except Exception:
-        time.sleep(5)
-
     engine = ctx.obj["engine"]
     url = engine.url
     logger.info(f"Migrating SQL database: {str(engine.url)!r}")

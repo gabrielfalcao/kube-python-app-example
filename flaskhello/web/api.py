@@ -4,13 +4,31 @@ import logging
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
+from flask import url_for
 from .base import application
 
+from flaskhello import config
 from flaskhello.models import User
 from flaskhello.worker.client import EchoClient
 
 
 logger = logging.getLogger(__name__)
+
+
+if config.HTTPS_API:
+
+    # monkey-patch Flask-RESTful to generate proper swagger url
+    @property
+    def specs_url(self):
+        """Monkey patch for HTTPS"""
+        return url_for(self.endpoint('specs'), _external=True, _scheme='https')
+
+    logger.warning(
+        'monkey-patching swagger to support https '
+        '(because HTTPS_API env var is set)'
+    )
+    Api.specs_url = specs_url
+
 
 api = Api(application, doc="/api/")
 
@@ -31,7 +49,6 @@ ns = api.namespace("users", description="User operations", path="/api/")
 
 @ns.route("/user")
 class UserListEndpoint(Resource):
-
     def get(self):
         users = User.all()
         return [u.to_dict() for u in users]
