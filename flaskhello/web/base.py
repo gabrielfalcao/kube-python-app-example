@@ -31,9 +31,7 @@ def config():
 def before_request():
     # fix ngrok issue
     if request.url.startswith('http://') and 'ngrok.io' in request.url:
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
+        return redirect(config.APP_URL_EXTERNAL, code=301)
 
 
 @application.route("/dashboard", methods=["GET"])
