@@ -46,7 +46,7 @@ spec:
             value: "true"
 
           - name: NGROK_BINDTLS
-            value: "both"
+            value: "true"
 
           # due to a problem with the ngrok image the hostname:port
           # needs be provided here

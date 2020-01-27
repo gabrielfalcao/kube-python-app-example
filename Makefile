@@ -100,6 +100,7 @@ deploy: deploy-with-helm
 deploy-with-helm:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	helm dependency update --skip-refresh operations/helm/
+	-(2>/dev/null newstore k8s space current) || newstore k8s space create --namespace-id=auth0
 	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
@@ -112,7 +113,6 @@ forward-queue-port:
 rollback:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	newstore k8s space delete current --confirm
-	newstore k8s space create
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
