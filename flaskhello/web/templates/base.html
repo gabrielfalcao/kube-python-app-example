@@ -97,9 +97,11 @@
       <script>
        $(function(){
          if(window.location.protocol != 'https:') {
-           location.href = location.href.replace("http://", "https://");
+           if (window.location.hostname.match(/ngrok.io/) {
+             location.href = location.href.replace("http://", "https://");
+           }
          }
-       })
+       });
       </script>
   </body>
 </html>
