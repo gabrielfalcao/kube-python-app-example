@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 import logging
-from flask import render_template, session, url_for, redirect
+from flask import render_template, session, url_for, redirect, request
 
 from . import db
 from . import backend
@@ -25,6 +25,15 @@ def index():
 @application.route("/config", methods=["GET"])
 def config():
     return render_template("config.html")
+
+
+@application.before_request
+def before_request():
+    # fix ngrok issue
+    if request.url.startswith('http://') and 'ngrok.io' in request.url:
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 
 
 @application.route("/dashboard", methods=["GET"])
