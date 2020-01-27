@@ -15,8 +15,8 @@ fullnameOverride: ""
 
 
 oauth2:
-    domain = "dev-newstore.auth0.com"
-    callback_url = "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+    domain: "dev-newstore.auth0.com"
+    callback_url: "https://newstoresauth0ldap.ngrok.io/callback/auth0"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
     client_id: "N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1"
@@ -38,6 +38,11 @@ kibana:
 
 ngrok:
   enabled: true
+  image:
+    repository: gabrielfalcao/k8s-flask-hello
+    tag: latest
+    pullPolicy: IfNotPresent
+
   token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
   subdomain: newstoresauth0ldap  # from "https:///newstoresauth0ldap.ngrok.io/"
 
