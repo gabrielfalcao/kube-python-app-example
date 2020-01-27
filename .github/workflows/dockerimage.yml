@@ -9,14 +9,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/cache@v1
-      with:
-        path: /var/lib/docker
-        key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile*') }}
-        restore-keys: |
-          ${{ runner.os }}-docker-
+    # - uses: actions/cache@v1
+    #   with:
+    #     path: /var/lib/docker
+    #     key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile*') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-docker-
 
-    - name: Build and push base Docker image
+    - name: Build and push base Docker image using cache
       uses: whoan/docker-build-with-cache-action@v3
       with:
         username: "${{ secrets.DOCKER_USERNAME }}"
@@ -25,7 +25,7 @@ jobs:
         image_tag: "${{ github.sha }}"
         dockefile: Dockerfile.base
 
-    - name: Build and push Docker image for Kubernetes
+    - name: Build and push Docker image for Kubernetes using cache
       uses: whoan/docker-build-with-cache-action@v3
       with:
         username: "${{ secrets.DOCKER_USERNAME }}"
