@@ -23,6 +23,7 @@ spec:
       - image: "wernight/ngrok"
         imagePullPolicy: {{ .Values.ngrok.image.pullPolicy }}
         name: {{ .Chart.Name }}
+        command: ['ngrok', 'http', '--authtoken', '${NGROK_AUTH}', '--subdomain', '${NGROK_SUBDOMAIN}', '${NGROK_REMOTE_ADDR}:${NGROK_PORT}']
         env:
           - name: NGROK_REMOTE_ADDR
             value: {{ include "flask-hello.web.hostname" . | quote }}
@@ -37,5 +38,5 @@ spec:
             value: {{ .Values.ngrok.subdomain | quote}}
 
           - name: NGROK_PORT
-            value: {{ .Values.service.port }}
+            value: {{ .Values.service.port | quote}}
 {{- end }}
