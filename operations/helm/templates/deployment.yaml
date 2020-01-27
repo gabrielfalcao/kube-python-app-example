@@ -62,6 +62,14 @@ spec:
         #     path: /health
         #     port: api
         #   initialDelaySeconds: 10
+
+        env:
+          - name: OAUTH2_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "flask-hello.fullname" . }}-secrets
+                key: oauth2-client-secret
+
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env

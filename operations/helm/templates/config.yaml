@@ -27,3 +27,13 @@ data:
   ZMQ_DEALER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_PUBLISHER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_SUBSCRIBER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
+
+  # see config.py for more information on these OAUTH2_* environment variables
+
+  OAUTH2_DOMAIN: {{ .Values.oauth2.domain |quote }}
+  OAUTH2_CALLBACK_URL: {{ .Values.oauth2.callback_url |quote }}
+  OAUTH2_CLIENT_ID: {{ .Values.oauth2.client_id |quote }}
+  OAUTH2_BASE_URL: {{ .Values.oauth2.base_url |quote }}
+  OAUTH2_ACCESS_TOKEN_URL: {{ .Values.oauth2.access_token_url |quote }}
+  OAUTH2_AUTHORIZE_URL: {{ .Values.oauth2.authorize_url |quote }}
+  OAUTH2_CLIENT_SCOPE: {{ .Values.oauth2.client_scope |quote }}

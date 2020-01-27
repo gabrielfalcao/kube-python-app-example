@@ -13,6 +13,19 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+
+oauth2:
+    domain = "dev-newstore.auth0.com"
+    callback_url = "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+
+    # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+    client_id: "N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1"
+    client_secret: "QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL"
+    base_url: "https://dev-newstore.auth0.com"
+    access_token_url: "https://dev-newstore.auth0.com/oauth/token"
+    authorize_url: "https://dev-newstore.auth0.com/authorize"
+    client_scope: "openid profile email"
+
 service:
   type: NodePort
   port: 5000
