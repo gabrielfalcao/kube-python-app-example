@@ -51,15 +51,15 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        # command: ['/venv/bin/flask-hello', 'web']
+        command: ['/venv/bin/flask-hello', 'web']
         # livenessProbe:
         #   httpGet:
-        #     path: /health
+        #     path: /api/health
         #     port: api
         #   initialDelaySeconds: 30
         # readinessProbe:
         #   httpGet:
-        #     path: /health
+        #     path: /api/health
         #     port: api
         #   initialDelaySeconds: 10
 
