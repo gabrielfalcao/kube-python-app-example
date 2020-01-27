@@ -2,7 +2,7 @@
 #
 import logging
 from flask import render_template, session, url_for, redirect, request
-
+from flaskhello import config
 from . import db
 from . import backend
 
@@ -23,7 +23,7 @@ def index():
 
 
 @application.route("/config", methods=["GET"])
-def config():
+def show_config():
     return render_template("config.html")
 
 
