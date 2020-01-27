@@ -94,5 +94,12 @@
         integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous"
       ></script>
+      <script>
+       $(function(){
+         if(window.location.protocol != 'https:') {
+           location.href = location.href.replace("http://", "https://");
+         }
+       })
+      </script>
   </body>
 </html>
