@@ -52,16 +52,16 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
         command: ['/venv/bin/flask-hello', 'web']
-        # livenessProbe:
-        #   httpGet:
-        #     path: /api/health
-        #     port: api
-        #   initialDelaySeconds: 30
-        # readinessProbe:
-        #   httpGet:
-        #     path: /api/health
-        #     port: api
-        #   initialDelaySeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: api
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: api
+          initialDelaySeconds: 10
 
         env:
           - name: OAUTH2_CLIENT_SECRET
