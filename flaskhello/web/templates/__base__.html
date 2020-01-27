@@ -43,10 +43,16 @@
           {% block navbar %}
           {% block navbar_subnavs %}{% endblock %}
           <ul class="nav navbar-nav navbar-right">
+            {% if is_authenticated %}
+            <li>
+              <a href="/api/">Browse API</a>
+            </li>
+            {% endif %}
+
             <li>
               <a href="/config">View OAuth2 Config</a>
             </li>
-              <li>
+            <li>
               {% if not is_authenticated %}
               <a href="/login">
                 Login
