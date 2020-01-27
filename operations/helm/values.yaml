@@ -26,6 +26,7 @@ oauth2:
     authorize_url: "https://dev-newstore.auth0.com/authorize"
     client_scope: "openid profile email read:user write:user browse:api"
     audience: "http://newstore/roles"
+
 service:
   type: NodePort
   port: 5000

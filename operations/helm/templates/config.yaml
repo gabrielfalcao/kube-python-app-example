@@ -40,4 +40,4 @@ data:
   OAUTH2_CLIENT_SCOPE: {{ .Values.oauth2.client_scope |quote }}
 
   APP_URL_EXTERNAL: "https://{{ .Values.ngrok.subdomain }}.ngrok.io/"
-  OAUTH2_CLIENT_AUDIENCE: "{{ .Values.oauth2.audience |quote }}"
+  OAUTH2_CLIENT_AUDIENCE: {{ .Values.oauth2.audience | quote }}
