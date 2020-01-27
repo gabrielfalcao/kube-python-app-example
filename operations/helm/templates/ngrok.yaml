@@ -23,14 +23,33 @@ spec:
       - image: "{{ .Values.ngrok.image.repository }}:{{ .Values.ngrok.image.tag }}"
         imagePullPolicy: {{ .Values.ngrok.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command:
-          - http
-          - '--authtoken'
-          - '{{ .Values.ngrok.token | quote }}'
-          - '--subdomain'
-          - '{{ .Values.ngrok.subdomain | quote }}'
-          - '--bindtls=true'
-          - '--log=stderr'
-          - '{{ include "flask-hello.web.fqdn" . | quote }}'
+        # command:
+        #   - http
+        #   - '--authtoken'
+        #   - '{{ .Values.ngrok.token | quote }}'
+        #   - '--subdomain'
+        #   - '{{ .Values.ngrok.subdomain | quote }}'
+        #   - '--bindtls=true'
+        #   - '--log=stderr'
+        #   - '{{ include "flask-hello.web.fqdn" . | quote }}'
+        env:
+          - name: NGROK_AUTH
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "flask-hello.fullname" . }}-secrets
+                key: ngrok-token
 
+          - name: NGROK_SUBDOMAIN
+            value: {{ .Values.ngrok.subdomain | quote }}
+
+          - name: NGROK_DEBUG
+            value: "true"
+
+          - name: NGROK_BINDTLS
+            value: "true"
+
+          # due to a problem with the ngrok image the hostname:port
+          # needs be provided here
+          - name: NGROK_PORT
+            value: {{ include "flask-hello.web.fqdn" . | quote }}
 {{- end }}
