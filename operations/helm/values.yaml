@@ -38,6 +38,7 @@ kibana:
 
 ngrok:
   enabled: true
+  bindtls: both
   image:
     repository: wernight/ngrok
     tag: latest
