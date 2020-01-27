@@ -16,7 +16,7 @@ data:
 
   FLASK_HOST: "0.0.0.0"
   FLASK_PORT: {{ .Values.service.port | quote }}
-  FLASK_DEBUG: "true"
+  # FLASK_DEBUG: "true"  # disable for production usage
 
   ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
   ZMQ_DEALER_PORT: {{ .Values.zmq.dealer_port | quote }}

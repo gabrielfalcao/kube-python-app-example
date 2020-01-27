@@ -6,7 +6,7 @@ APP_URL_EXTERNAL = "https://newstoresauth0ldap.ngrok.io/"
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 if REDIS_HOST:
-    SESSION_TYPE = "redis"
+    SESSION_TYPE = "filesystem"
     SESSION_REDIS = redis.Redis(
         host=REDIS_HOST or "localhost", port=int(os.getenv("REDIS_PORT") or 6379), db=0
     )
