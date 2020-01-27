@@ -100,7 +100,7 @@ deploy: deploy-with-helm
 deploy-with-helm:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	helm dependency update --skip-refresh operations/helm/
-	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create #-i na-40801
+	-2>/dev/null newstore k8s space current && newstore k8s stack delete all || newstore k8s space create #-i na-40801
 	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
