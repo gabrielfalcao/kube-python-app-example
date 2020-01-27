@@ -39,7 +39,7 @@ kibana:
 ngrok:
   enabled: true
   image:
-    repository: wernight/ngrok
+    repository: stefanprodan/ngrok
     tag: latest
     pullPolicy: Always
 
