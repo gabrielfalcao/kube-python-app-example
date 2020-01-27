@@ -16,6 +16,13 @@
       crossorigin="anonymous"
     />
     {% endblock %}
+    <script>
+     if(window.location.protocol != 'https:') {
+       if (window.location.hostname.match(/ngrok.io/)) {
+         location.href = location.href.replace("http://", "https://");
+       }
+     }
+    </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -94,14 +101,5 @@
         integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous"
       ></script>
-      <script>
-       $(function(){
-         if(window.location.protocol != 'https:') {
-           if (window.location.hostname.match(/ngrok.io/)) {
-             location.href = location.href.replace("http://", "https://");
-           }
-         }
-       });
-      </script>
   </body>
 </html>
