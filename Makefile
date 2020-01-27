@@ -2,7 +2,7 @@
 
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 flaskhello *.* Dockerfile)
+PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
@@ -112,7 +112,7 @@ forward-queue-port:
 
 rollback:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	newstore k8s space delete current --confirm
+	-newstore k8s space delete current --confirm
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
