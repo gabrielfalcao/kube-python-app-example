@@ -53,7 +53,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s.svc.cluster.local" .Release.Namespace -}}
 {{- end -}}
 {{- define "flask-hello.web.hostname" -}}
-{{ include "flask-hello.fullname" . }}-web.{{ include "namespace.svc.hostname" . }}
+{{ include "flask-hello.fullname" . }}.{{ include "namespace.svc.hostname" . }}
 {{- end -}}
 {{- define "flask-hello.web.fqdn" -}}
 {{ include "flask-hello.web.hostname" . }}:{{ .Values.service.port }}
