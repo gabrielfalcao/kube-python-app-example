@@ -33,8 +33,14 @@ def get_user_and_token_from_userinfo(
         raise ValidationError(f"userinfo must be a dict, got: {userinfo!r}")
 
     email = userinfo.pop('email', None)
+    nickname = userinfo.get('nickname', None)
+
+    if nickname and not email:
+        # hack for azure that does not support email unless we have an outlook licence
+        email = f'{nickname}@newstore.com'
+
     if not isinstance(email, str):
-        raise ValidationError(f"userinfo['email'] must be a string, got: {email!r}")
+        raise ValidationError(f"'email' missing from userinfo: {userinfo!r}")
 
     if not email:
         raise ValidationError(f"email cannot be empty")

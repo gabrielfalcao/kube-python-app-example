@@ -18,8 +18,9 @@ export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
 export # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
 export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
 export OAUTH2_CALLBACK_URL	:= https://newstoresauth0ldap.ngrok.io/callback/auth0
-export OAUTH2_CLIENT_ID		:= N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1
-export OAUTH2_CLIENT_SECRET	:= QaAD-WTxpqa3xUChuqyYiEL1d0bnDuusJvtij_cxgiZ9gBtww5QMkKoeabHpuwsL
+export OAUTH2_CLIENT_ID		:= oC4SLfakKghqIM0zAhQ3gKMb7qqQSBq6
+export OAUTH2_CLIENT_SECRET	:= iPX4umH7gDPUAmjzoJQ26TKeF7MWKYkqGIs842qcwMmrSPsFifdokX2DK1eb-TPV
+
 export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
 export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
 export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
