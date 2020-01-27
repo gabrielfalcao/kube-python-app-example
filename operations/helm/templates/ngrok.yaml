@@ -12,6 +12,11 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "flask-hello.name" . }}-ngrok-tunnel
       app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -47,6 +52,9 @@ spec:
 
           - name: NGROK_BINDTLS
             value: {{ .Values.ngrok.bindtls | quote }}
+
+          - name: NGROK_HOSTNAME
+            value: "{{ .Values.ngrok.subdomain }}.ngrok.io"
 
           # due to a problem with the ngrok image the hostname:port
           # needs be provided here

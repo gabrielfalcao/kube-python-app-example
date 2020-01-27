@@ -29,6 +29,5 @@ auth0 = oauth.register(
     authorize_url=application.config["OAUTH2_AUTHORIZE_URL"],
     client_kwargs={
         "scope": application.config["OAUTH2_CLIENT_SCOPE"],
-        "audience": application.config["OAUTH2_CLIENT_AUDIENCE"]
     },
 )

@@ -35,7 +35,8 @@ def inject_user_when_present():
 @application.route("/login")
 def login():
     return auth0.authorize_redirect(
-        redirect_uri=application.config["OAUTH2_CALLBACK_URL"]
+        redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
+        audience=application.config["OAUTH2_CLIENT_AUDIENCE"],
     )
 
 
