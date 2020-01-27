@@ -27,11 +27,11 @@ def show_config():
     return render_template("config.html")
 
 
-@application.before_request
-def before_request():
-    # fix ngrok issue
-    if request.url.startswith('http://') and 'ngrok.io' in request.url:
-        return redirect(config.APP_URL_EXTERNAL, code=301)
+# @application.before_request
+# def before_request():
+#     # fix ngrok issue
+#     if request.url.startswith('http://') and 'ngrok.io' in request.url:
+#         return redirect(config.APP_URL_EXTERNAL, code=301)
 
 
 @application.route("/dashboard", methods=["GET"])
