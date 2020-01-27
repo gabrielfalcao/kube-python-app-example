@@ -41,3 +41,4 @@ data:
 
 
   APP_URL_EXTERNAL: "https://newstoresauth0ldap.ngrok.io/"
+  OAUTH2_CLIENT_AUDIENCE: "https://newstoresauth0ldap.ngrok.io"

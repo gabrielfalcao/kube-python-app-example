@@ -36,6 +36,7 @@ OAUTH2_AUTHORIZE_URL = (
     os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/authorize"
 )
 OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email read:user write:user browse:api"
+OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstoresauth0ldap.ngrok.io"
 
 
 class dbconfig:
