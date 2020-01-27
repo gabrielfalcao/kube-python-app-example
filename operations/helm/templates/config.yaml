@@ -23,7 +23,7 @@ data:
   ZMQ_PUBLISHER_PORT: {{ .Values.zmq.publisher_port | quote }}
   ZMQ_SUBSCRIBER_PORT: {{ .Values.zmq.subscriber_port | quote }}
 
-  HTTPS_API: true
+  HTTPS_API: "true"
   ZMQ_ROUTER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_DEALER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_PUBLISHER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
