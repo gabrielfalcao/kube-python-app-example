@@ -26,11 +26,11 @@ spec:
         command:
           - http
           - '--authtoken'
-          - {{ .Values.ngrok.token | quote }}
+          - '{{ .Values.ngrok.token | quote }}'
           - '--subdomain'
-          - {{ .Values.ngrok.subdomain | quote }}
+          - '{{ .Values.ngrok.subdomain | quote }}'
           - '--bindtls=true'
           - '--log=stderr'
-          - {{ include "flask-hello.web.fqdn" . | quote }}
+          - '{{ include "flask-hello.web.fqdn" . | quote }}'
 
 {{- end }}
