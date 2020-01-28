@@ -102,7 +102,7 @@ postgresql:
 
 
 redis:
-  enabled: true
+  enabled: false
   image:
     pullPolicy: IfNotPresent
   cluster:
