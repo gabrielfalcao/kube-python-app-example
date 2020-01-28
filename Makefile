@@ -1,30 +1,30 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check docker-pull
 
+export FLASK_DEBUG	:= 1
+export VENV		?= .venv
+export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
+
+# https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
+export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
+export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
+export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
+export OAUTH2_CLIENT_ID		:= 4syTWOOh1u2HmPfyMMGSzMwhSSKeEi0Z
+export OAUTH2_CLIENT_SCOPE	:= openid profile email roles read:user write:user browse:api
+export OAUTH2_CLIENT_SECRET	:= yYHWQJ8yGSvQcSypjTbRQwpICDGBM1DuxkQtVS6DjVrg8ZIwDkBo-5yNvKS_Rjci
+export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
+
+
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
 PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
-HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
+HELM_SET_VARS		:= --set image.tag=$(PROD_TAG) --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --set oauth2.client_id=$(OAUTH2_CLIENT_ID) --set oauth2.client_secret=$(OAUTH2_CLIENT_SECRET)
 NAMESPACE		:= $$(newstore k8s space current)
-X			?= 10
 FIGLET			:= (2>/dev/null which figlet && figlet) || echo
-export FLASK_DEBUG	:= 1
-export VENV		?= .venv
-export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
 
-
-export # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
-export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
-export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
-export OAUTH2_CLIENT_ID		:= oC4SLfakKghqIM0zAhQ3gKMb7qqQSBq6
-export OAUTH2_CLIENT_SECRET	:= iPX4umH7gDPUAmjzoJQ26TKeF7MWKYkqGIs842qcwMmrSPsFifdokX2DK1eb-TPV
-
-export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
-export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
-export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
-export OAUTH2_CLIENT_SCOPE	:= openid profile email read:user write:user browse:api
 
 all: dependencies tests
 
