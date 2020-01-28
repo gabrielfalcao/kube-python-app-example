@@ -35,8 +35,8 @@ OAUTH2_ACCESS_TOKEN_URL = (
 OAUTH2_AUTHORIZE_URL = (
     os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/authorize"
 )
-OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email read:user write:user browse:api"
-OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") # or "https://newstore-auth0-test.ngrok.io/"
+OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email"
+OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-auth0-test.ngrok.io/"
 
 
 class dbconfig:

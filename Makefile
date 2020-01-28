@@ -10,9 +10,10 @@ export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
 export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
 export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
 export OAUTH2_CLIENT_ID		:= 4syTWOOh1u2HmPfyMMGSzMwhSSKeEi0Z
-export OAUTH2_CLIENT_SCOPE	:= openid profile email roles read:user write:user browse:api
+export OAUTH2_CLIENT_SCOPE	:= openid profile email roles read:user write:user browse:api https://newstore-auth0-test.ngrok.io/roles
 export OAUTH2_CLIENT_SECRET	:= yYHWQJ8yGSvQcSypjTbRQwpICDGBM1DuxkQtVS6DjVrg8ZIwDkBo-5yNvKS_Rjci
 export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
+export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-auth0-test.ngrok.io/
 
 
 DEPLOY_TIMEOUT		:= 300
