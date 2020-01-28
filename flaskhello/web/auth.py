@@ -47,19 +47,14 @@ def auth0_callback():
     try:
         token = auth0.authorize_access_token()
     except Exception as e:
-        args = dict(request.args)
-        return render_template(
-            "error.html", exception=e, args=json.dumps(args, indent=4)
-        )
-
-    response = auth0.get("userinfo")
-    if response.status_code != 200:
-        args = dict(request.args)
         return render_template(
             "error.html",
             exception='failed to retrieve user info',
-            args=response.json()
+            message=str(e),
+            args=dict(request.args)
         )
+
+    response = auth0.get("userinfo")
 
     session['oauth2_token'] = token
     session['oauth2_userinfo'] = userinfo = response.json()
