@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block middle %}
-<div class="jumbotron alert-info">
-  <h1>LDAP Integration Test App</h1>
+<div class="jumbotron alert-success">
+  <h1>NewStore Auth Test App</h1>
   <br />
 </div>
 <div class="panel panel-info">
@@ -10,9 +10,9 @@
       {% if authenticated %}
       <a class="btn btn-success" href="/api/" role="button">Browse the RESTful API</a>
       {% else %}
-      <a class="btn btn-primary btn-login" href="/login">Log in with OAuth2 Identity Provider</a>
+      <a class="btn btn-success btn-login" href="/login">Log in with OAuth2 Identity Provider</a>
       {% endif %}
-      <a class="btn btn-info" href="/config">View OAuth2 config</a>
+      <a class="btn btn-primary" href="/config">Check OAuth2 config</a>
     </p>
   </div>
 </div>

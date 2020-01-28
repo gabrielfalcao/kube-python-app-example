@@ -1,0 +1,12 @@
+<div class="tab-pane active" id="user">
+  <br />
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">User</h3>
+    </div>
+    <div class="panel-body">
+      <pre>{{ user.to_dict() | tojson(indent=4) }}</pre>
+    </div>
+  </div>
+</div>
