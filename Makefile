@@ -17,7 +17,7 @@ export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
 
 export # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
 export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
-export OAUTH2_CALLBACK_URL	:= https://newstoresauth0ldap.ngrok.io/callback/auth0
+export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
 export OAUTH2_CLIENT_ID		:= oC4SLfakKghqIM0zAhQ3gKMb7qqQSBq6
 export OAUTH2_CLIENT_SECRET	:= iPX4umH7gDPUAmjzoJQ26TKeF7MWKYkqGIs842qcwMmrSPsFifdokX2DK1eb-TPV
 
@@ -138,4 +138,4 @@ helm-setup:
 	2>/dev/null newstore k8s space current || newstore k8s space create
 
 tunnel:
-	ngrok http --subdomain=newstoresauth0ldap 5000
+	ngrok http --subdomain=newstore-auth0-test 5000

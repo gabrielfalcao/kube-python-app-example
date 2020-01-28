@@ -2,7 +2,7 @@ import os
 import redis
 
 
-APP_URL_EXTERNAL = os.getenv("APP_URL_EXTERNAL") or "https://newstoresauth0ldap.ngrok.io/"
+APP_URL_EXTERNAL = os.getenv("APP_URL_EXTERNAL") or "https://newstore-auth0-test.ngrok.io/"
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 if REDIS_HOST:
@@ -22,7 +22,7 @@ SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "dev-newstore.auth0.com"
 OAUTH2_CALLBACK_URL = (
     os.getenv("OAUTH2_CALLBACK_URL")
-    or "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+    or "https://newstore-auth0-test.ngrok.io/callback/auth0"
 )
 
 # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings

@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 oauth2:
     domain: "dev-newstore.auth0.com"
-    callback_url: "https://newstoresauth0ldap.ngrok.io/callback/auth0"
+    callback_url: "https://newstore-auth0-test.ngrok.io/callback/auth0"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
     client_id: "oC4SLfakKghqIM0zAhQ3gKMb7qqQSBq6"
@@ -46,7 +46,7 @@ ngrok:
     pullPolicy: Always
 
   token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
-  subdomain: newstoresauth0ldap  # from "https:///newstoresauth0ldap.ngrok.io/"
+  subdomain: newstore-auth0-test  # from "https:///newstore-auth0-test.ngrok.io/"
 
 zmq:
   type: NodePort
