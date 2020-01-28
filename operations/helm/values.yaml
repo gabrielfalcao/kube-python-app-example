@@ -49,6 +49,7 @@ ngrok:
   subdomain: newstore-auth0-test  # from "https:///newstore-auth0-test.ngrok.io/"
 
 zmq:
+  enabled: false
   type: NodePort
   router_port: 4242
   dealer_port: 6969
