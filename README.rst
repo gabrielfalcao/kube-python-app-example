@@ -49,7 +49,15 @@ Running locally
 Deploying
 ---------
 
-    NOTE: You need to have Toolbelt installed and configured locally
+
+
+NOTES:
+
+- You need to have Toolbelt installed and configured locally
+
+- If you have any local commits please push to github to build the
+  latest docker image of this repo and make it available to kubernetes
+  for deployment.
 
 
 .. code:: bash
@@ -61,3 +69,10 @@ Deploying
 Warning: due to tunneling on K8S you can only have 1 Chart deployed in
 1 namespace. This can be fixed by adding an ingress with route53
 subdomain.
+
+To destroy all your data and redeploy simply run:
+
+
+.. code:: bash
+
+   make redeploy
