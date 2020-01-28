@@ -19,8 +19,8 @@ oauth2:
     callback_url: "https://newstore-auth0-test.ngrok.io/callback/auth0"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
-    client_id: "4syTWOOh1u2HmPfyMMGSzMwhSSKeEi0Z"
-    client_secret: "yYHWQJ8yGSvQcSypjTbRQwpICDGBM1DuxkQtVS6DjVrg8ZIwDkBo-5yNvKS_Rjci"
+    client_id: "---injected by Makefile---"
+    client_secret: "---injected by Makefile---"
     base_url: "https://dev-newstore.auth0.com"
     access_token_url: "https://dev-newstore.auth0.com/oauth/token"
     authorize_url: "https://dev-newstore.auth0.com/authorize"
