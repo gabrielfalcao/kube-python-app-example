@@ -73,6 +73,14 @@ class UserEndpoint(Resource):
 
         return user.to_dict()
 
+    def delete(self, user_id):
+        user = User.find_one_by(id=user_id)
+        if not user:
+            return {"error": "user not found"}, 404
+
+        user.delete()
+        return {'deleted': user.to_dict()}
+
     @ns.expect(user_json)
     def put(self, user_id):
         user = User.find_by(id=user_id)
