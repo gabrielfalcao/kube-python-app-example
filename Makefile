@@ -111,7 +111,7 @@ db: $(VENV)/bin/flask-hello
 deploy:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	helm dependency update --skip-refresh operations/helm/
-	-2>/dev/null newstore k8s space current && newstore k8s stack delete all
+	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create
 	make helm-install
 
 helm-install:
@@ -121,7 +121,6 @@ helm-install:
 rollback:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	-newstore k8s space delete all --confirm
-	-newstore k8s space create
 
 redeploy: rollback deploy
 

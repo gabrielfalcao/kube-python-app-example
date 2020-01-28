@@ -52,8 +52,16 @@ def auth0_callback():
             "error.html", exception=e, args=json.dumps(args, indent=4)
         )
 
-    resp = auth0.get("userinfo")
-    userinfo = resp.json()
+    response = auth0.get("userinfo")
+    if response.status_code != 200:
+        args = dict(request.args)
+        return render_template(
+            "error.html",
+            exception='failed to retrieve user info',
+            args=response.json()
+        )
+
+    userinfo = response.json()
     session["user"] = userinfo
     session["oauth2_id"] = userinfo.get('sub')
 
