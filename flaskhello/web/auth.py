@@ -49,7 +49,7 @@ def auth0_callback():
     except Exception as e:
         return render_template(
             "error.html",
-            exception='failed to retrieve user info',
+            exception='Failed to retrieve OAuth2 userinfo',
             message=str(e),
             args=dict(request.args)
         )
