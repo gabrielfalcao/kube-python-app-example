@@ -61,7 +61,8 @@ def auth0_callback():
             args=response.json()
         )
 
-    userinfo = response.json()
+    session['oauth2_token'] = token
+    session['oauth2_userinfo'] = userinfo = response.json()
     session["user"] = userinfo
     session["oauth2_id"] = userinfo.get('sub')
 
