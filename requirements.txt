@@ -17,3 +17,4 @@ pyzmq==18.0.1
 redis==3.3.11
 requests==2.22.0
 uwsgi==2.0.18
+werkzeug==0.16.1
