@@ -35,9 +35,8 @@ api = Api(application, doc="/api/")
 user_json = api.model(
     "User",
     {
-        "id": fields.String(required=False, description="the user id"),
-        "email": fields.String(required=False, description="email address"),
-        "token": fields.String(required=False, description="token"),
+        "email": fields.String(required=True, description="email address"),
+        "password": fields.String(required=True, description="password"),
     },
 )
 rpc_request = api.model(
