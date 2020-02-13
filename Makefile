@@ -21,8 +21,8 @@ $(VENV):  # creates $(VENV) folder if does not exist
 
 $(VENV)/bin/flask-hello $(VENV)/bin/nosetests $(VENV)/bin/python $(VENV)/bin/pip: # installs latest pip
 	test -e $(VENV)/bin/pip || make $(VENV)
-	$(VENV)/bin/pip install -r development.txt
-	$(VENV)/bin/pip install -e .
+	$(VENV)/bin/pip install --no-cache-dir -r development.txt
+	$(VENV)/bin/pip install --no-cache-dir -e .
 
 # Runs the unit and functional tests
 tests: $(VENV)/bin/nosetests  # runs all tests
@@ -86,8 +86,8 @@ vanilla:
 
 deploy: deploy-with-helm
 deploy-with-helm:
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	helm dependency update --skip-refresh operations/helm/
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 port-forward:
