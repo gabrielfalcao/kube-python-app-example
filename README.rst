@@ -1,48 +1,78 @@
 ------
 
-Python Application in Kubernetes Stack
-======================================
+Python Application deployed Kubernetes Stack
+============================================
 
-What is
--------
+1. Simple Flask app
+2. Automated deployment with Toolbelt + K8S + Helm
+3. Runs tunneled with ngrok both locally and on K8S making testing easy and seamless
 
-- Flask Web API
-- ZeroMQ Client (REQ)
-- ZeroMQ Worker (REP)
-- ZeroMQ Queue (ROUTER + DEALER)
-- ZeroMQ Forwarder (PUB/SUB)
-- PostgreSQL
-- Redis
 
-Deployment
-----------
 
-Helm chart deploys all dependencies to a Kubernetes namespace.
 
-found in folder: `<operations/helm>`_
+Running locally
+---------------
 
-Developing
-----------
+    NOTE: You need to have postgres running locally
 
-1. Install all dependencies and run tests
 
-.. code:: bash
 
-   make tests
+1. (Re)create database and user
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Create postgresql database and user
 
 .. code:: bash
 
    make db
 
 
-3. Run web app
+
+2. Run web server on port 5000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 .. code:: bash
 
    make run
 
 
+3. Run tunnel on another port
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+
+.. code:: bash
+
+   make tunnel
+
+
+
+Deploying
+---------
+
+
+
+NOTES:
+
+- You need to have Toolbelt installed and configured locally
+
+- If you have any local commits please push to github to build the
+  latest docker image of this repo and make it available to kubernetes
+  for deployment.
+
+
+.. code:: bash
+
+   make deploy
+
+
+
+Warning: due to tunneling on K8S you can only have 1 Chart deployed in
+1 namespace. This can be fixed by adding an ingress with route53
+subdomain.
+
+To destroy all your data and redeploy simply run:
+
+
+.. code:: bash
+
+   make redeploy

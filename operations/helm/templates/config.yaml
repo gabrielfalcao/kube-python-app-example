@@ -16,14 +16,28 @@ data:
 
   FLASK_HOST: "0.0.0.0"
   FLASK_PORT: {{ .Values.service.port | quote }}
-  FLASK_DEBUG: "true"
+  # FLASK_DEBUG: "true"  # disable for production usage
 
   ZMQ_ROUTER_PORT: {{ .Values.zmq.router_port | quote }}
   ZMQ_DEALER_PORT: {{ .Values.zmq.dealer_port | quote }}
   ZMQ_PUBLISHER_PORT: {{ .Values.zmq.publisher_port | quote }}
   ZMQ_SUBSCRIBER_PORT: {{ .Values.zmq.subscriber_port | quote }}
 
+  HTTPS_API: "true"
   ZMQ_ROUTER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_DEALER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_PUBLISHER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
   ZMQ_SUBSCRIBER_HOST: {{ include "flask-hello.zmq-queue.hostname" . | quote }}
+
+  # see config.py for more information on these OAUTH2_* environment variables
+
+  OAUTH2_DOMAIN: {{ .Values.oauth2.domain |quote }}
+  OAUTH2_CALLBACK_URL: {{ .Values.oauth2.callback_url |quote }}
+  OAUTH2_CLIENT_ID: {{ .Values.oauth2.client_id |quote }}
+  OAUTH2_BASE_URL: {{ .Values.oauth2.base_url |quote }}
+  OAUTH2_ACCESS_TOKEN_URL: {{ .Values.oauth2.access_token_url |quote }}
+  OAUTH2_AUTHORIZE_URL: {{ .Values.oauth2.authorize_url |quote }}
+  OAUTH2_CLIENT_SCOPE: {{ .Values.oauth2.client_scope |quote }}
+
+  APP_URL_EXTERNAL: "https://{{ .Values.ngrok.subdomain }}.ngrok.io/"
+  OAUTH2_CLIENT_AUDIENCE: {{ .Values.oauth2.audience | quote }}

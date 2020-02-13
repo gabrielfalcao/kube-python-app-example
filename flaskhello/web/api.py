@@ -1,16 +1,13 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-import json
 import logging
-from flask import render_template
 from flask_restplus import Api
 from flask_restplus import Resource
 from flask_restplus import fields
-from flaskhello.core import application
-from flaskhello.core import session
-from flaskhello.auth import require_auth0
+from flask import url_for
+from .base import application
 
+from flaskhello import config
 from flaskhello.models import User
 from flaskhello.worker.client import EchoClient
 
@@ -18,19 +15,19 @@ from flaskhello.worker.client import EchoClient
 logger = logging.getLogger(__name__)
 
 
-@application.route("/", methods=["GET"])
-def frontend():
-    return render_template("index.html")
+if config.HTTPS_API:
 
+    # monkey-patch Flask-RESTful to generate proper swagger url
+    @property
+    def specs_url(self):
+        """Monkey patch for HTTPS"""
+        return url_for(self.endpoint('specs'), _external=True, _scheme='https')
 
-@application.route("/dashboard", methods=["GET"])
-@require_auth0
-def user_info():
-    return render_template(
-        "dashboard.html",
-        userinfo=session["profile"],
-        userinfo_pretty=json.dumps(session["jwt_payload"], indent=4),
+    logger.warning(
+        'monkey-patching swagger to support https '
+        '(because HTTPS_API env var is set)'
     )
+    Api.specs_url = specs_url
 
 
 api = Api(application, doc="/api/")
@@ -38,9 +35,9 @@ api = Api(application, doc="/api/")
 user_json = api.model(
     "User",
     {
-        "uuid": fields.String(required=False, description="the user uuid"),
+        "id": fields.String(required=False, description="the user id"),
         "email": fields.String(required=False, description="email address"),
-        "password": fields.String(required=False, description="password"),
+        "token": fields.String(required=False, description="token"),
     },
 )
 rpc_request = api.model(
@@ -52,13 +49,11 @@ ns = api.namespace("users", description="User operations", path="/api/")
 
 @ns.route("/user")
 class UserListEndpoint(Resource):
-    @require_auth0('read:user')
     def get(self):
         users = User.all()
         return [u.to_dict() for u in users]
 
     @ns.expect(user_json)
-    @require_auth0('write:user')
     def post(self):
         email = api.payload.get("email")
         password = api.payload.get("password")
@@ -71,7 +66,6 @@ class UserListEndpoint(Resource):
 
 @ns.route("/user/<user_id>")
 class UserEndpoint(Resource):
-    @require_auth0('read:user')
     def get(self, user_id):
         user = User.find_one_by(id=user_id)
         if not user:
@@ -79,8 +73,15 @@ class UserEndpoint(Resource):
 
         return user.to_dict()
 
+    def delete(self, user_id):
+        user = User.find_one_by(id=user_id)
+        if not user:
+            return {"error": "user not found"}, 404
+
+        user.delete()
+        return {'deleted': user.to_dict()}
+
     @ns.expect(user_json)
-    @require_auth0('write:user')
     def put(self, user_id):
         user = User.find_by(id=user_id)
         if not user:

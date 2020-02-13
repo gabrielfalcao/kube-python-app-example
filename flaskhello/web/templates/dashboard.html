@@ -1,0 +1,45 @@
+{% extends "dashboard/base.html" %}
+
+{% block profile_bar %}
+<div class="panel panel-success">
+  <div class="panel-heading text-center">
+    <strong>{{ user['name'] }}</strong>
+    <i class="fa fa-link fa-1x"></i></div>
+  <div class="panel-body">
+    <div class="text-center">
+      <img src="{{user['picture']}}" class="avatar img-circle img-thumbnail" alt="avatar">
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-warning">
+  <div class="panel-heading">Authorized Scopes</div>
+  <div class="panel-body">
+    {% for scope in token.get('scope', '').split() %}
+    <pre class="code">{{ scope }}</pre>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">API Access Token</div>
+  <div class="panel-body">
+    <pre class="code">{{ session['access_token'] }}</pre>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block tabs %}
+<li class="active"><a data-toggle="tab" href="#user">User</a></li>
+<li><a data-toggle="tab" href="#token">Token</a></li>
+<li><a data-toggle="tab" href="#session">Session</a></li>
+{% endblock %}
+
+
+{% block tabs_content %}
+{% include "tabs/user.html" %}
+{% include "tabs/token.html" %}
+{% include "tabs/session.html" %}
+{% endblock %}

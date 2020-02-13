@@ -1,3 +1,4 @@
+{{- if .Values.zmq.enabled }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,3 +27,4 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
+{{- end }}

@@ -13,6 +13,20 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+
+oauth2:
+    domain: "dev-newstore.auth0.com"
+    callback_url: "https://newstore-auth0-test.ngrok.io/callback/auth0"
+
+    # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+    client_id: "---injected by Makefile---"
+    client_secret: "---injected by Makefile---"
+    base_url: "https://dev-newstore.auth0.com"
+    access_token_url: "https://dev-newstore.auth0.com/oauth/token"
+    authorize_url: "https://dev-newstore.auth0.com/authorize"
+    client_scope: "openid profile email roles read:user write:user browse:api"
+    audience: "https://newstore-auth0-test.ngrok.io/"
+
 service:
   type: NodePort
   port: 5000
@@ -23,7 +37,19 @@ kibana:
     type: NodePort
     port: 5601
 
+ngrok:
+  enabled: true
+  bindtls: both
+  image:
+    repository: wernight/ngrok
+    tag: latest
+    pullPolicy: Always
+
+  token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
+  subdomain: newstore-auth0-test  # from "https:///newstore-auth0-test.ngrok.io/"
+
 zmq:
+  enabled: false
   type: NodePort
   router_port: 4242
   dealer_port: 6969
@@ -76,7 +102,7 @@ postgresql:
 
 
 redis:
-  enabled: true
+  enabled: false
   image:
     pullPolicy: IfNotPresent
   cluster:

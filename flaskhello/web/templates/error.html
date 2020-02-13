@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block container %}
+<div class="container">
+  <div class="jumbotron alert-danger">
+    <h1>Error</h1>
+    <h2>{{ exception }}</h2>
+      <p><strong>{{ message }}</strong></p>
+    <pre style="overflow:auto;color: #eee; background: #333;font-size: 16px;display: block;">{{ args | tojson(indent=4) }}</pre>
+  </div>
+</div>
+{% endblock %}

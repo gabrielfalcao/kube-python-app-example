@@ -1,17 +1,31 @@
 .PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check docker-pull
 
+export FLASK_DEBUG	:= 1
+export VENV		?= .venv
+export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
+
+# https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
+export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
+export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
+export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
+export OAUTH2_CLIENT_ID		:= 4syTWOOh1u2HmPfyMMGSzMwhSSKeEi0Z
+export OAUTH2_CLIENT_SCOPE	:= openid profile email roles read:user write:user browse:api https://newstore-auth0-test.ngrok.io/roles
+export OAUTH2_CLIENT_SECRET	:= yYHWQJ8yGSvQcSypjTbRQwpICDGBM1DuxkQtVS6DjVrg8ZIwDkBo-5yNvKS_Rjci
+export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
+export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-auth0-test.ngrok.io/
+
+
 DEPLOY_TIMEOUT		:= 300
 BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 flaskhello *.* Dockerfile)
+PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
-HELM_SET_VARS		:= --set image.tag=$(PROD_TAG)  --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE)
+HELM_SET_VARS		:= --set image.tag=$(PROD_TAG) --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --set oauth2.client_id=$(OAUTH2_CLIENT_ID) --set oauth2.client_secret=$(OAUTH2_CLIENT_SECRET)
 NAMESPACE		:= $$(newstore k8s space current)
-X			?= 10
 FIGLET			:= (2>/dev/null which figlet && figlet) || echo
-export FLASK_DEBUG	:= 1
-export VENV		?= .venv
+
 
 all: dependencies tests
 
@@ -80,36 +94,34 @@ docker-pull:
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE):$(PROD_TAG)
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
-
-vanilla:
-	helm template $(HELM_SET_VARS) operations/helm > operations/vanilla/flask-hello.yaml
-
-deploy: deploy-with-helm
-deploy-with-helm:
-	helm dependency update --skip-refresh operations/helm/
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
-
 port-forward:
 	newstore k8s run kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
 
 forward-queue-port:
 	newstore k8s run kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
 
-
-rollback:
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	-newstore k8s stack delete helm
-
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
 	-@2>/dev/null dropuser flask_hello || echo 'no db user'
 	-@2>/dev/null createuser flask_hello --createrole --createdb
 	-@2>/dev/null createdb flask_hello
-	-psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
-	-psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
-	$(VENV)/bin/flask-hello check-db
+	-@psql postgres << "CREATE ROLE flask_hello WITH LOGIN PASSWORD 'Wh15K3y'"
+	-@psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
 	$(VENV)/bin/flask-hello migrate-db
+
+deploy:
+	helm dependency update --skip-refresh operations/helm/
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
+	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create
+	make helm-install
+
+helm-install:
+	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+
+
+rollback:
+	helm template $(HELM_SET_VARS) operations/helm > /dev/null
+	-newstore k8s space delete all --confirm
 
 redeploy: rollback deploy
 
@@ -127,4 +139,4 @@ helm-setup:
 	2>/dev/null newstore k8s space current || newstore k8s space create
 
 tunnel:
-	ngrok http --subdomain=newstoresauth0ldap 5000
+	ngrok http --subdomain=newstore-auth0-test 5000

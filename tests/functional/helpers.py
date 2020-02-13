@@ -6,11 +6,7 @@ def before_each_test(context):
     context.web = application
     context.http = context.web.test_client()
     with context.http.session_transaction() as session:
-        session['jwt_payload'] = {
-            'user': {
-                'name': 'foo bar'
-            }
-        }
+        session["jwt_payload"] = {"user": {"name": "foo bar"}}
 
 
 def after_each_test(context):
