@@ -9,21 +9,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    # - uses: actions/cache@v1
-    #   with:
-    #     path: /var/lib/docker
-    #     key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile*') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-docker-
-
-    # - name: Build and push base Docker image using cache
-    #   uses: whoan/docker-build-with-cache-action@v3
-    #   with:
-    #     username: gabrielfalcao
-    #     password: "${{ secrets.DOCKER_PASSWORD }}"
-    #     image_name: gabrielfalcao/flask-hello-base
-    #     image_tag: "${{ github.sha }}"
-    #     dockefile: Dockerfile.base
+    - name: Build and push base Docker image using cache
+      uses: whoan/docker-build-with-cache-action@v3
+      with:
+        username: gabrielfalcao
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: gabrielfalcao/flask-hello-base
+        image_tag: "${{ github.sha }}"
+        dockefile: Dockerfile.base
 
     - name: Build and push Docker image for Kubernetes using cache
       uses: whoan/docker-build-with-cache-action@v3
@@ -33,20 +26,3 @@ jobs:
         image_name: gabrielfalcao/k8s-flask-hello
         image_tag: "${{ github.sha }}"
         dockefile: Dockerfile
-
-    # - name: Publish production image to registry
-    #   uses: elgohr/Publish-Docker-Github-Action@master
-    #   with:
-    #     name: gabrielfalcao/k8s-flask-hello
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKER_PASSWORD }}
-    #     tags: "latest,${{ github.sha }}"
-
-
-    # - name: Publish base image to registry
-    #   uses: elgohr/Publish-Docker-Github-Action@master
-    #   with:
-    #     name: gabrielfalcao/flask-hello-base
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKER_PASSWORD }}
-    #     tags: "latest,${{ github.sha }}"
