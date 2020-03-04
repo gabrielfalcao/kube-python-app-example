@@ -50,6 +50,7 @@ setup(
         "flaskhello": [
             "README.rst",
             "*.png",
+            "*.json",
             "*.rst",
             "docs/*",
             "docs/*/*",

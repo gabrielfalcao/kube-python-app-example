@@ -1,4 +1,4 @@
-.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check docker-pull
+.PHONY: tests all unit functional run docker-image docker-push docker migrate db deploy deploy-with-helm port-forward wheels docker-base-image redeploy check docker-pull clean
 
 export FLASK_DEBUG	:= 1
 export VENV		?= .venv
@@ -140,3 +140,6 @@ helm-setup:
 
 tunnel:
 	ngrok http --subdomain=newstore-auth0-test 5000
+
+clean:
+	rm -rf .venv

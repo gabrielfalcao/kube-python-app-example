@@ -6,13 +6,21 @@
 </div>
 <div class="panel panel-info">
   <div class="panel-body">
+    {% if authenticated %}
     <p class="text-center">
-      {% if authenticated %}
       <a class="btn btn-success" href="/api/" role="button">Browse the RESTful API</a>
-      {% else %}
-      <a class="btn btn-success btn-login" href="/login">Log in with OAuth2 Identity Provider</a>
-      {% endif %}
-      <a class="btn btn-primary" href="/config">Check OAuth2 config</a>
+    </p>
+    {% else %}
+    <h4>Login with:</h4>
+    <p class="text-center">
+      <a class="btn btn-success btn-login" target="_blank" href="/login/keycloak">KeyCloak</a>
+      <strong> or </strong>
+      <a class="btn btn-primary btn-login" href="/login/auth0">Auth0</a>
+    </p>
+    {% endif %}
+    <hr />
+    <p class="text-center">
+      <a class="btn btn-warning" href="/config">Check OIDC and OAuth2 configs</a>
     </p>
   </div>
 </div>

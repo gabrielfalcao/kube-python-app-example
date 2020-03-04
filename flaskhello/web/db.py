@@ -45,6 +45,8 @@ def get_user_and_token_from_userinfo(
     if not email:
         raise ValidationError(f"email cannot be empty")
 
+    if isinstance(token, str):
+        token = {'access_token': token}
     if not isinstance(token, dict):
         raise ValidationError(f"token must be a dict, got: {token!r}")
 
