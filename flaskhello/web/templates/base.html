@@ -68,15 +68,20 @@
             </li>
             <li>
               {% if not is_authenticated %}
-              <a href="/login">
+              <a href="/login/keycloak">
+                <span class="glyphicon glyphicon-key" aria-hidden="true"></span>
+                Login with Keycloak
+              </a>
+            </li>
+            <li>
+              <a href="/login/auth0">
                 <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                Login
+                Login with Auth0
               </a>
               {% else %}
               <a href="/logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                 Logout
-
               </a>
               {% endif %}
             </li>

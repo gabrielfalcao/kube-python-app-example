@@ -13,6 +13,7 @@ from flaskhello.web import db
 
 from .core import application
 from .core import auth0
+from .core import keycloak
 
 
 logger = logging.getLogger(__name__)
@@ -32,8 +33,17 @@ def inject_user_when_present():
     return dict(user=user)
 
 
-@application.route("/login")
-def login():
+@application.route("/login/auth0")
+def login_auth0():
+    return auth0.authorize_redirect(
+        redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
+        audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
+    )
+
+
+@application.route("/login/keycloak")
+@keycloak.require_login
+def login_keycloak():
     return auth0.authorize_redirect(
         redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
         audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
@@ -75,6 +85,26 @@ def auth0_callback():
     session["jwt_token"] = token.id_token
 
     return redirect("/dashboard")
+
+
+@application.route("/callback/keycloak")
+@keycloak.custom_callback
+def keycloak_callback():
+
+    # Handles response from token endpoint
+    try:
+        token = keycloak.authorize_access_token()
+    except Exception as e:
+        return render_template(
+            "error.html",
+            exception='Failed to retrieve OAuth2 userinfo',
+            message=str(e),
+            args=dict(request.args)
+        )
+
+    response = keycloak.get("userinfo")
+
+    userinfo = response.json()
 
 
 def is_authenticated():
