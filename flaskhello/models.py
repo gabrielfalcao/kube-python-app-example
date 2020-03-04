@@ -65,10 +65,10 @@ class User(Model):
         self,
         id_token: str,
         access_token: str,
-        expires_in: int,
-        expires_at: datetime,
-        scope: str,
-        token_type: str,
+        expires_in: int = None,
+        expires_at: datetime = None,
+        scope: str = None,
+        token_type: str = None,
         **extra_data,
     ):
         token = UserToken.get_or_create(user_id=self.id, id_token=id_token)

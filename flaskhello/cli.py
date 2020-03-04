@@ -127,12 +127,12 @@ def check():
     "-d",
     is_flag=True,
     help="enable debug mode (should not use in production)",
-    default=bool(os.getenv("FLASK_DEBUG")),
+    default=False,
 )
 @click.pass_context
 def run_web(ctx, host, port, debug):
     "runs the web server"
-
+    debug = debug or bool(os.getenv("FLASK_DEBUG"))
     if debug:
         set_debug_mode()
 

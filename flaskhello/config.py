@@ -45,10 +45,10 @@ OIDC_CLIENT_SECRETS =  os.getenv('OIDC_CLIENT_SECRETS_JSON_PATH') or str(module_
 OIDC_ID_TOKEN_COOKIE_SECURE =  bool(os.getenv('OIDC_ID_TOKEN_COOKIE_SECURE'))
 OIDC_REQUIRE_VERIFIED_EMAIL =  bool(os.getenv('OIDC_REQUIRE_VERIFIED_EMAIL'))
 OIDC_VALID_ISSUERS =  list(filter(bool, map(str.strip, os.getenv('OIDC_VALID_ISSUERS', '').split(',')))) or ['https://id.t.newstore.net/realms/test']
-OIDC_OPENID_REALM = os.getenv('OIDC_OPENID_REALM', '') or f"{APP_URL_EXTERNAL.rstrip('/')}/callback/keycloak"
-OVERWRITE_REDIRECT_URI = True
-OIDC_CALLBACK_ROUTE = '/callback/keycloak'
-OIDC_SCOPES = ['openid', 'email', 'profile', 'roles']
+OIDC_OPENID_REALM = os.getenv('OIDC_OPENID_REALM')
+# OIDC_CALLBACK_ROUTE = '/callback/keycloak'
+OIDC_SCOPES = ['openid', 'email', 'profile', 'roles', 'address', 'microprofile-jwt', 'phone', 'offline_access']
+# OIDC_USER_INFO_ENABLED = True
 
 
 class dbconfig:

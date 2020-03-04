@@ -15,7 +15,7 @@
 <div class="panel panel-warning">
   <div class="panel-heading">Authorized Scopes</div>
   <div class="panel-body">
-    {% for scope in token.get('scope', '').split() %}
+    {% for scope in (token.get('scope') or '').split() %}
     <pre class="code">{{ scope }}</pre>
     {% endfor %}
   </div>

@@ -35,19 +35,20 @@ def inject_user_when_present():
 
 @application.route("/login/auth0")
 def login_auth0():
-    return auth0.authorize_redirect(
-        redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
-        audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
-    )
+    # return auth0.authorize_redirect(
+    #     redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
+    #     audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
+    # )
+    pass
 
 
 @application.route("/login/keycloak")
 @keycloak.require_login
 def login_keycloak():
-    return auth0.authorize_redirect(
-        redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
-        audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
-    )
+    if keycloak.user_loggedin:
+        return redirect('/dashboard')
+
+    return keycloak.redirect_to_auth_server('/finalize/keycloak')
 
 
 @application.route("/callback/auth0")
@@ -87,28 +88,31 @@ def auth0_callback():
     return redirect("/dashboard")
 
 
-@application.route("/callback/keycloak")
-@keycloak.custom_callback
-def keycloak_callback():
+def ensure_oidc_session():
+    userinfo = keycloak.user_getinfo(['email', 'sub', 'groups'])
+    token = keycloak.get_cookie_id_token()
+    access_token = keycloak.get_access_token()
+    token['access_token'] = access_token
+    token['id_token'] = token.get('jti')
+    token['token_type'] = 'oidc'
+    token['expires_at'] = token.get('exp')
 
-    # Handles response from token endpoint
-    try:
-        token = keycloak.authorize_access_token()
-    except Exception as e:
-        return render_template(
-            "error.html",
-            exception='Failed to retrieve OAuth2 userinfo',
-            message=str(e),
-            args=dict(request.args)
-        )
-
-    response = keycloak.get("userinfo")
-
-    userinfo = response.json()
+    db_user, db_token = db.get_user_and_token_from_userinfo(
+        token=token,
+        userinfo=userinfo
+    )
+    session["user"] = db_user.to_dict()
+    session["token"] = db_token.to_dict()
+    session['access_token'] = access_token
+    session['oauth2_id'] = token['id_token']
+    session['jwt_token'] = keycloak.get_cookie_id_token()
 
 
 def is_authenticated():
-    auth_keys = {"user", "access_token", "jwt_token", "token"}
+    if keycloak.user_loggedin:
+        ensure_oidc_session()
+
+    auth_keys = {"user", "access_token", "token"}
     return auth_keys.intersection(set(session.keys()))
 
 
@@ -118,7 +122,7 @@ def require_auth0(permissions: List[str]):
         def decorated(*args, **kwargs):
             if not is_authenticated():
                 # Redirect to Login page here
-                return redirect(url_for("login"))
+                return redirect(url_for("login_keycloak"))
 
             # TODO: check if roles match
             return f(*args, **kwargs)
@@ -132,6 +136,7 @@ def require_auth0(permissions: List[str]):
 def logout():
     # Clear session stored data
     session.clear()
+    keycloak.logout()
     # Redirect user to logout endpoint
     params = {
         "client_id": application.config["OAUTH2_CLIENT_ID"],
