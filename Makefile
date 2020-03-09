@@ -9,9 +9,9 @@ export OAUTH2_ACCESS_TOKEN_URL	:= https://dev-newstore.auth0.com/oauth/token
 export OAUTH2_AUTHORIZE_URL	:= https://dev-newstore.auth0.com/authorize
 export OAUTH2_BASE_URL		:= https://dev-newstore.auth0.com
 export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
-export OAUTH2_CLIENT_ID		:= 4syTWOOh1u2HmPfyMMGSzMwhSSKeEi0Z
+export OAUTH2_CLIENT_ID		:= newstore-omnichannel-manager
 export OAUTH2_CLIENT_SCOPE	:= openid profile email roles read:user write:user browse:api https://newstore-auth0-test.ngrok.io/roles
-export OAUTH2_CLIENT_SECRET	:= yYHWQJ8yGSvQcSypjTbRQwpICDGBM1DuxkQtVS6DjVrg8ZIwDkBo-5yNvKS_Rjci
+export OAUTH2_CLIENT_SECRET	:= 398796d5-71fc-41fd-9493-ded44248b2e4
 export OAUTH2_DOMAIN		:= dev-newstore.auth0.com
 export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-auth0-test.ngrok.io/
 
