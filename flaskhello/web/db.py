@@ -34,6 +34,9 @@ def get_user_and_token_from_userinfo(
 
     email = userinfo.pop('email', None)
     nickname = userinfo.get('nickname', None)
+    sub = userinfo.get('sub', None)
+    if not email:
+        email = f'{sub}+test@newstore.com'
 
     if nickname and not email:
         # hack for azure that does not support email unless we have an outlook licence

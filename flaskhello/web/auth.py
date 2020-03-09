@@ -136,9 +136,4 @@ def logout():
     # Clear session stored data
     session.clear()
     keycloak.logout()
-    # Redirect user to logout endpoint
-    params = {
-        "client_id": application.config["OAUTH2_CLIENT_ID"],
-        "returnTo": application.config["APP_URL_EXTERNAL"],
-    }
-    return redirect(auth0.api_base_url + "/v2/logout?" + urlencode(params))
+    return redirect(url_for("index"))
