@@ -24,7 +24,7 @@ oauth2:
     base_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/"
     access_token_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token"
     authorize_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth"
-    client_scope: "openid profile email roles read:user write:user browse:api"
+    client_scope: "openid profile email roles profile picture email_verified http://newstore/flask-test http://newstore/newstore_id"
     audience: "https://newstore-keycloak-test.ngrok.io/"
 
 service:

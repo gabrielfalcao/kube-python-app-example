@@ -38,7 +38,7 @@ OAUTH2_ACCESS_TOKEN_URL = (
 OAUTH2_AUTHORIZE_URL = (
     os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/auth"
 )
-OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email"
+OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email roles profile picture email_verified http://newstore/flask-test http://newstore/newstore_id"
 OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-keycloak-test.ngrok.io/"
 
 OIDC_CLIENT_SECRETS =  os.getenv('OIDC_CLIENT_SECRETS_JSON_PATH') or str(module_path.joinpath('client_secrets.json'))
