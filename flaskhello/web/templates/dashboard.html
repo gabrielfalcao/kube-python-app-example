@@ -33,6 +33,7 @@
 
 {% block tabs %}
 <li class="active"><a data-toggle="tab" href="#token">JWT Token</a></li>
+<li class="active"><a data-toggle="tab" href="#token">ID Token</a></li>
 <li><a data-toggle="tab" href="#user">User</a></li>
 <li><a data-toggle="tab" href="#session">Session</a></li>
 {% endblock %}
@@ -40,6 +41,7 @@
 
 {% block tabs_content %}
 {% include "tabs/user.html" %}
-{% include "tabs/token.html" %}
+{% include "tabs/jwt_token.html" %}
+{% include "tabs/id_token.html" %}
 {% include "tabs/session.html" %}
 {% endblock %}
