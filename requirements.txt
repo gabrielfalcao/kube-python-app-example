@@ -1,3 +1,4 @@
+PyJWT>=1.7.1
 agentzero==0.4.4
 auth0-python==3.9.1
 authlib==0.13

@@ -21,7 +21,7 @@ cors = CORS(application, resources="/*")
 session_manager = Session(application)
 oauth = OAuth(application)
 
-auth0 = oauth.register(
+oauth2 = oauth.register(
     "identity_provider",
     client_id=application.config["OAUTH2_CLIENT_ID"],
     client_secret=application.config["OAUTH2_CLIENT_SECRET"],

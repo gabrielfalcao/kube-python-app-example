@@ -25,10 +25,10 @@ SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "id.t.newstore.net"
 OAUTH2_CALLBACK_URL = (
     os.getenv("OAUTH2_CALLBACK_URL")
-    or "https://newstore-auth0-test.ngrok.io/callback/auth0"
+    or "https://newstore-auth0-test.ngrok.io/callback/oauth2"
 )
 
-# https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
+# https://id.t.newstore.net/admin/master/console/#/realms/dodici/clients/c75308f7-99e9-4b18-aeca-6e742a0b361d/credentials
 OAUTH2_CLIENT_ID = os.getenv("OAUTH2_CLIENT_ID")
 OAUTH2_CLIENT_SECRET = os.getenv("OAUTH2_CLIENT_SECRET")
 OAUTH2_BASE_URL = os.getenv("OAUTH2_BASE_URL") or "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/"

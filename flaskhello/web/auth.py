@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-import json
+import jwt
 import logging
 from typing import List
 from functools import wraps
 
 from flask import redirect, session, render_template, request, g, url_for
-from six.moves.urllib.parse import urlencode
 
-from flaskhello.models import User
+# from flaskhello.models import User
 from flaskhello.web import db
 
 from .core import application
-from .core import auth0
+from .core import oauth2
 from .core import keycloak
 
 
@@ -32,15 +31,15 @@ def inject_user_when_present():
     return dict(user=user)
 
 
-@application.route("/login/auth0")
-def login_auth0():
-    return auth0.authorize_redirect(
+@application.route("/login/oauth2")
+def login_oauth2():
+    return oauth2.authorize_redirect(
         redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
         audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
     )
 
 
-@application.route("/login/keycloak")
+@application.route("/login/oidc")
 @keycloak.require_login
 def login_keycloak():
     if keycloak.user_loggedin:
@@ -49,12 +48,12 @@ def login_keycloak():
     return keycloak.redirect_to_auth_server('/finalize/keycloak')
 
 
-@application.route("/callback/auth0")
-def auth0_callback():
+@application.route("/callback/oauth2")
+def oauth2_callback():
 
     # Handles response from token endpoint
     try:
-        token = auth0.authorize_access_token()
+        token = oauth2.authorize_access_token()
     except Exception as e:
         return render_template(
             "error.html",
@@ -63,15 +62,19 @@ def auth0_callback():
             args=dict(request.args)
         )
 
-    response = auth0.get("userinfo")
+    response = oauth2.get("userinfo")
 
     userinfo = response.json()
     session["user"] = userinfo
     session["oauth2_id"] = userinfo.get('sub')
 
+    encoded_jwt_token = token.get("access_token")
+    jwt_token = jwt.decode(encoded_jwt_token, verify=False)
+
     session["token"] = token
-    session["access_token"] = token.get("access_token")
-    session["jwt_token"] = token.get("id_token")
+    session["access_token"] = encoded_jwt_token
+    session["id_token"] = token.get("id_token")
+    session["jwt_token"] = jwt_token
 
     user, token = db.get_user_and_token_from_userinfo(
         token=token,
@@ -114,7 +117,7 @@ def is_authenticated():
     return auth_keys.intersection(set(session.keys()))
 
 
-def require_auth0(permissions: List[str]):
+def require_oauth2(permissions: List[str]):
     def wrapper(f):
         @wraps(f)
         def decorated(*args, **kwargs):

@@ -68,15 +68,15 @@
             </li>
             <li>
               {% if not is_authenticated %}
-              <a href="/login/keycloak">
-                <span class="glyphicon glyphicon-key" aria-hidden="true"></span>
-                Login with Keycloak
+              <a href="/login/oidc">
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                Login with OpenID Connect
               </a>
             </li>
             <li>
-              <a href="/login/auth0">
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                Login with Auth0
+              <a href="/login/oauth2">
+                <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                Login with Oauth2
               </a>
               {% else %}
               <a href="/logout">

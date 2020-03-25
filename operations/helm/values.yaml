@@ -15,15 +15,15 @@ fullnameOverride: ""
 
 
 oauth2:
-    domain: "dev-newstore.auth0.com"
+    domain: "id.t.newstore.net"
     callback_url: "https://newstore-auth0-test.ngrok.io/callback/auth0"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
     client_id: "---injected by Makefile---"
     client_secret: "---injected by Makefile---"
-    base_url: "https://dev-newstore.auth0.com"
-    access_token_url: "https://dev-newstore.auth0.com/oauth/token"
-    authorize_url: "https://dev-newstore.auth0.com/authorize"
+    base_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/"
+    access_token_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token"
+    authorize_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth"
     client_scope: "openid profile email roles read:user write:user browse:api"
     audience: "https://newstore-auth0-test.ngrok.io/"
 

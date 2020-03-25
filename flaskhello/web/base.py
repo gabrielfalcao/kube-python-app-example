@@ -7,7 +7,7 @@ from . import db
 from . import backend
 
 from .auth import application
-from .auth import require_auth0
+from .auth import require_oauth2
 from .auth import is_authenticated
 
 
@@ -35,7 +35,7 @@ def show_config():
 
 
 @application.route("/dashboard", methods=["GET"])
-@require_auth0("read:user")
+@require_oauth2("read:user")
 def dashboard():
     access_token = session.get('access_token')
     if access_token:

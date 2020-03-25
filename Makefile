@@ -44,6 +44,7 @@ tests: $(VENV)/bin/nosetests  # runs all tests
 
 # Install dependencies
 dependencies: | $(VENV)/bin/nosetests
+	$(VENV)/bin/pip install -r development.txt
 
 check:
 	$(VENV)/bin/flask-hello check
