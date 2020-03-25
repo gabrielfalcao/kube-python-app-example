@@ -29,7 +29,7 @@ def test_hello_world(context):
     ("GET on /api/example should return a json containing hello world")
 
     # Given that I perform a GET /api/example
-    response = context.http.get("/api/user")
+    response = context.http.get("/api/users")
 
     # When I check the response
     response.headers.should.have.key("Content-Type").being.equal("application/json")
