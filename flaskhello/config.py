@@ -22,7 +22,7 @@ HTTPS_API = os.getenv("HTTPS_API")
 
 SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 
-OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "dev-newstore.auth0.com"
+OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "id.t.newstore.net"
 OAUTH2_CALLBACK_URL = (
     os.getenv("OAUTH2_CALLBACK_URL")
     or "https://newstore-auth0-test.ngrok.io/callback/auth0"
@@ -31,12 +31,12 @@ OAUTH2_CALLBACK_URL = (
 # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
 OAUTH2_CLIENT_ID = os.getenv("OAUTH2_CLIENT_ID")
 OAUTH2_CLIENT_SECRET = os.getenv("OAUTH2_CLIENT_SECRET")
-OAUTH2_BASE_URL = os.getenv("OAUTH2_BASE_URL") or "https://dev-newstore.auth0.com"
+OAUTH2_BASE_URL = os.getenv("OAUTH2_BASE_URL") or "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/"
 OAUTH2_ACCESS_TOKEN_URL = (
-    os.getenv("OAUTH2_ACCESS_TOKEN_URL") or f"{OAUTH2_BASE_URL}/oauth/token"
+    os.getenv("OAUTH2_ACCESS_TOKEN_URL") or f"{OAUTH2_BASE_URL}/token"
 )
 OAUTH2_AUTHORIZE_URL = (
-    os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/authorize"
+    os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/auth"
 )
 OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email"
 OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-auth0-test.ngrok.io/"

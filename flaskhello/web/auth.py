@@ -34,11 +34,10 @@ def inject_user_when_present():
 
 @application.route("/login/auth0")
 def login_auth0():
-    # return auth0.authorize_redirect(
-    #     redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
-    #     audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
-    # )
-    pass
+    return auth0.authorize_redirect(
+        redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
+        audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
+    )
 
 
 @application.route("/login/keycloak")
