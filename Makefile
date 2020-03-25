@@ -118,7 +118,7 @@ deploy:
 helm-install:
 	git push
 	helm dependency update --skip-refresh operations/helm/
-	newstore k8s helm install $(HELM_SET_VARS) -n $(PROD_TAG) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+	newstore k8s helm install $(HELM_SET_VARS) --name $(PROD_TAG) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 
 rollback:
