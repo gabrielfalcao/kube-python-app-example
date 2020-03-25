@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import jwt
+import json
 import logging
 from typing import List
 from functools import wraps
 
-from flask import redirect, session, render_template, request, g, url_for
+from flask import redirect, session, render_template, request, g, url_for, jsonify
 
-# from flaskhello.models import User
+from flaskhello.models import User, UserToken, JWTToken
 from flaskhello.web import db
 
 from .core import application
@@ -29,6 +30,23 @@ def inject_user_when_present():
 
     user = getattr(g, "user", None)
     return dict(user=user)
+
+
+@application.route("/delete-users")
+def delete_users():
+    response = {
+        'users': [],
+        'tokens': [],
+    }
+    for user in User.all():
+        user.delete()
+        response['users'].append(user.to_dict())
+
+    for token in UserToken.all():
+        token.delete()
+        response['tokens'].append(token.to_dict())
+
+    return jsonify(response)
 
 
 @application.route("/login/oauth2")
@@ -70,7 +88,7 @@ def oauth2_callback():
 
     encoded_jwt_token = token.get("access_token")
     jwt_token = jwt.decode(encoded_jwt_token, verify=False)
-
+    userinfo['jwt_token'] = jwt_token
     session["token"] = token
     session["access_token"] = encoded_jwt_token
     session["id_token"] = token.get("id_token")
@@ -80,11 +98,12 @@ def oauth2_callback():
         token=token,
         userinfo=userinfo
     )
+    JWTToken.get_or_create(
+        user_id=user.id,
+        data=json.dumps(jwt_token),
+    )
     session["user"] = user.to_dict()
     session["token"] = token.to_dict()
-    session["oauth2_id"] = user.oauth2_id
-    session["access_token"] = token.access_token
-    session["jwt_token"] = token.id_token
 
     return redirect("/dashboard")
 
@@ -113,7 +132,7 @@ def is_authenticated():
     if keycloak.user_loggedin:
         ensure_oidc_session()
 
-    auth_keys = {"user", "access_token", "token"}
+    auth_keys = {"user", "access_token", "token", "jwt_token"}
     return auth_keys.intersection(set(session.keys()))
 
 

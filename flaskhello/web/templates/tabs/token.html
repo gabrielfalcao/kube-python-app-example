@@ -3,10 +3,10 @@
 
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Token</h3>
+      <h3 class="panel-title">JWT Token</h3>
     </div>
     <div class="panel-body">
-      <pre>{{ token.to_dict() | tojson(indent=4) }}</pre>
+      <pre>{{ session['jwt_token'] | tojson(indent=4) }}</pre>
     </div>
   </div>
 

@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 oauth2:
     domain: "id.t.newstore.net"
-    callback_url: "https://newstore-keycloak-test.ngrok.io/callback/auth0"
+    callback_url: "https://newstore-keycloak-test.ngrok.io/callback/oauth2"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
     client_id: "---injected by Makefile---"

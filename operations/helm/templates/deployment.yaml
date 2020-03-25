@@ -36,7 +36,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}-db-migrate
-        command: ['/venv/bin/flask-hello', 'migrate-db']
+        command: ['/venv/bin/flask-hello', 'migrate-db', '--drop']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env

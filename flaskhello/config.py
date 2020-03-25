@@ -46,7 +46,7 @@ OIDC_ID_TOKEN_COOKIE_SECURE =  bool(os.getenv('OIDC_ID_TOKEN_COOKIE_SECURE'))
 OIDC_REQUIRE_VERIFIED_EMAIL =  bool(os.getenv('OIDC_REQUIRE_VERIFIED_EMAIL'))
 # OIDC_VALID_ISSUERS = None
 OIDC_OPENID_REALM = os.getenv('OIDC_OPENID_REALM')
-# OIDC_CALLBACK_ROUTE = '/callback/keycloak'
+# OIDC_CALLBACK_ROUTE = '/callback_oidc'
 OIDC_SCOPES = ['openid', 'email', 'profile', 'roles', 'address', 'microprofile-jwt', 'phone', 'offline_access']
 # OIDC_USER_INFO_ENABLED = True
 
@@ -55,7 +55,7 @@ class dbconfig:
     host = os.getenv("POSTGRES_HOST") or "localhost"
     port = int(os.getenv("POSTGRES_PORT") or 5432)
     username = os.getenv("POSTGRES_USERNAME") or "flask_hello"
-    password = os.getenv("POSTGRES_PASSWORD") or ""
+    password = os.getenv("POSTGRES_PASSWORD") or "Wh15k3y"
     database = os.getenv("POSTGRES_DATABASE") or "flask_hello"
     auth = os.getenv("POSTGRES_AUTH") or (
         password and f"{username}:{password}" or username

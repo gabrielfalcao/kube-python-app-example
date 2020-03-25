@@ -122,3 +122,26 @@ class UserToken(Model):
         data.update(self.extra_data)
         data['scope'] = self.scope
         return data
+
+
+class JWTToken(Model):
+    table = db.Table(
+        "user_jwt_tokens",
+        metadata,
+        db.Column("id", db.Integer, primary_key=True),
+        db.Column("data", db.UnicodeText, nullable=True, index=True),
+        DefaultForeignKey("user_id", "user.id"),
+    )
+
+    @property
+    def user(self):
+        return User.find_one_by(id=self.user_id)
+
+    @property
+    def data(self):
+        return json.loads(self.get('data', 'null'))
+
+    def to_dict(self):
+        data = self.serialize()
+        data['data'] = self.data
+        return data

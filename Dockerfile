@@ -16,7 +16,7 @@ RUN /venv/bin/pip install uwsgi
 RUN make tests
 
 ENV OAUTH2_DOMAIN           id.t.newstore.net
-ENV OAUTH2_CALLBACK_URL     https://newstore-keycloak-test.ngrok.io/callback/auth0
+ENV OAUTH2_CALLBACK_URL     https://newstore-keycloak-test.ngrok.io/callback/oauth2
 ENV OAUTH2_CLIENT_ID        FROM_DOCKERFILE_PLEASE_OVERRIDE
 ENV OAUTH2_CLIENT_SECRET    FROM_DOCKERFILE_PLEASE_OVERRIDE
 ENV OAUTH2_BASE_URL         https://id.t.newstore.net
