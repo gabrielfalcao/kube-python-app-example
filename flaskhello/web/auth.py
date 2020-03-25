@@ -37,7 +37,7 @@ def delete_users():
     for user in User.all():
         user.delete()
 
-    return redirect('/')
+    return redirect(url_for('login_oauth2'))
 
 
 @application.route("/login/oauth2")
