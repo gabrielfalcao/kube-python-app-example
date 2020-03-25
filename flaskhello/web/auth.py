@@ -78,11 +78,13 @@ def oauth2_callback():
     session["oauth2_id"] = userinfo.get('sub')
 
     encoded_jwt_token = token.get("access_token")
+    encoded_id_token = token.get("id_token")
     jwt_token = jwt.decode(encoded_jwt_token, verify=False)
+    id_token = jwt.decode(encoded_id_token, verify=False)
     userinfo['jwt_token'] = jwt_token
     session["token"] = token
     session["access_token"] = encoded_jwt_token
-    session["id_token"] = token.get("id_token")
+    session["id_token"] = id_token
     session["jwt_token"] = jwt_token
 
     user, token = db.get_user_and_token_from_userinfo(
