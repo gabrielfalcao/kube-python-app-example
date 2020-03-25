@@ -34,19 +34,10 @@ def inject_user_when_present():
 
 @application.route("/delete-users")
 def delete_users():
-    response = {
-        'users': [],
-        'tokens': [],
-    }
     for user in User.all():
         user.delete()
-        response['users'].append(user.to_dict())
 
-    for token in UserToken.all():
-        token.delete()
-        response['tokens'].append(token.to_dict())
-
-    return jsonify(response)
+    return redirect('/')
 
 
 @application.route("/login/oauth2")
