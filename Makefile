@@ -8,12 +8,12 @@ export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
 export OAUTH2_ACCESS_TOKEN_URL	:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token
 export OAUTH2_AUTHORIZE_URL	:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth
 export OAUTH2_BASE_URL		:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/
-export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
+export OAUTH2_CALLBACK_URL	:= https://newstore-keycloak-test.ngrok.io/callback/auth0
 export OAUTH2_CLIENT_ID		:= newstore-omnichannel-manager
 export OAUTH2_CLIENT_SCOPE	:= openid profile email
 export OAUTH2_CLIENT_SECRET	:= 398796d5-71fc-41fd-9493-ded44248b2e4
 export OAUTH2_DOMAIN		:= id.t.newstore.net
-export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-auth0-test.ngrok.io/
+export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-keycloak-test.ngrok.io/
 
 
 DEPLOY_TIMEOUT		:= 300
@@ -140,7 +140,7 @@ helm-setup:
 	2>/dev/null newstore k8s space current || newstore k8s space create
 
 tunnel:
-	ngrok http --subdomain=newstore-auth0-test 5000
+	ngrok http --subdomain=newstore-keycloak-test 5000
 
 clean:
 	rm -rf .venv

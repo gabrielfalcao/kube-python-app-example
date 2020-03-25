@@ -5,7 +5,7 @@ from pathlib import Path
 module_path = Path(__file__).parent
 
 
-APP_URL_EXTERNAL = os.getenv("APP_URL_EXTERNAL") or "https://newstore-auth0-test.ngrok.io/"
+APP_URL_EXTERNAL = os.getenv("APP_URL_EXTERNAL") or "https://newstore-keycloak-test.ngrok.io/"
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 if REDIS_HOST:
@@ -25,7 +25,7 @@ SECRET_KEY = b"c]WNEy-&?;NN%UzOc"
 OAUTH2_DOMAIN = os.getenv("OAUTH2_DOMAIN") or "id.t.newstore.net"
 OAUTH2_CALLBACK_URL = (
     os.getenv("OAUTH2_CALLBACK_URL")
-    or "https://newstore-auth0-test.ngrok.io/callback/oauth2"
+    or "https://newstore-keycloak-test.ngrok.io/callback/oauth2"
 )
 
 # https://id.t.newstore.net/admin/master/console/#/realms/dodici/clients/c75308f7-99e9-4b18-aeca-6e742a0b361d/credentials
@@ -39,7 +39,7 @@ OAUTH2_AUTHORIZE_URL = (
     os.getenv("OAUTH2_AUTHORIZE_URL") or "{OAUTH2_BASE_URL}/auth"
 )
 OAUTH2_CLIENT_SCOPE = os.getenv("OAUTH2_CLIENT_SCOPE") or "openid profile email"
-OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-auth0-test.ngrok.io/"
+OAUTH2_CLIENT_AUDIENCE = os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-keycloak-test.ngrok.io/"
 
 OIDC_CLIENT_SECRETS =  os.getenv('OIDC_CLIENT_SECRETS_JSON_PATH') or str(module_path.joinpath('client_secrets.json'))
 OIDC_ID_TOKEN_COOKIE_SECURE =  bool(os.getenv('OIDC_ID_TOKEN_COOKIE_SECURE'))
