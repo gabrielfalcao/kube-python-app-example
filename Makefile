@@ -136,7 +136,7 @@ close:
 worker:
 	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'
 
-helm-setup:
+setup-helm:
 	helm repo add elastic https://helm.elastic.co
 	2>/dev/null newstore k8s space current || newstore k8s space create
 
