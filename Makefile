@@ -117,6 +117,7 @@ deploy:
 	make helm-install
 
 helm-install:
+	helm dependency update --skip-refresh operations/helm/
 	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 
