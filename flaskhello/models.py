@@ -104,7 +104,7 @@ class UserToken(Model):
 
     @property
     def scope(self):
-        return self.get('scope', '').split()
+        return self.get("scope", "").split()
 
     @property
     def extra_data(self):
@@ -120,7 +120,7 @@ class UserToken(Model):
         data.pop("extra_data", None)
         data.pop("scope", None)
         data.update(self.extra_data)
-        data['scope'] = self.scope
+        data["scope"] = self.scope
         return data
 
 
@@ -139,9 +139,9 @@ class JWTToken(Model):
 
     @property
     def data(self):
-        return json.loads(self.get('data', 'null'))
+        return json.loads(self.get("data", "null"))
 
     def to_dict(self):
         data = self.serialize()
-        data['data'] = self.data
+        data["data"] = self.data
         return data

@@ -38,7 +38,7 @@ setup(
         [
             "A python application consisting of "
             "an HTTP server, ZMQ Components and "
-            "a command-line tool to help put everything together",
+            "a command-line tool to help put everything together"
         ]
     ),
     long_description=local_file("README.rst"),
@@ -47,14 +47,7 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     include_package_data=True,
     package_data={
-        "flaskhello": [
-            "README.rst",
-            "*.png",
-            "*.json",
-            "*.rst",
-            "docs/*",
-            "docs/*/*",
-        ]
+        "flaskhello": ["README.rst", "*.png", "*.json", "*.rst", "docs/*", "docs/*/*"]
     },
     package_dir={"flask-hello": "flaskhello"},
     zip_safe=False,
