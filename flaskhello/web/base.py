@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 #
 import logging
-from flask import render_template, session, url_for, redirect, request
-from flaskhello import config
+from flask import render_template, session, url_for, redirect
 from . import db
 from . import backend
-
+from flaskhello.models import User
 from .auth import application
 from .auth import require_oauth2
 from .auth import is_authenticated
@@ -57,3 +56,19 @@ def dashboard():
     )
 
     return render_template("dashboard.html", user=user, token=token, roles=roles)
+
+
+@application.route("/.reboot")
+@require_oauth2("admin:system")
+def reboot_process_gracefully():
+    logger.critical("application container will exit gracefully because a request to /.reboot was made")
+    raise SystemExit(0)
+
+
+@application.route("/delete-users")
+@require_oauth2("delete:user")
+def delete_users():
+    for user in User.all():
+        user.delete()
+
+    return redirect(url_for("logout"))

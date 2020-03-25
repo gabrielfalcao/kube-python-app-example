@@ -5,9 +5,9 @@ import logging
 from typing import List
 from functools import wraps
 
-from flask import redirect, session, render_template, request, g, url_for, jsonify
+from flask import redirect, session, render_template, request, g, url_for
 
-from flaskhello.models import User, UserToken, JWTToken
+from flaskhello.models import JWTToken
 from flaskhello.web import db
 
 from .core import application
@@ -30,14 +30,6 @@ def inject_user_when_present():
 
     user = getattr(g, "user", None)
     return dict(user=user)
-
-
-@application.route("/delete-users")
-def delete_users():
-    for user in User.all():
-        user.delete()
-
-    return redirect(url_for("logout"))
 
 
 @application.route("/login/oauth2")
