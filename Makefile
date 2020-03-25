@@ -17,8 +17,8 @@ export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-keycloak-test.ngrok.io/
 
 
 DEPLOY_TIMEOUT		:= 300
-BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
+BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
+PROD_TAG		:= $(shell git log --pretty="format:%h" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
@@ -118,7 +118,7 @@ deploy:
 helm-install:
 	git push
 	helm dependency update --skip-refresh operations/helm/
-	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+	newstore k8s helm install $(HELM_SET_VARS) -n $(PROD_TAG) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 
 rollback:
