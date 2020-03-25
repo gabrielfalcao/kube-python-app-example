@@ -44,9 +44,9 @@ def login_auth0():
 @keycloak.require_login
 def login_keycloak():
     if keycloak.user_loggedin:
-        return redirect('/dashboard')
+        return redirect("/dashboard")
 
-    return keycloak.redirect_to_auth_server('/finalize/keycloak')
+    return keycloak.redirect_to_auth_server("/finalize/keycloak")
 
 
 @application.route("/callback/auth0")
@@ -58,25 +58,22 @@ def auth0_callback():
     except Exception as e:
         return render_template(
             "error.html",
-            exception='Failed to retrieve OAuth2 userinfo',
+            exception="Failed to retrieve OAuth2 userinfo",
             message=str(e),
-            args=dict(request.args)
+            args=dict(request.args),
         )
 
     response = auth0.get("userinfo")
 
     userinfo = response.json()
     session["user"] = userinfo
-    session["oauth2_id"] = userinfo.get('sub')
+    session["oauth2_id"] = userinfo.get("sub")
 
     session["token"] = token
     session["access_token"] = token.get("access_token")
     session["jwt_token"] = token.get("id_token")
 
-    user, token = db.get_user_and_token_from_userinfo(
-        token=token,
-        userinfo=userinfo
-    )
+    user, token = db.get_user_and_token_from_userinfo(token=token, userinfo=userinfo)
     session["user"] = user.to_dict()
     session["token"] = token.to_dict()
     session["oauth2_id"] = user.oauth2_id
@@ -87,23 +84,22 @@ def auth0_callback():
 
 
 def ensure_oidc_session():
-    userinfo = keycloak.user_getinfo(['email', 'sub', 'groups'])
+    userinfo = keycloak.user_getinfo(["email", "sub", "groups"])
     token = keycloak.get_cookie_id_token()
     access_token = keycloak.get_access_token()
-    token['access_token'] = access_token
-    token['id_token'] = token.get('jti')
-    token['token_type'] = 'oidc'
-    token['expires_at'] = token.get('exp')
+    token["access_token"] = access_token
+    token["id_token"] = token.get("jti")
+    token["token_type"] = "oidc"
+    token["expires_at"] = token.get("exp")
 
     db_user, db_token = db.get_user_and_token_from_userinfo(
-        token=token,
-        userinfo=userinfo
+        token=token, userinfo=userinfo
     )
     session["user"] = db_user.to_dict()
     session["token"] = db_token.to_dict()
-    session['access_token'] = access_token
-    session['oauth2_id'] = token['id_token']
-    session['jwt_token'] = keycloak.get_cookie_id_token()
+    session["access_token"] = access_token
+    session["oauth2_id"] = token["id_token"]
+    session["jwt_token"] = keycloak.get_cookie_id_token()
 
 
 def is_authenticated():

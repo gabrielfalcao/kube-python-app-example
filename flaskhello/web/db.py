@@ -18,29 +18,26 @@ class ValidationError(BackendError):
 
 @application.errorhandler(BackendError)
 def handle_error(error):
-    response = {
-        'error': str(error)
-    }
+    response = {"error": str(error)}
     return jsonify(response), error.status_code
 
 
 def get_user_and_token_from_userinfo(
-        userinfo: dict,
-        token: dict,
+    userinfo: dict, token: dict
 ) -> Tuple[User, UserToken]:
 
     if not isinstance(userinfo, dict):
         raise ValidationError(f"userinfo must be a dict, got: {userinfo!r}")
 
-    email = userinfo.pop('email', None)
-    nickname = userinfo.get('nickname', None)
-    sub = userinfo.get('sub', None)
+    email = userinfo.pop("email", None)
+    nickname = userinfo.get("nickname", None)
+    sub = userinfo.get("sub", None)
     if not email:
-        email = f'{sub}+test@newstore.com'
+        email = f"{sub}+test@newstore.com"
 
     if nickname and not email:
         # hack for azure that does not support email unless we have an outlook licence
-        email = f'{nickname}@newstore.com'
+        email = f"{nickname}@newstore.com"
 
     if not isinstance(email, str):
         raise ValidationError(f"'email' missing from userinfo: {userinfo!r}")
@@ -49,7 +46,7 @@ def get_user_and_token_from_userinfo(
         raise ValidationError(f"email cannot be empty")
 
     if isinstance(token, str):
-        token = {'access_token': token}
+        token = {"access_token": token}
     if not isinstance(token, dict):
         raise ValidationError(f"token must be a dict, got: {token!r}")
 
@@ -67,21 +64,17 @@ def get_user_and_token_from_userinfo(
         if value:
             user.set(**{field: value})
 
-    user.update_and_save(
-        extra_data=json.dumps(userinfo, indent=4, default=str)
-    )
+    user.update_and_save(extra_data=json.dumps(userinfo, indent=4, default=str))
     return user, token
 
 
-def get_user_and_token_from_access_token(
-        access_token: str
-) -> Tuple[User, UserToken]:
+def get_user_and_token_from_access_token(access_token: str) -> Tuple[User, UserToken]:
 
     if not access_token:
         raise ValidationError(f"invalid access token {access_token!r}")
 
     token = UserToken.find_one_by(access_token=access_token)
     if not token:
-        raise BackendError(f'token not found', 401)
+        raise BackendError(f"token not found", 401)
 
     return token.user, token

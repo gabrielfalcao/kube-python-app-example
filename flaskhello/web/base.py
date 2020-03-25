@@ -37,7 +37,7 @@ def show_config():
 @application.route("/dashboard", methods=["GET"])
 @require_auth0("read:user")
 def dashboard():
-    access_token = session.get('access_token')
+    access_token = session.get("access_token")
     if access_token:
         try:
             user, token = db.get_user_and_token_from_access_token(access_token)
@@ -45,21 +45,15 @@ def dashboard():
             access_token = token.access_token
         except db.BackendError:
             session.clear()
-            return redirect(url_for('logout'))
+            return redirect(url_for("logout"))
     else:
         user = session["user"]
         token = session["token"]
-        access_token = session['access_token']
-        oauth2_id = session['oauth2_id']
+        access_token = session["access_token"]
+        oauth2_id = session["oauth2_id"]
 
     roles = backend.get_roles_from_access_token_and_oauth2_id(
-        access_token=access_token,
-        oauth2_id=oauth2_id,
+        access_token=access_token, oauth2_id=oauth2_id
     )
 
-    return render_template(
-        "dashboard.html",
-        user=user,
-        token=token,
-        roles=roles,
-    )
+    return render_template("dashboard.html", user=user, token=token, roles=roles)

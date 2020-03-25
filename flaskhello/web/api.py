@@ -21,11 +21,10 @@ if config.HTTPS_API:
     @property
     def specs_url(self):
         """Monkey patch for HTTPS"""
-        return url_for(self.endpoint('specs'), _external=True, _scheme='https')
+        return url_for(self.endpoint("specs"), _external=True, _scheme="https")
 
     logger.warning(
-        'monkey-patching swagger to support https '
-        '(because HTTPS_API env var is set)'
+        "monkey-patching swagger to support https " "(because HTTPS_API env var is set)"
     )
     Api.specs_url = specs_url
 
@@ -79,7 +78,7 @@ class UserEndpoint(Resource):
             return {"error": "user not found"}, 404
 
         user.delete()
-        return {'deleted': user.to_dict()}
+        return {"deleted": user.to_dict()}
 
     @ns.expect(user_json)
     def put(self, user_id):

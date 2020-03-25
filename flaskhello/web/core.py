@@ -28,8 +28,6 @@ auth0 = oauth.register(
     api_base_url=application.config["OAUTH2_BASE_URL"],
     access_token_url=application.config["OAUTH2_ACCESS_TOKEN_URL"],
     authorize_url=application.config["OAUTH2_AUTHORIZE_URL"],
-    client_kwargs={
-        "scope": application.config["OAUTH2_CLIENT_SCOPE"],
-    },
+    client_kwargs={"scope": application.config["OAUTH2_CLIENT_SCOPE"]},
 )
 keycloak = OpenIDConnect(application)
