@@ -17,8 +17,11 @@ export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-keycloak-test.ngrok.io/
 
 
 DEPLOY_TIMEOUT		:= 300
-BASE_TAG		:= $(shell git log --pretty="format:%h" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%h" -n1 .)
+# NOTE: the sha must be the long version to match the ${{ github.sha
+# }} variable in the github actions. Using %h (short sha) will cause
+# deploys to fails with ImagePullBackOff
+BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
+PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
