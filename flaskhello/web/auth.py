@@ -134,5 +134,9 @@ def require_oauth2(permissions: List[str]):
 def logout():
     # Clear session stored data
     session.clear()
-    keycloak.logout()
+    try:
+        keycloak.logout()
+    except Exception as e:
+        logger.info(f'could not logout from openid: {e}')
+
     return redirect(url_for("index"))
