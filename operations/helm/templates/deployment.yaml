@@ -51,7 +51,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command: ['/venv/bin/flask-hello', 'web']
+        command: ['/venv/bin/flask-hello', 'web', '--debug']
         livenessProbe:
           httpGet:
             path: /health
