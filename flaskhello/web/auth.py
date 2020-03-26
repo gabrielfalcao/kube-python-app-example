@@ -139,4 +139,4 @@ def logout():
     except Exception as e:
         logger.info(f'could not logout from openid: {e}')
 
-    return redirect(url_for("index"))
+    return redirect(request.args.get('next') or url_for("index"))
