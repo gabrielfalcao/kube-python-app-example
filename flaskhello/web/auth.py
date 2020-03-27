@@ -12,7 +12,6 @@ from flaskhello.web import db
 
 from .core import application
 from .core import oauth2
-from .core import keycloak
 
 
 logger = logging.getLogger(__name__)
@@ -40,15 +39,6 @@ def login_oauth2():
     )
 
 
-@application.route("/login/oidc")
-@keycloak.require_login
-def login_keycloak():
-    if keycloak.user_loggedin:
-        return redirect("/dashboard")
-
-    return keycloak.redirect_to_auth_server("/finalize/keycloak")
-
-
 @application.route("/callback/oauth2")
 def oauth2_callback():
 
@@ -66,51 +56,31 @@ def oauth2_callback():
     response = oauth2.get("userinfo")
 
     userinfo = response.json()
-    session["user"] = userinfo
-    session["oauth2_id"] = userinfo.get("sub")
 
     encoded_jwt_token = token.get("access_token")
     encoded_id_token = token.get("id_token")
     jwt_token = jwt.decode(encoded_jwt_token, verify=False)
     id_token = jwt.decode(encoded_id_token, verify=False)
+
+    session["oauth2_id"] = userinfo.get("sub")
     userinfo["jwt_token"] = jwt_token
     session["token"] = token
     session["access_token"] = encoded_jwt_token
     session["id_token"] = id_token
     session["jwt_token"] = jwt_token
 
-    user, token = db.get_user_and_token_from_userinfo(token=token, userinfo=userinfo)
-    JWTToken.get_or_create(user_id=user.id, data=json.dumps(jwt_token))
+    user, token = db.get_user_and_token_from_userinfo(
+        token=token,
+        userinfo=userinfo,
+    )
     session["user"] = user.to_dict()
     session["token"] = token.to_dict()
 
     return redirect("/dashboard")
 
 
-def ensure_oidc_session():
-    userinfo = keycloak.user_getinfo(["email", "sub", "groups"])
-    token = keycloak.get_cookie_id_token()
-    access_token = keycloak.get_access_token()
-    token["access_token"] = access_token
-    token["id_token"] = token.get("jti")
-    token["token_type"] = "oidc"
-    token["expires_at"] = token.get("exp")
-
-    db_user, db_token = db.get_user_and_token_from_userinfo(
-        token=token, userinfo=userinfo
-    )
-    session["user"] = db_user.to_dict()
-    session["token"] = db_token.to_dict()
-    session["access_token"] = access_token
-    session["oauth2_id"] = token["id_token"]
-    session["jwt_token"] = keycloak.get_cookie_id_token()
-
-
 def is_authenticated():
-    if keycloak.user_loggedin:
-        ensure_oidc_session()
-
-    auth_keys = {"user", "access_token", "token", "jwt_token"}
+    auth_keys = {"user", "access_token", "token", "id_token", "jwt_token"}
     return auth_keys.intersection(set(session.keys()))
 
 
@@ -120,7 +90,7 @@ def require_oauth2(permissions: List[str]):
         def decorated(*args, **kwargs):
             if not is_authenticated():
                 # Redirect to Login page here
-                return redirect(url_for("login_keycloak"))
+                return redirect(url_for("login_oauth2"))
 
             # TODO: check if roles match
             return f(*args, **kwargs)
@@ -134,9 +104,4 @@ def require_oauth2(permissions: List[str]):
 def logout():
     # Clear session stored data
     session.clear()
-    try:
-        keycloak.logout()
-    except Exception as e:
-        logger.info(f'could not logout from openid: {e}')
-
     return redirect(request.args.get('next') or url_for("index"))

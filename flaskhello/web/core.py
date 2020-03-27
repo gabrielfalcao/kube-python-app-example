@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
 from authlib.integrations.flask_client import OAuth
-from flask_oidc import OpenIDConnect
 
 from flaskhello.filesystem import templates_path
 
@@ -30,4 +29,3 @@ oauth2 = oauth.register(
     authorize_url=application.config["OAUTH2_AUTHORIZE_URL"],
     client_kwargs={"scope": application.config["OAUTH2_CLIENT_SCOPE"]},
 )
-keycloak = OpenIDConnect(application)
