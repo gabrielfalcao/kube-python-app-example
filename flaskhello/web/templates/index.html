@@ -1,27 +1,25 @@
 {% extends "base.html" %}
 {% block middle %}
-<div class="jumbotron alert-success">
+<div class="jumbotron alert-info">
   <h1>Keycloak Test App</h1>
   <br />
 </div>
 <div class="panel panel-info">
   <div class="panel-body">
-    {% if authenticated %}
-    <p class="text-center">
-      <a class="btn btn-success" href="/api/" role="button">Browse the RESTful API</a>
-    </p>
-    {% else %}
-    <h4>Login with:</h4>
-    <p class="text-center">
-      <a class="btn btn-success btn-login" target="_blank" href="/login/oidc">OpenID Connect</a>
-      <strong> or </strong>
-      <a class="btn btn-primary btn-login" href="/login/oauth2">OAuth2</a>
-    </p>
-    {% endif %}
-    <hr />
-    <p class="text-center">
-      <a class="btn btn-warning" href="/config">Check OIDC and OAuth2 configs</a>
-    </p>
+    <div class="row">
+      {% if authenticated %}
+      <div class="col-md-6 text-center">
+          <a class="btn btn-lg btn-success" href="/api/" role="button">Browse the RESTful API</a>
+      </div>
+      {% else %}
+      <div class="col-md-6 text-center">
+        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2">OAuth2 Login via KeyCloak</a>
+      </div>
+      {% endif %}
+      <div class="col-md-6 text-center">
+          <a class="btn btn-lg btn-warning" href="/config">View Python Application Config</a>
+      </div>
+    </div>
   </div>
 </div>
 

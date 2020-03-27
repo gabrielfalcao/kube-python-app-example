@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>{% block title %}Auth Test App{% endblock %}</title>
+    <title>{% block title %}KeyCloak Test App{% endblock %}</title>
 
     <!-- Bootstrap -->
     {% block head_css %}
@@ -43,7 +43,7 @@
             <span class="icon-bar"></span>
           </button>
           {% block navbar_header %}
-          <a class="navbar-brand" href="/">Keycloak Test</a>
+          <a class="navbar-brand" href="/">Keycloak Test App</a>
           {% endblock %}
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -68,15 +68,9 @@
             </li>
             <li>
               {% if not is_authenticated %}
-              <a href="/login/oidc">
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                Login with OpenID Connect
-              </a>
-            </li>
-            <li>
               <a href="/login/oauth2">
                 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                Login with Oauth2
+                OAuth2 Login via KeyCloak
               </a>
               {% else %}
               <a href="/logout">
