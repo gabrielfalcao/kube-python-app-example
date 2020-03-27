@@ -47,6 +47,10 @@ spec:
               name: {{ template "flask-hello.fullname" . }}-secrets
               key: postgresql-password
 
+        env:
+        - name: DOCKER_IMAGE
+          value: {{ .Values.image.tag }}
+
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}

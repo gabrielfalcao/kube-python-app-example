@@ -48,6 +48,9 @@ OAUTH2_CLIENT_SCOPE = (
 OAUTH2_CLIENT_AUDIENCE = (
     os.getenv("OAUTH2_CLIENT_AUDIENCE") or "https://newstore-keycloak-test.ngrok.io/"
 )
+DOCKER_IMAGE = (
+    os.getenv("DOCKER_IMAGE") or "latest"
+)
 
 OIDC_CLIENT_SECRETS = os.getenv("OIDC_CLIENT_SECRETS_JSON_PATH") or str(
     module_path.joinpath("client_secrets.json")
