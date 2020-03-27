@@ -1,23 +1,29 @@
 {% extends "base.html" %}
 {% block middle %}
-<div class="jumbotron alert-info">
+<div class="jumbotron alert-info text-center">
   <h1>Keycloak Test App</h1>
-  <br />
 </div>
 <div class="panel panel-info">
   <div class="panel-body">
     <div class="row">
       {% if authenticated %}
       <div class="col-md-6 text-center">
-          <a class="btn btn-lg btn-success" href="/api/" role="button">Browse the RESTful API</a>
+        <a class="btn btn-lg btn-success" href="/api/" role="button">
+          <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+          Browse the RESTful API
+        </a>
       </div>
       {% else %}
       <div class="col-md-6 text-center">
-        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2">OAuth2 Login via KeyCloak</a>
+        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2">
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+          OAuth2 Login via KeyCloak</a>
       </div>
       {% endif %}
       <div class="col-md-6 text-center">
-          <a class="btn btn-lg btn-warning" href="/config">View Python Application Config</a>
+        <a class="btn btn-lg btn-warning" href="/config">
+          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          Show Container Config</a>
       </div>
     </div>
   </div>
