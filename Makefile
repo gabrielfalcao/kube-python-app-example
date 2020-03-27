@@ -11,7 +11,7 @@ export OAUTH2_BASE_URL		:= https://id.t.newstore.net/realms/dodici/protocol/open
 export OAUTH2_CALLBACK_URL	:= https://newstore-keycloak-test.ngrok.io/callback/oauth2
 export OAUTH2_CLIENT_ID		:= newstore-omnichannel-manager
 export OAUTH2_CLIENT_SCOPE	:= openid profile email roles role_list profile picture email_verified http://newstore/flask-test http://newstore/newstore_id
-export OAUTH2_CLIENT_SECRET	:= 398796d5-71fc-41fd-9493-ded44248b2e4
+export OAUTH2_CLIENT_SECRET	:= b21e24c4-4088-4521-b8e8-a18abecdc2ff
 export OAUTH2_DOMAIN		:= id.t.newstore.net
 export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-keycloak-test.ngrok.io/
 
