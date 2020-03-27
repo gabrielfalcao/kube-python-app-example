@@ -1,0 +1,13 @@
+{
+  "mappings": {
+    "user_id": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+    "email": "emailaddress",
+    "name": "name",
+    "given_name": "givenname",
+    "family_name": "surname",
+    "upn": "upn",
+    "groups": "http://schemas.xmlsoap.org/claims/Group"
+  },
+  "includeAttributeNameFormat": false,
+  "mapUnknownClaimsAsIs": true
+}

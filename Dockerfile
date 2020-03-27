@@ -15,13 +15,13 @@ RUN /venv/bin/pip install uwsgi
 
 RUN make tests
 
-ENV OAUTH2_DOMAIN           dev-newstore.auth0.com
-ENV OAUTH2_CALLBACK_URL     https://newstore-auth0-test.ngrok.io/callback/auth0
+ENV OAUTH2_DOMAIN           id.t.newstore.net
+ENV OAUTH2_CALLBACK_URL     https://newstore-keycloak-test.ngrok.io/callback/oauth2
 ENV OAUTH2_CLIENT_ID        FROM_DOCKERFILE_PLEASE_OVERRIDE
 ENV OAUTH2_CLIENT_SECRET    FROM_DOCKERFILE_PLEASE_OVERRIDE
-ENV OAUTH2_BASE_URL         https://dev-newstore.auth0.com
-ENV OAUTH2_ACCESS_TOKEN_URL https://dev-newstore.auth0.com/oauth/token
-ENV OAUTH2_AUTHORIZE_URL    https://dev-newstore.auth0.com/authorize
+ENV OAUTH2_BASE_URL         https://id.t.newstore.net
+ENV OAUTH2_ACCESS_TOKEN_URL https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token
+ENV OAUTH2_AUTHORIZE_URL    https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth
 ENV OAUTH2_CLIENT_SCOPE     openid profile email
 
 RUN flask-hello check

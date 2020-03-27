@@ -1,27 +1,31 @@
 {% extends "base.html" %}
 {% block middle %}
-<div class="jumbotron alert-success">
-  <h1>NewStore Auth Test App</h1>
-  <br />
+<div class="jumbotron alert-info text-center">
+  <h1>Keycloak Test App</h1>
 </div>
 <div class="panel panel-info">
   <div class="panel-body">
-    {% if authenticated %}
-    <p class="text-center">
-      <a class="btn btn-success" href="/api/" role="button">Browse the RESTful API</a>
-    </p>
-    {% else %}
-    <h4>Login with:</h4>
-    <p class="text-center">
-      <a class="btn btn-success btn-login" target="_blank" href="/login/keycloak">KeyCloak</a>
-      <strong> or </strong>
-      <a class="btn btn-primary btn-login" href="/login/auth0">Auth0</a>
-    </p>
-    {% endif %}
-    <hr />
-    <p class="text-center">
-      <a class="btn btn-warning" href="/config">Check OIDC and OAuth2 configs</a>
-    </p>
+    <div class="row">
+      {% if authenticated %}
+      <div class="col-md-6 text-center">
+        <a class="btn btn-lg btn-success" href="/api/" role="button">
+          <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+          Browse the RESTful API
+        </a>
+      </div>
+      {% else %}
+      <div class="col-md-6 text-center">
+        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2">
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+          OAuth2 Login via KeyCloak</a>
+      </div>
+      {% endif %}
+      <div class="col-md-6 text-center">
+        <a class="btn btn-lg btn-warning" href="/config">
+          <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          Show Container Config</a>
+      </div>
+    </div>
   </div>
 </div>
 

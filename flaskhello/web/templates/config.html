@@ -3,7 +3,7 @@
 <h2>Container Config</h2>
 <div class="list-group">
   {% for key, value in config.items() %}
-  {% if key.startswith("OAUTH2_") or key.startswith("OIDC_") %}
+  {% if key.startswith("OAUTH2_") %}
       {% if 'SECRET' in key %}
           {% set kind="danger" %}
           {% set value="**REDACTED**" %}

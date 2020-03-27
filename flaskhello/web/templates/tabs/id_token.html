@@ -1,12 +1,12 @@
-<div class="tab-pane" id="token">
+<div class="tab-pane" id="id_token">
   <br />
 
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Token</h3>
+      <h3 class="panel-title">ID Token</h3>
     </div>
     <div class="panel-body">
-      <pre>{{ token.to_dict() | tojson(indent=4) }}</pre>
+      <pre>{{ session['id_token'] | tojson(indent=4) }}</pre>
     </div>
   </div>
 

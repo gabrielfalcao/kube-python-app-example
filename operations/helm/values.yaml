@@ -15,17 +15,17 @@ fullnameOverride: ""
 
 
 oauth2:
-    domain: "dev-newstore.auth0.com"
-    callback_url: "https://newstore-auth0-test.ngrok.io/callback/auth0"
+    domain: "id.t.newstore.net"
+    callback_url: "https://newstore-keycloak-test.ngrok.io/callback/oauth2"
 
     # https://manage.auth0.com/dashboard/us/dev-newstore/applications/N6l4Wi2JmIh5gXiGj2sibsZiJRJu0jj1/settings
     client_id: "---injected by Makefile---"
     client_secret: "---injected by Makefile---"
-    base_url: "https://dev-newstore.auth0.com"
-    access_token_url: "https://dev-newstore.auth0.com/oauth/token"
-    authorize_url: "https://dev-newstore.auth0.com/authorize"
-    client_scope: "openid profile email roles read:user write:user browse:api"
-    audience: "https://newstore-auth0-test.ngrok.io/"
+    base_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/"
+    access_token_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token"
+    authorize_url: "https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth"
+    client_scope: "openid profile email roles role_list profile picture email_verified http://newstore/flask-test http://newstore/newstore_id"
+    audience: "https://newstore-keycloak-test.ngrok.io/"
 
 service:
   type: NodePort
@@ -46,7 +46,7 @@ ngrok:
     pullPolicy: Always
 
   token: "34DAA242kqHzC3z1PxsnG_4hehzoCdvw7qbi5768QQg"
-  subdomain: newstore-auth0-test  # from "https:///newstore-auth0-test.ngrok.io/"
+  subdomain: newstore-keycloak-test  # from "https:///newstore-keycloak-test.ngrok.io/"
 
 zmq:
   enabled: false

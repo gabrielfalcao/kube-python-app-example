@@ -22,9 +22,16 @@
 </div>
 
 <div class="panel panel-info">
-  <div class="panel-heading">API Access Token</div>
+  <div class="panel-heading">Raw JWT Token</div>
   <div class="panel-body">
     <pre class="code">{{ session['access_token'] }}</pre>
+  </div>
+</div>
+
+<div class="panel panel-danger">
+  <div class="panel-heading">Actions</div>
+  <div class="panel-body">
+    <a class="btn btn-danger" href="{{ url_for('delete_users') }}">Force re-authentication flow</a>
   </div>
 </div>
 
@@ -32,14 +39,16 @@
 
 
 {% block tabs %}
-<li class="active"><a data-toggle="tab" href="#user">User</a></li>
-<li><a data-toggle="tab" href="#token">Token</a></li>
+<li class="active"><a data-toggle="tab" href="#jwt_token">JWT Token</a></li>
+<li><a data-toggle="tab" href="#id_token">ID Token</a></li>
+<li><a data-toggle="tab" href="#user">User</a></li>
 <li><a data-toggle="tab" href="#session">Session</a></li>
 {% endblock %}
 
 
 {% block tabs_content %}
 {% include "tabs/user.html" %}
-{% include "tabs/token.html" %}
+{% include "tabs/jwt_token.html" %}
+{% include "tabs/id_token.html" %}
 {% include "tabs/session.html" %}
 {% endblock %}

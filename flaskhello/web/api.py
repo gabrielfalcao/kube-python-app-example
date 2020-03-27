@@ -46,7 +46,7 @@ rpc_request = api.model(
 ns = api.namespace("users", description="User operations", path="/api/")
 
 
-@ns.route("/user")
+@ns.route("/users")
 class UserListEndpoint(Resource):
     def get(self):
         users = User.all()
@@ -59,6 +59,16 @@ class UserListEndpoint(Resource):
         try:
             user = User.create(email=email, password=password)
             return user.to_dict(), 201
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+    def delete(self):
+        response = []
+        try:
+            for user in User.all():
+                user.delete()
+                response.append(user.to_dict())
+            return response, 200
         except Exception as e:
             return {"error": str(e)}, 400
 

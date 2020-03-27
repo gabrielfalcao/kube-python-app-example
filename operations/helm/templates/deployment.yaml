@@ -36,7 +36,7 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}-db-migrate
-        command: ['/venv/bin/flask-hello', 'migrate-db']
+        command: ['/venv/bin/flask-hello', 'migrate-db', '--drop']
         envFrom:
           - configMapRef:
               name: {{ include "flask-hello.fullname" . }}-env
@@ -47,11 +47,15 @@ spec:
               name: {{ template "flask-hello.fullname" . }}-secrets
               key: postgresql-password
 
+        env:
+        - name: DOCKER_IMAGE
+          value: {{ .Values.image.tag }}
+
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
-        command: ['/venv/bin/flask-hello', 'web']
+        command: ['/venv/bin/flask-hello', 'web', '--debug']
         livenessProbe:
           httpGet:
             path: /health

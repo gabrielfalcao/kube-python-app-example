@@ -8,15 +8,18 @@ export HTTPS_API	?= $(shell ps aux | grep ngrok | grep -v grep)
 export OAUTH2_ACCESS_TOKEN_URL	:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/token
 export OAUTH2_AUTHORIZE_URL	:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/auth
 export OAUTH2_BASE_URL		:= https://id.t.newstore.net/realms/dodici/protocol/openid-connect/
-export OAUTH2_CALLBACK_URL	:= https://newstore-auth0-test.ngrok.io/callback/auth0
+export OAUTH2_CALLBACK_URL	:= https://newstore-keycloak-test.ngrok.io/callback/oauth2
 export OAUTH2_CLIENT_ID		:= newstore-omnichannel-manager
-export OAUTH2_CLIENT_SCOPE	:= openid profile email
-export OAUTH2_CLIENT_SECRET	:= 398796d5-71fc-41fd-9493-ded44248b2e4
+export OAUTH2_CLIENT_SCOPE	:= openid profile email roles auth0
+export OAUTH2_CLIENT_SECRET	:= b21e24c4-4088-4521-b8e8-a18abecdc2ff
 export OAUTH2_DOMAIN		:= id.t.newstore.net
-export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-auth0-test.ngrok.io/
+export OAUTH2_CLIENT_AUDIENCE	:= https://newstore-keycloak-test.ngrok.io/
 
 
 DEPLOY_TIMEOUT		:= 300
+# NOTE: the sha must be the long version to match the ${{ github.sha
+# }} variable in the github actions. Using %h (short sha) will cause
+# deploys to fails with ImagePullBackOff
 BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
 PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
 DOCKER_AUTHOR		:= gabrielfalcao
@@ -44,6 +47,7 @@ tests: $(VENV)/bin/nosetests  # runs all tests
 
 # Install dependencies
 dependencies: | $(VENV)/bin/nosetests
+	$(VENV)/bin/pip install -r development.txt
 
 check:
 	$(VENV)/bin/flask-hello check
@@ -111,11 +115,12 @@ db: $(VENV)/bin/flask-hello
 
 deploy:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	helm dependency update --skip-refresh operations/helm/
 	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create
 	make helm-install
 
 helm-install:
+	git push
+	helm dependency update --skip-refresh operations/helm/
 	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
 
 
@@ -134,12 +139,12 @@ close:
 worker:
 	$(VENV)/bin/flask-hello worker --address='tcp://127.0.0.1:6969'
 
-helm-setup:
+setup-helm:
 	helm repo add elastic https://helm.elastic.co
 	2>/dev/null newstore k8s space current || newstore k8s space create
 
 tunnel:
-	ngrok http --subdomain=newstore-auth0-test 5000
+	ngrok http --subdomain=newstore-keycloak-test 5000
 
 clean:
 	rm -rf .venv

@@ -156,8 +156,9 @@ def check_db(ctx):
 
 
 @main.command("migrate-db")
+@click.option("--drop/--no-drop", default=False)
 @click.pass_context
-def migrate_db(ctx):
+def migrate_db(ctx, drop):
     "runs the web server"
 
     set_debug_mode()
@@ -168,6 +169,14 @@ def migrate_db(ctx):
 
     engine = ctx.obj["engine"]
     url = engine.url
+
+    if drop:
+        try:
+            metadata.drop_all(engine)
+            logger.warning(f"DROPPED DB due to --drop")
+        except Exception as e:
+            logger.exception(f"failed to connect to migrate {url}: {e}")
+
     logger.info(f"Migrating SQL database: {str(engine.url)!r}")
     try:
         metadata.create_all(engine)
