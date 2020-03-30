@@ -33,9 +33,15 @@ def inject_user_when_present():
 
 @application.route("/login/oauth2")
 def login_oauth2():
+    params = {}
+    idp = request.args.get('idp')
+    if idp == 'azure':
+        params['kc_idp_hint'] = 'newstore-azure-ad'
+
     return oauth2.authorize_redirect(
         redirect_uri=application.config["OAUTH2_CALLBACK_URL"],
         audience=application.config["OAUTH2_CLIENT_AUDIENCE"] or None,
+        **params
     )
 
 

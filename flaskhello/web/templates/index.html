@@ -15,9 +15,20 @@
       </div>
       {% else %}
       <div class="col-md-6 text-center">
-        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2">
+        <p>
+        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2?idp=azure">
           <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-          OAuth2 Login via KeyCloak</a>
+          KeyCloak login via Azure AD
+        </a>
+        </p>
+        <p>OR</p>
+        <p>
+
+        <a class="btn btn-lg btn-primary btn-login" href="/login/oauth2?idp=auth0">
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+          KeyCloak login via Auth0
+        </a>
+        </p>
       </div>
       {% endif %}
       <div class="col-md-6 text-center">

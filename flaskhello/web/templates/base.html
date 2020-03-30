@@ -68,9 +68,15 @@
             </li>
             <li>
               {% if not is_authenticated %}
-              <a href="/login/oauth2">
+              <a href="/login/oauth2?idp=azure">
+                <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+                Azure AD Login
+              </a>
+            </li>
+            <li>
+              <a href="/login/oauth2?idp=auth0">
                 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                OAuth2 Login via KeyCloak
+                Auth0 Login
               </a>
               {% else %}
               <a href="/logout">
