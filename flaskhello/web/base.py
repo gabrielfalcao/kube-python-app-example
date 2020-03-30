@@ -71,4 +71,4 @@ def delete_users():
     for user in User.all():
         user.delete()
 
-    return redirect(url_for("logout", next=url_for("index")))
+    return redirect(url_for("logout"))
