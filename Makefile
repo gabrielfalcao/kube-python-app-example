@@ -113,6 +113,10 @@ db: $(VENV)/bin/flask-hello
 	-@psql postgres << "GRANT ALL PRIVILEGES ON DATABASE flask_hello TO flask_hello;"
 	$(VENV)/bin/flask-hello migrate-db
 
+template:
+	helm dependency update --skip-refresh operations/helm/
+	helm template $(HELM_SET_VARS) operations/helm
+
 deploy:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
 	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create
