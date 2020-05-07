@@ -26,7 +26,8 @@ DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
 HELM_SET_VARS		:= --set image.tag=$(PROD_TAG) --set image.repository=$(DOCKER_AUTHOR)/$(PROD_IMAGE) --set oauth2.client_id=$(OAUTH2_CLIENT_ID) --set oauth2.client_secret=$(OAUTH2_CLIENT_SECRET)
-NAMESPACE		:= $$(newstore k8s space current)
+NAMESPACE		:= python-app-example
+HELM_RELEASE		:= python-app-example-v1
 FIGLET			:= (2>/dev/null which figlet && figlet) || echo
 
 
@@ -99,10 +100,10 @@ docker-pull:
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
 port-forward:
-	newstore k8s run kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
+	kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
 
 forward-queue-port:
-	newstore k8s run kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
+	kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
 
 db: $(VENV)/bin/flask-hello
 	-@2>/dev/null dropdb flask_hello || echo ''
@@ -119,18 +120,25 @@ template:
 
 deploy:
 	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	-(2>/dev/null newstore k8s space current && newstore k8s stack delete all) || newstore k8s space create
+	make k8s-namespace
+	git push
 	make helm-install
+	helm dependency update --skip-refresh operations/helm/
 
 helm-install:
-	git push
-	helm dependency update --skip-refresh operations/helm/
-	newstore k8s helm install $(HELM_SET_VARS) --timeout $(DEPLOY_TIMEOUT) --no-update --debug operations/helm
+	helm install --namespace $(NAMESPACE) $(HELM_SET_VARS) -n $(HELM_RELEASE) operations/helm
 
+helm-upgrade:
+	helm upgrade --namespace $(NAMESPACE) $(HELM_SET_VARS) $(HELM_RELEASE) operations/helm
+
+k8s-namespace:
+	kubectl get namespaces | grep $(NAMESPACE) | awk '{print $$1}' || kubectl create namespace $(NAMESPACE)
 
 rollback:
-	helm template $(HELM_SET_VARS) operations/helm > /dev/null
-	-newstore k8s space delete all --confirm
+	helm delete $(HELM_RELEASE)
+
+k9s:
+	k9s -n $(NAMESPACE)
 
 redeploy: rollback deploy
 
@@ -145,7 +153,7 @@ worker:
 
 setup-helm:
 	helm repo add elastic https://helm.elastic.co
-	2>/dev/null newstore k8s space current || newstore k8s space create
+
 
 tunnel:
 	ngrok http --subdomain=newstore-keycloak-test 5000

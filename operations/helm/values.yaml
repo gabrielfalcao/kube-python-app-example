@@ -28,7 +28,7 @@ oauth2:
     audience: "https://newstore-keycloak-test.ngrok.io/"
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 5000
 
 kibana:
@@ -61,7 +61,7 @@ elasticsearch:
   fullnameOverride: infrastructure-elasticsearch
 
 ingress:
-  enabled: false
+  enabled: true
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

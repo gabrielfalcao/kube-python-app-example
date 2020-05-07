@@ -4,10 +4,18 @@ kind: Ingress
 metadata:
   name: {{ include "flask-hello.fullname" . }}-ingress
   annotations:
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: flask-hello
+  - host: n1.instanc.es
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "flask-hello.fullname" . }}
+          servicePort: 5000
+  - host: n2.instanc.es
     http:
       paths:
       - path: /
