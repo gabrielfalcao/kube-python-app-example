@@ -38,7 +38,7 @@ kibana:
     port: 5601
 
 ngrok:
-  enabled: true
+  enabled: false
   bindtls: both
   image:
     repository: wernight/ngrok

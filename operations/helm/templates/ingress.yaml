@@ -8,14 +8,21 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: n1.instanc.es
+  - host: m8.visualcu.es
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ include "flask-hello.fullname" . }}
           servicePort: 5000
-  - host: n2.instanc.es
+  - host: visualcu.es
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include "flask-hello.fullname" . }}
+          servicePort: 5000
+  - host: m3.visualcu.es
     http:
       paths:
       - path: /
