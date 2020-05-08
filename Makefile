@@ -135,7 +135,7 @@ k8s-namespace:
 	kubectl get namespaces | grep $(NAMESPACE) | awk '{print $$1}' || kubectl create namespace $(NAMESPACE)
 
 rollback:
-	helm delete $(HELM_RELEASE)
+	helm delete --purge $(HELM_RELEASE)
 
 k9s:
 	k9s -n $(NAMESPACE)
