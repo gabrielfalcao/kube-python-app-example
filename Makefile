@@ -21,7 +21,7 @@ DEPLOY_TIMEOUT		:= 300
 # }} variable in the github actions. Using %h (short sha) will cause
 # deploys to fails with ImagePullBackOff
 BASE_TAG		:= $(shell git log --pretty="format:%H" -n1 Dockerfile.base *.txt setup.py)
-PROD_TAG		:= $(shell git log --pretty="format:%H" -n1 .)
+PROD_TAG		:= 662b4dd72fc5bda6b81259e72be909b420b5b56a # $(shell git log --pretty="format:%H" -n3 . | tail -1)
 DOCKER_AUTHOR		:= gabrielfalcao
 BASE_IMAGE		:= flask-hello-base
 PROD_IMAGE		:= k8s-flask-hello
@@ -100,7 +100,8 @@ docker-pull:
 	docker pull $(DOCKER_AUTHOR)/$(PROD_IMAGE)
 
 port-forward:
-	kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
+	kubepfm --target "$(NAMESPACE):.*web:5000:5000" --target "ingress-nginx:*nginx-ingress-controller*:80:80"
+	# kubepfm --target "$(NAMESPACE):.*kibana.*:5601:5601" --target "$(NAMESPACE):.*web:5000:5000" --target "$(NAMESPACE):.*elastic.*:9200:9200" --target "$(NAMESPACE):.*elastic.*:9300:9300" --target "$(NAMESPACE):.*queue:4242:4242" --target "$(NAMESPACE):.*queue:6969:6969" --target "$(NAMESPACE):.*forwarder:5353:5353" --target "$(NAMESPACE):.*forwarder:5858:5858"
 
 forward-queue-port:
 	kubepfm --target "$(NAMESPACE):.*queue:4242:4242"
